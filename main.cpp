@@ -1,24 +1,36 @@
 ﻿#include <dpp/nlohmann/json.hpp>
 #include <dpp/dpp.h>
+#include <fstream>
 
 std::vector<std::pair<dpp::snowflake, std::future<void>>> request;
 std::vector<std::future<void>> process;
 
 void message_create(const dpp::message_create_t& event)
 {
-	{
-		uint64_t i = std::count_if(request.begin(), request.end(), [&](std::pair<dpp::snowflake, std::future<void>>& req) {
-			return event.msg.member.user_id == req.first;
-			});
-		if (i >= 2) return;
-	}
+	uint64_t i = std::count_if(request.begin(), request.end(), [&](std::pair<dpp::snowflake, std::future<void>>& req) {
+		return event.msg.member.user_id == req.first;
+		});
+	if (i >= 2) return;
+	std::function<void()> response =
+		(event.msg.content == "ping") ? std::function<void()>([&]()
+			{
+				event.reply("> :ping_pong: pong! *" + dpp::remove_tail(std::to_string(bot.rest_ping * 100)) + "ms*");
+			}) :
+		(event.msg.content == "test") ? std::function<void()>([&]()
+			{
+				event.reply("this is a test");
+			}) : std::function<void()>();
+
+	std::async(std::launch::async, response);
 }
 
 void clear_request()
 {
 	while (true)
-		if (not request.empty())
-			std::this_thread::sleep_for(std::chrono::milliseconds(900)), request.clear();
+	{
+		std::this_thread::sleep_for(std::chrono::seconds(1));
+		if (not request.empty()) request.clear();
+	}
 }
 
 int main()
@@ -28,9 +40,8 @@ int main()
 		std::cout << event.message << std::endl;
 		});
 	bot.on_message_create([](const dpp::message_create_t& event) {
-		if (event.msg.is_dm() or not event.msg.webhook_id.empty() or event.msg.member.get_user()->is_bot()) return;
+		if (not event.msg.webhook_id.empty() or event.msg.member.get_user()->is_bot()) return;
 		request.emplace_back(std::make_pair(event.msg.member.user_id, std::async(std::launch::async, message_create, event)));
 		});
-
 	bot.start(dpp::start_type::st_wait);
 }
