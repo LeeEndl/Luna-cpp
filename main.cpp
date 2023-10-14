@@ -14,7 +14,7 @@ void message_create(const dpp::message_create_t& event)
 	std::function<void()> response =
 		(event.msg.content == "ping") ? std::function<void()>([&]()
 			{
-				event.reply("> :ping_pong: pong! *" + dpp::remove_tail(std::to_string(bot.rest_ping * 100)) + "ms*");
+				event.reply("> :ping_pong: pong! *" + std::to_string(bot.rest_ping * 100) + "ms*");
 			}) :
 		(event.msg.content == "test") ? std::function<void()>([&]()
 			{
