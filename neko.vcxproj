@@ -53,9 +53,8 @@
       <AdditionalIncludeDirectories>./include/</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>
       </DisableSpecificWarnings>
-      <Optimization>Full</Optimization>
-      <FavorSizeOrSpeed>
-      </FavorSizeOrSpeed>
+      <Optimization>MinSpace</Optimization>
+      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <CallingConvention>FastCall</CallingConvention>
       <DebugInformationFormat>None</DebugInformationFormat>
@@ -118,8 +117,6 @@
     <ClCompile Include="include\dpp\cluster\user_cluster.cpp" />
     <ClCompile Include="include\dpp\cluster\voice.cpp" />
     <ClCompile Include="include\dpp\cluster\webhook_cluster.cpp" />
-    <ClCompile Include="include\dpp\cluster_coro_calls.cpp" />
-    <ClCompile Include="include\dpp\cluster_sync_calls.cpp" />
     <ClCompile Include="include\dpp\commandhandler.cpp" />
     <ClCompile Include="include\dpp\discordclient.cpp" />
     <ClCompile Include="include\dpp\discordevents.cpp" />
@@ -240,18 +237,10 @@
     <ClInclude Include="include\dpp\cache.h" />
     <ClInclude Include="include\dpp\channel.h" />
     <ClInclude Include="include\dpp\cluster.h" />
-    <ClInclude Include="include\dpp\cluster_coro_calls.h" />
-    <ClInclude Include="include\dpp\cluster_sync_calls.h" />
     <ClInclude Include="include\dpp\collector.h" />
     <ClInclude Include="include\dpp\colors.h" />
     <ClInclude Include="include\dpp\commandhandler.h" />
     <ClInclude Include="include\dpp\coro.h" />
-    <ClInclude Include="include\dpp\coro\async.h" />
-    <ClInclude Include="include\dpp\coro\coro.h" />
-    <ClInclude Include="include\dpp\coro\coroutine.h" />
-    <ClInclude Include="include\dpp\coro\job.h" />
-    <ClInclude Include="include\dpp\coro\task.h" />
-    <ClInclude Include="include\dpp\coro\when_any.h" />
     <ClInclude Include="include\dpp\discordclient.h" />
     <ClInclude Include="include\dpp\discordevents.h" />
     <ClInclude Include="include\dpp\discordvoiceclient.h" />

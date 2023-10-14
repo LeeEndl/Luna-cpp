@@ -23,12 +23,6 @@
     <ClCompile Include="include\dpp\cluster.cpp">
       <Filter>dpp</Filter>
     </ClCompile>
-    <ClCompile Include="include\dpp\cluster_coro_calls.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\cluster_sync_calls.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
     <ClCompile Include="include\dpp\commandhandler.cpp">
       <Filter>dpp</Filter>
     </ClCompile>
@@ -433,9 +427,6 @@
     <Filter Include="dpp\events">
       <UniqueIdentifier>{28dfc596-1389-43ee-a162-a7d1707815f9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="dpp\coro">
-      <UniqueIdentifier>{14e95a7e-8451-4ae7-a34b-4bb78086379c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="zlib">
       <UniqueIdentifier>{ada5e88e-8710-46ea-ac2d-3d9a9f6efa17}</UniqueIdentifier>
     </Filter>
@@ -466,12 +457,6 @@
       <Filter>dpp</Filter>
     </ClInclude>
     <ClInclude Include="include\dpp\cluster.h">
-      <Filter>dpp</Filter>
-    </ClInclude>
-    <ClInclude Include="include\dpp\cluster_coro_calls.h">
-      <Filter>dpp</Filter>
-    </ClInclude>
-    <ClInclude Include="include\dpp\cluster_sync_calls.h">
       <Filter>dpp</Filter>
     </ClInclude>
     <ClInclude Include="include\dpp\collector.h">
@@ -641,24 +626,6 @@
     </ClInclude>
     <ClInclude Include="include\dpp\wsclient.h">
       <Filter>dpp</Filter>
-    </ClInclude>
-    <ClInclude Include="include\dpp\coro\async.h">
-      <Filter>dpp\coro</Filter>
-    </ClInclude>
-    <ClInclude Include="include\dpp\coro\coro.h">
-      <Filter>dpp\coro</Filter>
-    </ClInclude>
-    <ClInclude Include="include\dpp\coro\coroutine.h">
-      <Filter>dpp\coro</Filter>
-    </ClInclude>
-    <ClInclude Include="include\dpp\coro\job.h">
-      <Filter>dpp\coro</Filter>
-    </ClInclude>
-    <ClInclude Include="include\dpp\coro\task.h">
-      <Filter>dpp\coro</Filter>
-    </ClInclude>
-    <ClInclude Include="include\dpp\coro\when_any.h">
-      <Filter>dpp\coro</Filter>
     </ClInclude>
     <ClInclude Include="include\zlib\crc32.h">
       <Filter>zlib</Filter>
