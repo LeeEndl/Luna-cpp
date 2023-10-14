@@ -15,10 +15,6 @@ void message_create(const dpp::message_create_t& event)
 		(event.msg.content == "ping") ? std::function<void()>([&]()
 			{
 				event.reply("> :ping_pong: pong! *" + std::to_string(bot.rest_ping * 100) + "ms*");
-			}) :
-		(event.msg.content == "test") ? std::function<void()>([&]()
-			{
-				event.reply("this is a test");
 			}) : std::function<void()>();
 
 	std::async(std::launch::async, response);
