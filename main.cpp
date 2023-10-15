@@ -12,13 +12,10 @@ void message_create(const dpp::message_create_t& event)
 		return event.msg.member.user_id == req.first;
 		});
 	if (i >= 2) return;
-	std::function<void()> response =
-		(event.msg.content == "!ping") ? std::function<void()>([&]()
-			{
-				event.reply("> :ping_pong: pong! *" + std::to_string(bot.rest_ping * 100) + "ms*");
-			}) : std::function<void()>();
-
-	std::async(std::launch::async, response);
+	std::async(std::launch::async, (event.msg.content == "!ping") ? std::function<void()>([&]()
+		{
+			event.reply("> :ping_pong: pong! *" + std::to_string(bot.rest_ping * 100) + "ms*");
+		}) : std::function<void()>());
 }
 
 void clear_request()
