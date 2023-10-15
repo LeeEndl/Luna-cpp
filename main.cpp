@@ -37,7 +37,7 @@ int main()
 		std::cout << event.message << std::endl;
 		});
 	bot.on_message_create([](const dpp::message_create_t& event) {
-		if (not std::any_of(commands.begin(), commands.end(), [&](std::string& command) { return command == event.msg.content; }) or not event.msg.webhook_id.empty() or 
+		if (std::none_of(commands.begin(), commands.end(), [&](std::string& command) { return command == event.msg.content; }) or not event.msg.webhook_id.empty() or
 			event.msg.member.get_user()->is_bot()) return;
 		request.emplace_back(std::make_pair(event.msg.member.user_id, std::async(std::launch::async, message_create, event)));
 		});
