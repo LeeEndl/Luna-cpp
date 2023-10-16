@@ -6,21 +6,6 @@ std::vector<std::pair<dpp::snowflake, std::future<void>>> request;
 std::vector<std::future<void>> process;
 std::vector<std::string> commands = { "!ping", "!kick " };
 
-std::vector<std::string> index(std::string source, const char& find)
-{
-	std::string temp = "";
-	std::vector<std::string> i;
-	for (auto c : source) c not_eq find ? temp += c : c == find && not temp.empty() ? i.push_back(temp), temp = "" : "";
-	if (not temp.empty()) i.push_back(temp);
-	return i;
-}
-
-std::string trim_mention(std::string str) {
-	std::string i = str;
-	i.erase(std::remove_if(i.begin(), i.end(), [&](const char& c) { return c == '<' or c == '>' or c == '!' or c == '@'; }), i.end());
-	return i;
-}
-
 void message_create(const dpp::message_create_t& event)
 {
 	uint64_t i = std::count_if(request.begin(), request.end(), [&](std::pair<dpp::snowflake, std::future<void>>& req) {
@@ -34,8 +19,8 @@ void message_create(const dpp::message_create_t& event)
 			}) :
 		(event.msg.content.find("!kick ") not_eq -1) ? std::function<void()>([&event]()
 			{
-				std::string id = index(event.msg.content, ' ')[1];
-				bot.user_get(dpp::snowflake(trim_mention(id)), [&](const dpp::confirmation_callback_t& callback) {
+				std::string id = dpp::utility::index(event.msg.content, ' ')[1];
+				bot.user_get(dpp::snowflake(dpp::utility::trim_mention(id)), [&](const dpp::confirmation_callback_t& callback) {
 					id = std::to_string(std::get<dpp::user_identified>(callback.value).id);
 					if (callback.is_error()) event.reply("> invalid user id");
 					else {
