@@ -8,10 +8,9 @@ std::vector<std::string> commands = { "!ping", "!kick " };
 
 void message_create(const dpp::message_create_t& event)
 {
-	uint64_t i = std::count_if(request.begin(), request.end(), [&](std::pair<dpp::snowflake, std::future<void>>& req) {
+	if (std::count_if(request.begin(), request.end(), [&](std::pair<dpp::snowflake, std::future<void>>& req) {
 		return event.msg.member.user_id == req.first;
-		});
-	if (i >= 2) return;
+		}) > 1) return;
 	std::async(std::launch::async,
 		(event.msg.content == "!ping") ? std::function<void()>([&event]()
 			{
@@ -29,8 +28,7 @@ void message_create(const dpp::message_create_t& event)
 						else event.reply("> you do not have permission: `Kick Members`");
 					}
 					});
-			})
-				: std::function<void()>());
+			}) : std::function<void()>());
 }
 
 void clear_request()
