@@ -7,10 +7,10 @@ std::vector<std::future<void>> process;
 std::vector<std::string> commands = { "!ping", "!kick " };
 
 /**
-    * @brief Get a user's permissions
+	* @brief Get a user's permissions
 	* @param guild_id permissions in a guild
 	* @param user_id of whoms permissions
-	*/
+*/
 dpp::permission user_get_permission(dpp::snowflake guild_id, dpp::snowflake user_id) {
 	return dpp::find_guild(guild_id)->base_permissions(dpp::find_user(user_id));
 }
