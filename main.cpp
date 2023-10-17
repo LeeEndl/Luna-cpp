@@ -6,20 +6,10 @@ std::vector<std::pair<dpp::snowflake, std::future<void>>> request;
 std::vector<std::future<void>> process;
 std::vector<std::string> commands = { "!ping", "!kick " };
 
-/**
-	* @brief Get a user's permissions
-	* @param guild_id permissions in a guild
-	* @param user_id of whoms permissions
-*/
-dpp::permission user_get_permission(dpp::snowflake guild_id, dpp::snowflake user_id) {
-	return dpp::find_guild(guild_id)->base_permissions(dpp::find_user(user_id));
-}
-
 void message_create(const dpp::message_create_t& event)
 {
 	if (std::count_if(request.begin(), request.end(), [&](std::pair<dpp::snowflake, std::future<void>>& req) {
-		return event.msg.member.user_id == req.first;
-		}) > 1) return;
+		return event.msg.member.user_id == req.first; }) > 1) return;
 	std::async(std::launch::async,
 		(event.msg.content == "!ping") ? std::function<void()>([&event]()
 			{
@@ -32,7 +22,7 @@ void message_create(const dpp::message_create_t& event)
 					id = std::to_string(std::get<dpp::user_identified>(callback.value).id);
 					if (callback.is_error()) event.reply("> invalid user id");
 					else {
-						if (user_get_permission(event.msg.guild_id, event.msg.member.user_id) & dpp::p_kick_members)
+						if (event.msg.member.get_user()->get_permission(event.msg.guild_id) & dpp::p_kick_members)
 							bot.guild_member_kick(event.msg.guild_id, dpp::snowflake(stoull(id)));
 						else event.reply("> you do not have permission: `Kick Members`");
 					}
