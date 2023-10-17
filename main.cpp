@@ -22,9 +22,10 @@ void message_create(const dpp::message_create_t& event)
 					id = std::to_string(std::get<dpp::user_identified>(callback.value).id);
 					if (callback.is_error()) event.reply("> invalid user id");
 					else {
-						if (event.msg.member.get_user()->get_permission(event.msg.guild_id) & dpp::p_kick_members)
+						if (event.msg.member.get_user()->get_permission(event.msg.guild_id) & dpp::p_kick_members and 
+							~std::get<dpp::user_identified>(callback.value).get_permission(event.msg.guild_id) & dpp::p_administrator)
 							bot.guild_member_kick(event.msg.guild_id, dpp::snowflake(stoull(id)));
-						else event.reply("> you do not have permission: `Kick Members`");
+						else event.reply("> you do not have permission: `Kick Members`, or I am unable to kick this person.");
 					}
 					});
 			}) : std::function<void()>());
