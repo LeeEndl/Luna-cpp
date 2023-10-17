@@ -23,7 +23,7 @@ void message_create(const dpp::message_create_t& event)
 	std::async(std::launch::async,
 		(event.msg.content == "!ping") ? std::function<void()>([&event]()
 			{
-				event.reply("> :ping_pong: pong! *" + std::to_string(bot.rest_ping * 100) + "ms*");
+				event.reply("> :ping_pong: pong! *" + std::to_string(static_cast<int>((bot.rest_ping + bot.get_shard(0)->websocket_ping) * 1000)) + "ms*");
 			}) :
 		(event.msg.content.find("!kick ") not_eq -1) ? std::function<void()>([&event]()
 			{
@@ -40,18 +40,15 @@ void message_create(const dpp::message_create_t& event)
 			}) : std::function<void()>());
 }
 
-void clear_request()
-{
-	while (true)
-	{
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-		if (not request.empty()) request.clear();
-	}
-}
-
 int main()
 {
-	process.emplace_back(std::async(std::launch::async, clear_request));
+	process.emplace_back(std::async(std::launch::async, std::function<void()>([]() {
+		while (true)
+		{
+			std::this_thread::sleep_for(std::chrono::seconds(1));
+			if (not request.empty()) request.clear();
+		}
+		})));
 	bot.on_log([&](const dpp::log_t& event) {
 		std::cout << event.message << std::endl;
 		});
