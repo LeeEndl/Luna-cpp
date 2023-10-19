@@ -468,9 +468,6 @@
     <ClInclude Include="include\dpp\commandhandler.h">
       <Filter>dpp</Filter>
     </ClInclude>
-    <ClInclude Include="include\dpp\coro.h">
-      <Filter>dpp</Filter>
-    </ClInclude>
     <ClInclude Include="include\dpp\discordclient.h">
       <Filter>dpp</Filter>
     </ClInclude>
@@ -507,9 +504,6 @@
     <ClInclude Include="include\dpp\exception.h">
       <Filter>dpp</Filter>
     </ClInclude>
-    <ClInclude Include="include\dpp\export.h">
-      <Filter>dpp</Filter>
-    </ClInclude>
     <ClInclude Include="include\dpp\guild.h">
       <Filter>dpp</Filter>
     </ClInclude>
@@ -529,9 +523,6 @@
       <Filter>dpp</Filter>
     </ClInclude>
     <ClInclude Include="include\dpp\json.h">
-      <Filter>dpp</Filter>
-    </ClInclude>
-    <ClInclude Include="include\dpp\json_fwd.h">
       <Filter>dpp</Filter>
     </ClInclude>
     <ClInclude Include="include\dpp\json_interface.h">
@@ -619,9 +610,6 @@
       <Filter>dpp</Filter>
     </ClInclude>
     <ClInclude Include="include\dpp\webhook.h">
-      <Filter>dpp</Filter>
-    </ClInclude>
-    <ClInclude Include="include\dpp\win32_safe_warnings.h">
       <Filter>dpp</Filter>
     </ClInclude>
     <ClInclude Include="include\dpp\wsclient.h">
@@ -1070,6 +1058,9 @@
     </ClInclude>
     <ClInclude Include="include\openssl\x509v3err.h">
       <Filter>openssl</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dpp\json_in.h">
+      <Filter>dpp</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

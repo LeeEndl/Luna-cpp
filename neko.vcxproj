@@ -49,7 +49,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>./include/</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>
       </DisableSpecificWarnings>
@@ -75,7 +75,7 @@
       <AdditionalLibraryDirectories>./include/</AdditionalLibraryDirectories>
     </Link>
     <ProjectReference>
-      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -240,7 +240,6 @@
     <ClInclude Include="include\dpp\collector.h" />
     <ClInclude Include="include\dpp\colors.h" />
     <ClInclude Include="include\dpp\commandhandler.h" />
-    <ClInclude Include="include\dpp\coro.h" />
     <ClInclude Include="include\dpp\discordclient.h" />
     <ClInclude Include="include\dpp\discordevents.h" />
     <ClInclude Include="include\dpp\discordvoiceclient.h" />
@@ -253,7 +252,6 @@
     <ClInclude Include="include\dpp\event.h" />
     <ClInclude Include="include\dpp\event_router.h" />
     <ClInclude Include="include\dpp\exception.h" />
-    <ClInclude Include="include\dpp\export.h" />
     <ClInclude Include="include\dpp\guild.h" />
     <ClInclude Include="include\dpp\httpsclient.h" />
     <ClInclude Include="include\dpp\integration.h" />
@@ -261,7 +259,7 @@
     <ClInclude Include="include\dpp\invite.h" />
     <ClInclude Include="include\dpp\isa_detection.h" />
     <ClInclude Include="include\dpp\json.h" />
-    <ClInclude Include="include\dpp\json_fwd.h" />
+    <ClInclude Include="include\dpp\json_in.h" />
     <ClInclude Include="include\dpp\json_interface.h" />
     <ClInclude Include="include\dpp\managed.h" />
     <ClInclude Include="include\dpp\message.h" />
@@ -291,7 +289,6 @@
     <ClInclude Include="include\dpp\voiceregion.h" />
     <ClInclude Include="include\dpp\voicestate.h" />
     <ClInclude Include="include\dpp\webhook.h" />
-    <ClInclude Include="include\dpp\win32_safe_warnings.h" />
     <ClInclude Include="include\dpp\wsclient.h" />
     <ClInclude Include="include\openssl\aes.h" />
     <ClInclude Include="include\openssl\asn1.h" />
