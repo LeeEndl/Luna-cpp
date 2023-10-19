@@ -34,7 +34,7 @@
 
   /* #define GEN_TREES_H */
 
-#include "deflate.h"
+#include "deflate.hpp"
 
 #ifdef ZLIB_DEBUG
 #  include <ctype.h>
@@ -111,7 +111,7 @@ local int base_dist[D_CODES];
 /* First normalized distance for each code (0 = distance of 1) */
 
 #else
-#  include "trees.h"
+#  include "trees.hpp"
 #endif /* GEN_TREES_H */
 
 struct static_tree_desc_s {
@@ -406,14 +406,14 @@ void gen_trees_header(void) {
 			static_dtree[i].Len, SEPARATOR(i, D_CODES - 1, 5));
 	}
 
-	fprintf(header, "const uch ZLIB_INTERNAL _dist_code[DIST_CODE_LEN] = {\n");
+	fprintf(header, "const uch  _dist_code[DIST_CODE_LEN] = {\n");
 	for (i = 0; i < DIST_CODE_LEN; i++) {
 		fprintf(header, "%2u%s", _dist_code[i],
 			SEPARATOR(i, DIST_CODE_LEN - 1, 20));
 	}
 
 	fprintf(header,
-		"const uch ZLIB_INTERNAL _length_code[MAX_MATCH-MIN_MATCH+1]= {\n");
+		"const uch  _length_code[MAX_MATCH-MIN_MATCH+1]= {\n");
 	for (i = 0; i < MAX_MATCH - MIN_MATCH + 1; i++) {
 		fprintf(header, "%2u%s", _length_code[i],
 			SEPARATOR(i, MAX_MATCH - MIN_MATCH, 20));
@@ -454,7 +454,7 @@ local void init_block(deflate_state* s) {
 /* ===========================================================================
  * Initialize the tree data structures for a new zlib stream.
  */
-void ZLIB_INTERNAL _tr_init(deflate_state* s) {
+void  _tr_init(deflate_state* s) {
 	tr_static_init();
 
 	s->l_desc.dyn_tree = s->dyn_ltree;
@@ -865,7 +865,7 @@ local void send_all_trees(deflate_state* s, int lcodes, int dcodes,
 /* ===========================================================================
  * Send a stored block
  */
-void ZLIB_INTERNAL _tr_stored_block(deflate_state* s, charf* buf,
+void  _tr_stored_block(deflate_state* s, charf* buf,
 	ulg stored_len, int last) {
 	send_bits(s, (STORED_BLOCK << 1) + last, 3);  /* send block type */
 	bi_windup(s);        /* align on byte boundary */
@@ -885,7 +885,7 @@ void ZLIB_INTERNAL _tr_stored_block(deflate_state* s, charf* buf,
 /* ===========================================================================
  * Flush the bits in the bit buffer to pending output (leaves at most 7 bits)
  */
-void ZLIB_INTERNAL _tr_flush_bits(deflate_state* s) {
+void  _tr_flush_bits(deflate_state* s) {
 	bi_flush(s);
 }
 
@@ -893,7 +893,7 @@ void ZLIB_INTERNAL _tr_flush_bits(deflate_state* s) {
  * Send one empty static block to give enough lookahead for inflate.
  * This takes 10 bits, of which 7 may remain in the bit buffer.
  */
-void ZLIB_INTERNAL _tr_align(deflate_state* s) {
+void  _tr_align(deflate_state* s) {
 	send_bits(s, STATIC_TREES << 1, 3);
 	send_code(s, END_BLOCK, static_ltree);
 #ifdef ZLIB_DEBUG
@@ -993,7 +993,7 @@ local int detect_data_type(deflate_state* s) {
  * Determine the best encoding for the current block: dynamic trees, static
  * trees or store, and write out the encoded block.
  */
-void ZLIB_INTERNAL _tr_flush_block(deflate_state* s, charf* buf,
+void  _tr_flush_block(deflate_state* s, charf* buf,
 	ulg stored_len, int last) {
 	ulg opt_lenb, static_lenb; /* opt_len and static_len in bytes */
 	int max_blindex = 0;  /* index of last bit length code of non zero freq */
@@ -1091,7 +1091,7 @@ void ZLIB_INTERNAL _tr_flush_block(deflate_state* s, charf* buf,
  * Save the match info and tally the frequency counts. Return true if
  * the current block must be flushed.
  */
-int ZLIB_INTERNAL _tr_tally(deflate_state * s, unsigned dist, unsigned lc) {
+int  _tr_tally(deflate_state * s, unsigned dist, unsigned lc) {
 	s->sym_buf[s->sym_next++] = (uch)dist;
 	s->sym_buf[s->sym_next++] = (uch)(dist >> 8);
 	s->sym_buf[s->sym_next++] = (uch)lc;

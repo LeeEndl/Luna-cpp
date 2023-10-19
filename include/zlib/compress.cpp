@@ -5,8 +5,8 @@
 
  /* @(#) $Id$ */
 
-#define ZLIB_INTERNAL
-#include "zlib.h"
+#define 
+#include "zlib.hpp"
 
 /* ===========================================================================
 	 Compresses the source buffer into the destination buffer. The level
@@ -19,7 +19,7 @@
    memory, Z_BUF_ERROR if there was not enough room in the output buffer,
    Z_STREAM_ERROR if the level parameter is invalid.
 */
-int ZEXPORT compress2(Bytef* dest, uLongf* destLen, const Bytef* source,
+int  compress2(Bytef* dest, uLongf* destLen, const Bytef* source,
 	uLong sourceLen, int level) {
 	z_stream stream;
 	int err;
@@ -60,7 +60,7 @@ int ZEXPORT compress2(Bytef* dest, uLongf* destLen, const Bytef* source,
 
 /* ===========================================================================
  */
-int ZEXPORT compress(Bytef* dest, uLongf* destLen, const Bytef* source,
+int  compress(Bytef* dest, uLongf* destLen, const Bytef* source,
 	uLong sourceLen) {
 	return compress2(dest, destLen, source, sourceLen, Z_DEFAULT_COMPRESSION);
 }
@@ -69,7 +69,7 @@ int ZEXPORT compress(Bytef* dest, uLongf* destLen, const Bytef* source,
 	 If the default memLevel or windowBits for deflateInit() is changed, then
    this function needs to be updated.
  */
-uLong ZEXPORT compressBound(uLong sourceLen) {
+uLong  compressBound(uLong sourceLen) {
 	return sourceLen + (sourceLen >> 12) + (sourceLen >> 14) +
 		(sourceLen >> 25) + 13;
 }

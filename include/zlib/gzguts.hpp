@@ -12,13 +12,13 @@
 #endif
 
 #ifdef HAVE_HIDDEN
-#  define ZLIB_INTERNAL __attribute__((visibility ("hidden")))
+#  define  __attribute__((visibility ("hidden")))
 #else
-#  define ZLIB_INTERNAL
+#  define 
 #endif
 
 #include <stdio.h>
-#include "zlib.h"
+#include "zlib.hpp"
 #ifdef STDC
 #  include <string.h>
 #  include <stdlib.h>
@@ -137,10 +137,10 @@ extern void   free(voidpf ptr);
 
 /* provide prototypes for these when building zlib without LFS */
 #if !defined(_LARGEFILE64_SOURCE) || _LFS64_LARGEFILE-0 == 0
-ZEXTERN gzFile ZEXPORT gzopen64(const char*, const char*);
-ZEXTERN z_off64_t ZEXPORT gzseek64(gzFile, z_off64_t, int);
-ZEXTERN z_off64_t ZEXPORT gztell64(gzFile);
-ZEXTERN z_off64_t ZEXPORT gzoffset64(gzFile);
+ gzFile  gzopen64(const char*, const char*);
+ z_off64_t  gzseek64(gzFile, z_off64_t, int);
+ z_off64_t  gztell64(gzFile);
+ z_off64_t  gzoffset64(gzFile);
 #endif
 
 /* default memLevel */
@@ -202,9 +202,9 @@ typedef struct {
 typedef gz_state FAR* gz_statep;
 
 /* shared functions */
-void ZLIB_INTERNAL gz_error(gz_statep, int, const char*);
+void  gz_error(gz_statep, int, const char*);
 #if defined UNDER_CE
-char ZLIB_INTERNAL* gz_strwinerror(DWORD error);
+char * gz_strwinerror(DWORD error);
 #endif
 
 /* GT_OFF(x), where x is an unsigned value, is true if x > maximum z_off64_t
@@ -213,6 +213,6 @@ char ZLIB_INTERNAL* gz_strwinerror(DWORD error);
 #ifdef INT_MAX
 #  define GT_OFF(x) (sizeof(int) == sizeof(z_off64_t) && (x) > INT_MAX)
 #else
-unsigned ZLIB_INTERNAL gz_intmax(void);
+unsigned  gz_intmax(void);
 #  define GT_OFF(x) (sizeof(int) == sizeof(z_off64_t) && (x) > gz_intmax())
 #endif

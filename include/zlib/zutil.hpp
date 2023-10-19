@@ -14,12 +14,11 @@
 #define ZUTIL_H
 
 #ifdef HAVE_HIDDEN
-#  define ZLIB_INTERNAL __attribute__((visibility ("hidden")))
+#  define  __attribute__((visibility ("hidden")))
 #else
-#  define ZLIB_INTERNAL
 #endif
 
-#include "zlib.h"
+#include "zlib.hpp"
 
 #if defined(STDC) && !defined(Z_SOLO)
 #  if !(defined(_WIN32_WCE) && defined(_MSC_VER))
@@ -191,9 +190,9 @@ void* _Cdecl farmalloc(unsigned long nbytes);
 /* provide prototypes for these when building zlib without LFS */
 #if !defined(_WIN32) && \
     (!defined(_LARGEFILE64_SOURCE) || _LFS64_LARGEFILE-0 == 0)
-ZEXTERN uLong ZEXPORT adler32_combine64(uLong, uLong, z_off_t);
-ZEXTERN uLong ZEXPORT crc32_combine64(uLong, uLong, z_off_t);
-ZEXTERN uLong ZEXPORT crc32_combine_gen64(z_off_t);
+ uLong  adler32_combine64(uLong, uLong, z_off_t);
+ uLong  crc32_combine64(uLong, uLong, z_off_t);
+ uLong  crc32_combine_gen64(z_off_t);
 #endif
 
 /* common defaults */
@@ -232,16 +231,16 @@ ZEXTERN uLong ZEXPORT crc32_combine_gen64(z_off_t);
 #    define zmemzero(dest, len) memset(dest, 0, len)
 #  endif
 #else
-void ZLIB_INTERNAL zmemcpy(Bytef* dest, const Bytef* source, uInt len);
-int ZLIB_INTERNAL zmemcmp(const Bytef* s1, const Bytef* s2, uInt len);
-void ZLIB_INTERNAL zmemzero(Bytef* dest, uInt len);
+void  zmemcpy(Bytef* dest, const Bytef* source, uInt len);
+int  zmemcmp(const Bytef* s1, const Bytef* s2, uInt len);
+void  zmemzero(Bytef* dest, uInt len);
 #endif
 
 /* Diagnostic functions */
 #ifdef ZLIB_DEBUG
 #  include <stdio.h>
-extern int ZLIB_INTERNAL z_verbose;
-extern void ZLIB_INTERNAL z_error(char* m);
+extern int  z_verbose;
+extern void  z_error(char* m);
 #  define Assert(cond,msg) {if(!(cond)) z_error(msg);}
 #  define Trace(x) {if (z_verbose>=0) fprintf x ;}
 #  define Tracev(x) {if (z_verbose>0) fprintf x ;}
@@ -258,9 +257,9 @@ extern void ZLIB_INTERNAL z_error(char* m);
 #endif
 
 #ifndef Z_SOLO
-voidpf ZLIB_INTERNAL zcalloc(voidpf opaque, unsigned items,
+voidpf  zcalloc(voidpf opaque, unsigned items,
 	unsigned size);
-void ZLIB_INTERNAL zcfree(voidpf opaque, voidpf ptr);
+void  zcfree(voidpf opaque, voidpf ptr);
 #endif
 
 #define ZALLOC(strm, items, size) \

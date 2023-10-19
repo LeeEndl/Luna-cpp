@@ -10,10 +10,10 @@
 	inflate_fast() can be used with either inflate.c or infback.c.
   */
 
-#include "zutil.h"
-#include "inftrees.h"
-#include "inflate.h"
-#include "inffast.h"
+#include "zutil.hpp"
+#include "inftrees.hpp"
+#include "inflate.hpp"
+#include "inffast.hpp"
 
   /*
 	 strm provides memory allocation functions in zalloc and zfree, or
@@ -22,7 +22,7 @@
 	 windowBits is in the range 8..15, and window is a user-supplied
 	 window and output buffer that is 2**windowBits bytes.
    */
-int ZEXPORT inflateBackInit_(z_streamp strm, int windowBits,
+int  inflateBackInit_(z_streamp strm, int windowBits,
 	unsigned char FAR* window, const char* version,
 	int stream_size) {
 	struct inflate_state FAR* state;
@@ -106,7 +106,7 @@ local void fixedtables(struct inflate_state FAR* state) {
 		virgin = 0;
 	}
 #else /* !BUILDFIXED */
-#   include "inffixed.h"
+#   include "inffixed.hpp"
 #endif /* BUILDFIXED */
 	state->lencode = lenfix;
 	state->lenbits = 9;
@@ -239,7 +239,7 @@ local void fixedtables(struct inflate_state FAR* state) {
 	  inflateBack() can also return Z_STREAM_ERROR if the input parameters
 	  are not correct, i.e. strm is Z_NULL or the state was not initialized.
 	*/
-int ZEXPORT inflateBack(z_streamp strm, in_func in, void FAR* in_desc,
+int  inflateBack(z_streamp strm, in_func in, void FAR* in_desc,
 	out_func out, void FAR* out_desc) {
 	struct inflate_state FAR* state;
 	z_const unsigned char FAR* next;    /* next input */
@@ -618,7 +618,7 @@ inf_leave:
 	return ret;
 }
 
-int ZEXPORT inflateBackEnd(z_streamp strm) {
+int  inflateBackEnd(z_streamp strm) {
 	if (strm == Z_NULL || strm->state == Z_NULL || strm->zfree == (free_func)0)
 		return Z_STREAM_ERROR;
 	ZFREE(strm, strm->state);

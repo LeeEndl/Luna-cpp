@@ -49,7 +49,7 @@
 
   /* @(#) $Id$ */
 
-#include "deflate.h"
+#include "deflate.hpp"
 
 const char deflate_copyright[] =
 " deflate 1.3 Copyright 1995-2023 Jean-loup Gailly and Mark Adler ";
@@ -365,7 +365,7 @@ local void fill_window(deflate_state* s) {
 }
 
 /* ========================================================================= */
-int ZEXPORT deflateInit_(z_streamp strm, int level, const char* version,
+int  deflateInit_(z_streamp strm, int level, const char* version,
 	int stream_size) {
 	return deflateInit2_(strm, level, Z_DEFLATED, MAX_WBITS, DEF_MEM_LEVEL,
 		Z_DEFAULT_STRATEGY, version, stream_size);
@@ -373,7 +373,7 @@ int ZEXPORT deflateInit_(z_streamp strm, int level, const char* version,
 }
 
 /* ========================================================================= */
-int ZEXPORT deflateInit2_(z_streamp strm, int level, int method,
+int  deflateInit2_(z_streamp strm, int level, int method,
 	int windowBits, int memLevel, int strategy,
 	const char* version, int stream_size) {
 	deflate_state* s;
@@ -538,7 +538,7 @@ local int deflateStateCheck(z_streamp strm) {
 }
 
 /* ========================================================================= */
-int ZEXPORT deflateSetDictionary(z_streamp strm, const Bytef* dictionary,
+int  deflateSetDictionary(z_streamp strm, const Bytef* dictionary,
 	uInt  dictLength) {
 	deflate_state* s;
 	uInt str, n;
@@ -604,7 +604,7 @@ int ZEXPORT deflateSetDictionary(z_streamp strm, const Bytef* dictionary,
 }
 
 /* ========================================================================= */
-int ZEXPORT deflateGetDictionary(z_streamp strm, Bytef* dictionary,
+int  deflateGetDictionary(z_streamp strm, Bytef* dictionary,
 	uInt* dictLength) {
 	deflate_state* s;
 	uInt len;
@@ -623,7 +623,7 @@ int ZEXPORT deflateGetDictionary(z_streamp strm, Bytef* dictionary,
 }
 
 /* ========================================================================= */
-int ZEXPORT deflateResetKeep(z_streamp strm) {
+int  deflateResetKeep(z_streamp strm) {
 	deflate_state* s;
 
 	if (deflateStateCheck(strm)) {
@@ -683,7 +683,7 @@ local void lm_init(deflate_state* s) {
 }
 
 /* ========================================================================= */
-int ZEXPORT deflateReset(z_streamp strm) {
+int  deflateReset(z_streamp strm) {
 	int ret;
 
 	ret = deflateResetKeep(strm);
@@ -693,7 +693,7 @@ int ZEXPORT deflateReset(z_streamp strm) {
 }
 
 /* ========================================================================= */
-int ZEXPORT deflateSetHeader(z_streamp strm, gz_headerp head) {
+int  deflateSetHeader(z_streamp strm, gz_headerp head) {
 	if (deflateStateCheck(strm) || strm->state->wrap != 2)
 		return Z_STREAM_ERROR;
 	strm->state->gzhead = head;
@@ -701,7 +701,7 @@ int ZEXPORT deflateSetHeader(z_streamp strm, gz_headerp head) {
 }
 
 /* ========================================================================= */
-int ZEXPORT deflatePending(z_streamp strm, unsigned* pending, int* bits) {
+int  deflatePending(z_streamp strm, unsigned* pending, int* bits) {
 	if (deflateStateCheck(strm)) return Z_STREAM_ERROR;
 	if (pending != Z_NULL)
 		*pending = strm->state->pending;
@@ -711,7 +711,7 @@ int ZEXPORT deflatePending(z_streamp strm, unsigned* pending, int* bits) {
 }
 
 /* ========================================================================= */
-int ZEXPORT deflatePrime(z_streamp strm, int bits, int value) {
+int  deflatePrime(z_streamp strm, int bits, int value) {
 	deflate_state* s;
 	int put;
 
@@ -734,7 +734,7 @@ int ZEXPORT deflatePrime(z_streamp strm, int bits, int value) {
 }
 
 /* ========================================================================= */
-int ZEXPORT deflateParams(z_streamp strm, int level, int strategy) {
+int  deflateParams(z_streamp strm, int level, int strategy) {
 	deflate_state* s;
 	compress_func func;
 
@@ -779,7 +779,7 @@ int ZEXPORT deflateParams(z_streamp strm, int level, int strategy) {
 }
 
 /* ========================================================================= */
-int ZEXPORT deflateTune(z_streamp strm, int good_length, int max_lazy,
+int  deflateTune(z_streamp strm, int good_length, int max_lazy,
 	int nice_length, int max_chain) {
 	deflate_state* s;
 
@@ -816,7 +816,7 @@ int ZEXPORT deflateTune(z_streamp strm, int good_length, int max_lazy,
  *
  * Shifts are used to approximate divisions, for speed.
  */
-uLong ZEXPORT deflateBound(z_streamp strm, uLong sourceLen) {
+uLong  deflateBound(z_streamp strm, uLong sourceLen) {
 	deflate_state* s;
 	uLong fixedlen, storelen, wraplen;
 
@@ -928,7 +928,7 @@ local void flush_pending(z_streamp strm) {
     } while (0)
 
  /* ========================================================================= */
-int ZEXPORT deflate(z_streamp strm, int flush) {
+int  deflate(z_streamp strm, int flush) {
 	int old_flush; /* value of flush param for previous deflate call */
 	deflate_state* s;
 
@@ -1242,7 +1242,7 @@ int ZEXPORT deflate(z_streamp strm, int flush) {
 }
 
 /* ========================================================================= */
-int ZEXPORT deflateEnd(z_streamp strm) {
+int  deflateEnd(z_streamp strm) {
 	int status;
 
 	if (deflateStateCheck(strm)) return Z_STREAM_ERROR;
@@ -1266,7 +1266,7 @@ int ZEXPORT deflateEnd(z_streamp strm) {
  * To simplify the source, this is not supported for 16-bit MSDOS (which
  * doesn't have enough memory anyway to duplicate compression states).
  */
-int ZEXPORT deflateCopy(z_streamp dest, z_streamp source) {
+int  deflateCopy(z_streamp dest, z_streamp source) {
 #ifdef MAXSEG_64K
 	(void)dest;
 	(void)source;
