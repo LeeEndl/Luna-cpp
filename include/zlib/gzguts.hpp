@@ -11,12 +11,6 @@
 #  undef _TIME_BITS
 #endif
 
-#ifdef HAVE_HIDDEN
-#  define  __attribute__((visibility ("hidden")))
-#else
-#  define 
-#endif
-
 #include <stdio.h>
 #include "zlib.hpp"
 #ifdef STDC
@@ -167,8 +161,6 @@ extern void   free(voidpf ptr);
 
 /* internal gzip file state data structure */
 typedef struct {
-	/* exposed contents for gzgetc() macro */
-	struct gzFile_s x;      /* "x" for exposed */
 	/* x.have: number of bytes available at x.next */
 	/* x.next: next output data to deliver or write */
 	/* x.pos: current position in uncompressed data */
