@@ -65,4 +65,4 @@
 #include <dpp/collector.h>
 
 std::vector<std::thread> event_threads;
-dpp::cluster bot("MTAwNDUxNDkzNTA1OTAwNTQ3MA.GW_vG4.B3WWzgFknM01pJG5GpknbpD2Ro8Qb2ket54I50", dpp::i_all_intents);
+dpp::cluster bot("", dpp::i_all_intents);
