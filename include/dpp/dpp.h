@@ -63,6 +63,3 @@
 #include <dpp/discordevents.h>
 #include <dpp/timed_listener.h>
 #include <dpp/collector.h>
-
-std::vector<std::thread> event_threads;
-dpp::cluster bot("", dpp::i_all_intents);

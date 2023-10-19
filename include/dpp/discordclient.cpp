@@ -27,7 +27,7 @@
 #include <dpp/cluster.h>
 #include <thread>
 #include <dpp/etf.h>
-#include <zlib/zlib.h>
+#include <zlib/zlib.hpp>
 #ifdef _WIN32
 #include <WinSock2.h>
 #include <WS2tcpip.h>

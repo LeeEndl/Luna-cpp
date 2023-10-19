@@ -35,7 +35,7 @@
 #include <dpp/sysdep.h>
 #include <dpp/discordevents.h>
 #include <dpp/exception.h>
-#include <zlib/zlib.h>
+#include <zlib/zlib.hpp>
 
 #pragma warning (disable: 4996)
 
