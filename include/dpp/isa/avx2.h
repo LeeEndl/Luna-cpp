@@ -26,7 +26,6 @@
 #include <numeric>
 
 namespace dpp {
-
 	using avx_2_float = __m256;
 
 	/**
@@ -104,7 +103,6 @@ namespace dpp {
 			return _mm256_load_ps(values);
 		}
 	};
-
 } // namespace dpp
 
 #endif

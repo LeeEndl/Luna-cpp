@@ -26,9 +26,8 @@
 #include <numeric>
 
 namespace dpp {
-
 	using avx_float = __m128;
-	
+
 	/**
 	 * @brief A class for audio mixing operations using AVX instructions.
 	 */
@@ -101,7 +100,6 @@ namespace dpp {
 			return _mm_load_ps(values);
 		}
 	};
-
 } // namespace dpp
 
 #endif

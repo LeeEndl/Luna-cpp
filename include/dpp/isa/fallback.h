@@ -22,7 +22,6 @@
 #include <numeric>
 
 namespace dpp {
-
 	/**
 	 * @brief A class for audio mixing operations using x64 instructions.
 	 */
@@ -68,8 +67,6 @@ namespace dpp {
 			for (uint64_t x = 0; x < byte_blocks_per_register; ++x) {
 				up_sampled_vector[x] += static_cast<int32_t>(decoded_data[x]);
 			}
-
 		}
 	};
-
 } // namespace dpp

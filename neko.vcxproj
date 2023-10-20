@@ -214,7 +214,6 @@
     <ClCompile Include="include\dpp\voicestate.cpp" />
     <ClCompile Include="include\dpp\webhook.cpp" />
     <ClCompile Include="include\dpp\wsclient.cpp" />
-    <ClCompile Include="include\openssl\applink.c" />
     <ClCompile Include="include\zlib\adler32.cpp" />
     <ClCompile Include="include\zlib\compress.cpp" />
     <ClCompile Include="include\zlib\crc32.cpp" />
@@ -257,6 +256,10 @@
     <ClInclude Include="include\dpp\integration.h" />
     <ClInclude Include="include\dpp\intents.h" />
     <ClInclude Include="include\dpp\invite.h" />
+    <ClInclude Include="include\dpp\isa\avx.h" />
+    <ClInclude Include="include\dpp\isa\avx2.h" />
+    <ClInclude Include="include\dpp\isa\avx512.h" />
+    <ClInclude Include="include\dpp\isa\fallback.h" />
     <ClInclude Include="include\dpp\isa_detection.h" />
     <ClInclude Include="include\dpp\json.h" />
     <ClInclude Include="include\dpp\json_in.h" />

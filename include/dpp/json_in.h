@@ -1,11 +1,11 @@
 #ifndef INCLUDE_NLOHMANN_JSON_FWD_HPP_
 #define INCLUDE_NLOHMANN_JSON_FWD_HPP_
 
-#include <cstdint>   
-#include <map>  
-#include <memory>  
-#include <string>  
-#include <vector>  
+#include <cstdint>
+#include <map>
+#include <memory>
+#include <string>
+#include <vector>
 
 #ifndef JSON_SKIP_LIBRARY_VERSION_CHECK
 #if defined(NLOHMANN_JSON_VERSION_MAJOR) && defined(NLOHMANN_JSON_VERSION_MINOR) && defined(NLOHMANN_JSON_VERSION_PATCH)
@@ -15,9 +15,9 @@
 #endif
 #endif
 
-#define NLOHMANN_JSON_VERSION_MAJOR 3    
-#define NLOHMANN_JSON_VERSION_MINOR 11   
-#define NLOHMANN_JSON_VERSION_PATCH 2    
+#define NLOHMANN_JSON_VERSION_MAJOR 3
+#define NLOHMANN_JSON_VERSION_MINOR 11
+#define NLOHMANN_JSON_VERSION_PATCH 2
 
 #ifndef JSON_DIAGNOSTICS
 #define JSON_DIAGNOSTICS 0
@@ -90,7 +90,7 @@
 #ifndef NLOHMANN_JSON_NAMESPACE_END
 #define NLOHMANN_JSON_NAMESPACE_END                                     \
     }        \
-    }    
+    }
 #endif
 
 NLOHMANN_JSON_NAMESPACE_BEGIN
