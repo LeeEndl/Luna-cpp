@@ -4,7 +4,7 @@
 dpp::cluster bot("TOKEN", dpp::i_all_intents);
 std::vector<std::pair<dpp::snowflake, std::future<void>>> request;
 std::vector<std::future<void>> process;
-std::vector<std::string> commands = { "!ping", "!kick " };
+std::vector<std::string> commands = { "!ping", "!kick ", "!purge " };
 
 void message_create(const dpp::message_create_t& event)
 {
@@ -22,13 +22,18 @@ void message_create(const dpp::message_create_t& event)
 					id = std::to_string(std::get<dpp::user_identified>(callback.value).id);
 					if (callback.is_error()) event.reply("> invalid user id");
 					else {
-						if (event.msg.member.get_user()->get_permission(event.msg.guild_id) & dpp::p_kick_members and
-							~std::get<dpp::user_identified>(callback.value).get_permission(event.msg.guild_id) & dpp::p_administrator)
-							bot.guild_member_kick(event.msg.guild_id, dpp::snowflake(stoull(id)));
-						else event.reply("> you do not have permission: `Kick Members`, or I am unable to kick this person.");
+						(event.msg.member.get_user()->get_permission(event.msg.guild_id) & dpp::p_kick_members and
+							~std::get<dpp::user_identified>(callback.value).get_permission(event.msg.guild_id) & dpp::p_administrator) ?
+							bot.guild_member_kick(event.msg.guild_id, dpp::snowflake(stoull(id))) :
+							event.reply("> you do not have permission: `Kick Members`, or I am unable to kick this person.");
 					}
 					});
-			}) : std::function<void()>());
+			}) : (event.msg.content.find("!purge ") not_eq -1) ? std::function<void()>([&event]()
+				{
+					int amount = std::all_of(dpp::utility::index(event.msg.content, ' ')[1].begin(), dpp::utility::index(event.msg.content, ' ')[1].end(), ::isdigit) ?
+						stoi(dpp::utility::index(event.msg.content, ' ')[1]) : 0;
+					if (amount > 100 or amount < 1) event.reply("> provide a number 1-100");
+				}) : std::function<void()>());
 }
 
 int main()
