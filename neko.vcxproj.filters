@@ -2,9 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="include\dpp\application.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
     <ClCompile Include="include\dpp\auditlog.cpp">
       <Filter>dpp</Filter>
     </ClCompile>
@@ -404,6 +401,9 @@
     <ClCompile Include="include\openssl\applink.c">
       <Filter>openssl</Filter>
     </ClCompile>
+    <ClCompile Include="include\dpp\application.cpp">
+      <Filter>dpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="dpp">
@@ -607,9 +607,6 @@
       <Filter>zlib</Filter>
     </ClInclude>
     <ClInclude Include="include\zlib\deflate.hpp">
-      <Filter>zlib</Filter>
-    </ClInclude>
-    <ClInclude Include="include\zlib\gzguts.hpp">
       <Filter>zlib</Filter>
     </ClInclude>
     <ClInclude Include="include\zlib\inffast.hpp">

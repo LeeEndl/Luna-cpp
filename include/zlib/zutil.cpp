@@ -1,29 +1,19 @@
-/* zutil.c -- target dependent utility functions for the compression library
- * Copyright (C) 1995-2017 Jean-loup Gailly
- * For conditions of distribution and use, see copyright notice in zlib.h
- */
-
- /* @(#) $Id$ */
-
 #include "zutil.hpp"
-#ifndef Z_SOLO
-#  include "gzguts.hpp"
-#endif
 
 z_const char* const z_errmsg[10] = {
-	(z_const char*)"need dictionary",     /* Z_NEED_DICT       2  */
-	(z_const char*)"stream end",          /* Z_STREAM_END      1  */
-	(z_const char*)"",                    /* Z_OK              0  */
-	(z_const char*)"file error",          /* Z_ERRNO         (-1) */
-	(z_const char*)"stream error",        /* Z_STREAM_ERROR  (-2) */
-	(z_const char*)"data error",          /* Z_DATA_ERROR    (-3) */
-	(z_const char*)"insufficient memory", /* Z_MEM_ERROR     (-4) */
-	(z_const char*)"buffer error",        /* Z_BUF_ERROR     (-5) */
-	(z_const char*)"incompatible version",/* Z_VERSION_ERROR (-6) */
+	(z_const char*)"need dictionary",               
+	(z_const char*)"stream end",                   
+	(z_const char*)"",                                     
+	(z_const char*)"file error",                     
+	(z_const char*)"stream error",            
+	(z_const char*)"data error",                
+	(z_const char*)"insufficient memory",        
+	(z_const char*)"buffer error",               
+	(z_const char*)"incompatible version",   
 	(z_const char*)""
 };
 
-const char*  zlibVersion(void) {
+const char* zlibVersion(void) {
 	return ZLIB_VERSION;
 }
 
@@ -58,11 +48,6 @@ uLong  zlibCompileFlags(void) {
 #ifdef ZLIB_DEBUG
 	flags += 1 << 8;
 #endif
-	/*
-#if defined(ASMV) || defined(ASMINF)
-	flags += 1 << 9;
-#endif
-	 */
 #ifdef ZLIB_WINAPI
 	flags += 1 << 10;
 #endif
@@ -124,18 +109,11 @@ void  z_error(char* m) {
 }
 #endif
 
-/* exported to allow conversion of error code to string for compress() and
- * uncompress()
- */
-const char*  zError(int err) {
+const char* zError(int err) {
 	return ERR_MSG(err);
 }
 
 #if defined(_WIN32_WCE) && _WIN32_WCE < 0x800
-/* The older Microsoft C Run-Time Library for Windows CE doesn't have
- * errno.  We define it as a global variable to simplify porting.
- * Its value is always 0 and should not be used.
- */
 int errno = 0;
 #endif
 
@@ -144,7 +122,7 @@ int errno = 0;
 void  zmemcpy(Bytef* dest, const Bytef* source, uInt len) {
 	if (len == 0) return;
 	do {
-		*dest++ = *source++; /* ??? to be unrolled */
+		*dest++ = *source++;      
 	} while (--len != 0);
 }
 
@@ -160,120 +138,12 @@ int  zmemcmp(const Bytef* s1, const Bytef* s2, uInt len) {
 void  zmemzero(Bytef* dest, uInt len) {
 	if (len == 0) return;
 	do {
-		*dest++ = 0;  /* ??? to be unrolled */
+		*dest++ = 0;       
 	} while (--len != 0);
 }
 #endif
 
-#ifndef Z_SOLO
-
-#ifdef SYS16BIT
-
-#ifdef __TURBOC__
-/* Turbo C in 16-bit mode */
-
-#  define MY_ZCALLOC
-
-/* Turbo C malloc() does not allow dynamic allocation of 64K bytes
- * and farmalloc(64K) returns a pointer with an offset of 8, so we
- * must fix the pointer. Warning: the pointer must be put back to its
- * original form in order to free it, use zcfree().
- */
-
-#define MAX_PTR 10
- /* 10*64K = 640K */
-
-local int next_ptr = 0;
-
-typedef struct ptr_table_s {
-	voidpf org_ptr;
-	voidpf new_ptr;
-} ptr_table;
-
-local ptr_table table[MAX_PTR];
-/* This table is used to remember the original form of pointers
- * to large buffers (64K). Such pointers are normalized with a zero offset.
- * Since MSDOS is not a preemptive multitasking OS, this table is not
- * protected from concurrent access. This hack doesn't work anyway on
- * a protected system like OS/2. Use Microsoft C instead.
- */
-
-voidpf  zcalloc(voidpf opaque, unsigned items, unsigned size) {
-	voidpf buf;
-	ulg bsize = (ulg)items * size;
-
-	(void)opaque;
-
-	/* If we allocate less than 65520 bytes, we assume that farmalloc
-	 * will return a usable pointer which doesn't have to be normalized.
-	 */
-	if (bsize < 65520L) {
-		buf = farmalloc(bsize);
-		if (*(ush*)&buf != 0) return buf;
-	}
-	else {
-		buf = farmalloc(bsize + 16L);
-	}
-	if (buf == NULL || next_ptr >= MAX_PTR) return NULL;
-	table[next_ptr].org_ptr = buf;
-
-	/* Normalize the pointer to seg:0 */
-	*((ush*)&buf + 1) += ((ush)((uch*)buf - 0) + 15) >> 4;
-	*(ush*)&buf = 0;
-	table[next_ptr++].new_ptr = buf;
-	return buf;
-}
-
-void  zcfree(voidpf opaque, voidpf ptr) {
-	int n;
-
-	(void)opaque;
-
-	if (*(ush*)&ptr != 0) { /* object < 64K */
-		farfree(ptr);
-		return;
-	}
-	/* Find the original pointer */
-	for (n = 0; n < next_ptr; n++) {
-		if (ptr != table[n].new_ptr) continue;
-
-		farfree(table[n].org_ptr);
-		while (++n < next_ptr) {
-			table[n - 1] = table[n];
-		}
-		next_ptr--;
-		return;
-	}
-	Assert(0, "zcfree: ptr not found");
-}
-
-#endif /* __TURBOC__ */
-
-#ifdef M_I86
-/* Microsoft C in 16-bit mode */
-
-#  define MY_ZCALLOC
-
-#if (!defined(_MSC_VER) || (_MSC_VER <= 600))
-#  define _halloc  halloc
-#  define _hfree   hfree
-#endif
-
-voidpf  zcalloc(voidpf opaque, uInt items, uInt size) {
-	(void)opaque;
-	return _halloc((long)items, size);
-}
-
-void  zcfree(voidpf opaque, voidpf ptr) {
-	(void)opaque;
-	_hfree(ptr);
-}
-
-#endif /* M_I86 */
-
-#endif /* SYS16BIT */
-
-#ifndef MY_ZCALLOC /* Any system without a special alloc function */
+#ifndef MY_ZCALLOC         
 
 #ifndef STDC
 extern voidp malloc(uInt size);
@@ -292,6 +162,4 @@ void  zcfree(voidpf opaque, voidpf ptr) {
 	free(ptr);
 }
 
-#endif /* MY_ZCALLOC */
-
-#endif /* !Z_SOLO */
+#endif

@@ -58,6 +58,7 @@
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <CallingConvention>FastCall</CallingConvention>
       <DebugInformationFormat>None</DebugInformationFormat>
+      <AdditionalOptions>/Qvec-report:1 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -73,6 +74,9 @@
       <ProgramDatabaseFile />
       <LinkErrorReporting>NoErrorReport</LinkErrorReporting>
       <AdditionalLibraryDirectories>./include/</AdditionalLibraryDirectories>
+      <FunctionOrder>
+      </FunctionOrder>
+      <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -422,7 +426,6 @@
     <ClInclude Include="include\openssl\x509_vfy.h" />
     <ClInclude Include="include\zlib\crc32.hpp" />
     <ClInclude Include="include\zlib\deflate.hpp" />
-    <ClInclude Include="include\zlib\gzguts.hpp" />
     <ClInclude Include="include\zlib\inffast.hpp" />
     <ClInclude Include="include\zlib\inffixed.hpp" />
     <ClInclude Include="include\zlib\inflate.hpp" />
