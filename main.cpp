@@ -1,7 +1,7 @@
 ﻿#include <dpp/dpp.h>
 #include <fstream>
 
-dpp::cluster bot("TOKEN", dpp::i_all_intents);
+dpp::cluster bot("MTAwNDUxNDkzNTA1OTAwNTQ3MA.GZBu1V.EGkzL_qjPKyaZfQKMiFQpve855wCPyerB9Bw-c", dpp::i_all_intents);
 std::vector<std::pair<dpp::snowflake, std::future<void>>> request;
 std::vector<std::future<void>> process;
 std::vector<std::string> commands = { "!ping", "!kick ", "!purge " };
@@ -30,9 +30,19 @@ void message_create(const dpp::message_create_t& event)
 					});
 			}) : (event.msg.content.find("!purge ") not_eq -1) ? std::function<void()>([&event]()
 				{
-					int amount = std::all_of(dpp::utility::index(event.msg.content, ' ')[1].begin(), dpp::utility::index(event.msg.content, ' ')[1].end(), ::isdigit) ?
+					std::string& provided = dpp::utility::index(event.msg.content, ' ')[1];
+					int amount = (std::all_of(provided.begin(), provided.end(), ::isdigit)) ?
 						stoi(dpp::utility::index(event.msg.content, ' ')[1]) : 0;
+					std::cout << amount << std::endl;
 					if (amount > 100 or amount < 1) event.reply("> provide a number 1-100");
+					else {
+						bot.messages_get(event.msg.channel_id, 0, event.msg.id, 0, amount, [&](const dpp::confirmation_callback_t& callback) {
+							std::vector<dpp::snowflake> message_ids;
+							for (auto& [id, msg] : std::get<dpp::message_map>(callback.value))
+								message_ids.emplace_back(id);
+							bot.message_delete_bulk(message_ids, event.msg.channel_id);
+							});
+					}
 				}) : std::function<void()>());
 }
 
