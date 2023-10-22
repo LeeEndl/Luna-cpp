@@ -1,7 +1,7 @@
 ﻿#include <dpp/dpp.h>
 #include <fstream>
 
-dpp::cluster bot("MTAwNDUxNDkzNTA1OTAwNTQ3MA.GZBu1V.EGkzL_qjPKyaZfQKMiFQpve855wCPyerB9Bw-c", dpp::i_all_intents);
+dpp::cluster bot("TOKEN", dpp::i_all_intents);
 std::vector<std::pair<dpp::snowflake, std::future<void>>> request;
 std::vector<std::future<void>> process;
 std::vector<std::string> commands = { "!ping", "!kick ", "!purge " };
@@ -30,19 +30,20 @@ void message_create(const dpp::message_create_t& event)
 					});
 			}) : (event.msg.content.find("!purge ") not_eq -1) ? std::function<void()>([&event]()
 				{
-					std::string& provided = dpp::utility::index(event.msg.content, ' ')[1];
-					int amount = (std::all_of(provided.begin(), provided.end(), ::isdigit)) ?
-						stoi(dpp::utility::index(event.msg.content, ' ')[1]) : 0;
-					std::cout << amount << std::endl;
-					if (amount > 100 or amount < 1) event.reply("> provide a number 1-100");
-					else {
-						bot.messages_get(event.msg.channel_id, 0, event.msg.id, 0, amount, [&](const dpp::confirmation_callback_t& callback) {
+					if (event.msg.member.get_user()->get_permission(event.msg.guild_id) & dpp::p_manage_messages) /* only members who can delete messages */
+					{
+						std::string& provided = dpp::utility::index(event.msg.content, ' ')[1];
+						int amount = (std::all_of(provided.begin(), provided.end(), ::isdigit)) ?
+							stoi(dpp::utility::index(event.msg.content, ' ')[1]) : 0;
+						bot.messages_get(event.msg.channel_id, 0, 0, 0, std::clamp(amount, 1, 100), [&](const dpp::confirmation_callback_t& callback) {
 							std::vector<dpp::snowflake> message_ids;
 							for (auto& [id, msg] : std::get<dpp::message_map>(callback.value))
-								message_ids.emplace_back(id);
-							bot.message_delete_bulk(message_ids, event.msg.channel_id);
+								if (msg.sent - (60 * 60 * 24 * 14) <= std::time(nullptr)) message_ids.emplace_back(id);
+							(message_ids.size() > 1) ?
+								event.reply("> there are no messages within this channel, or there `14 days old`") :
+								event.reply("> deleted " + std::to_string(message_ids.size()) + " messages"), bot.message_delete_bulk(message_ids, event.msg.channel_id);
 							});
-					}
+					} /* only members who can delete messages */
 				}) : std::function<void()>());
 }
 
