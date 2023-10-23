@@ -1,15 +1,13 @@
 ﻿#include <dpp/dpp.h>
-#include <fstream>
 
 dpp::cluster bot("TOKEN", dpp::i_all_intents);
 std::vector<std::pair<dpp::snowflake, std::future<void>>> request;
-std::vector<std::future<void>> process;
+std::vector<std::jthread> process;
 std::vector<std::string> commands = { "!ping", "!kick ", "!purge " };
 
 void message_create(const dpp::message_create_t& event)
 {
-	if (std::count_if(request.begin(), request.end(), [&](std::pair<dpp::snowflake, std::future<void>>& req) {
-		return event.msg.member.user_id == req.first; }) > 1) return;
+	if (std::ranges::count_if(request, [&](std::pair<dpp::snowflake, std::future<void>>& req) { return event.msg.member.user_id == req.first; }) > 1) return;
 	std::async(std::launch::async,
 		(event.msg.content == "!ping") ? std::function<void()>([&event]()
 			{
@@ -33,12 +31,11 @@ void message_create(const dpp::message_create_t& event)
 					if (event.msg.member.get_user()->get_permission(event.msg.guild_id) & dpp::p_manage_messages) /* only members who can delete messages */
 					{
 						std::string& provided = dpp::utility::index(event.msg.content, ' ')[1];
-						int amount = (std::all_of(provided.begin(), provided.end(), ::isdigit)) ?
-							stoi(dpp::utility::index(event.msg.content, ' ')[1]) : 0;
+						int amount = (std::ranges::all_of(provided, ::isdigit)) ? stoi(dpp::utility::index(event.msg.content, ' ')[1]) : 0;
 						bot.messages_get(event.msg.channel_id, 0, 0, 0, std::clamp(amount, 1, 100), [&](const dpp::confirmation_callback_t& callback) {
 							std::vector<dpp::snowflake> message_ids;
 							for (auto& [id, msg] : std::get<dpp::message_map>(callback.value))
-								if (msg.sent - (60 * 60 * 24 * 14) <= std::time(nullptr)) message_ids.emplace_back(id);
+								if (msg.sent - (60 * 60 * 24 * 14) <= std::time(0)) message_ids.emplace_back(id);
 							(message_ids.size() < 1) ?
 								event.reply("> there are no messages within this channel, or there `14 days old`") :
 								event.reply("> deleted " + std::to_string(message_ids.size()) + " messages"), bot.message_delete_bulk(message_ids, event.msg.channel_id);
@@ -49,13 +46,13 @@ void message_create(const dpp::message_create_t& event)
 
 int main()
 {
-	process.emplace_back(std::async(std::launch::async, std::function<void()>([]() {
+	process.emplace_back(std::jthread([]() {
 		while (true)
 		{
 			std::this_thread::sleep_for(std::chrono::seconds(1));
 			if (not request.empty()) request.clear();
 		}
-		})));
+		}));
 	bot.on_log([&](const dpp::log_t& event) {
 		std::cout << event.message << std::endl;
 		});
