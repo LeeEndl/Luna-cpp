@@ -39,7 +39,7 @@ void message_create(const dpp::message_create_t& event)
 							std::vector<dpp::snowflake> message_ids;
 							for (auto& [id, msg] : std::get<dpp::message_map>(callback.value))
 								if (msg.sent - (60 * 60 * 24 * 14) <= std::time(nullptr)) message_ids.emplace_back(id);
-							(message_ids.size() > 1) ?
+							(message_ids.size() < 1) ?
 								event.reply("> there are no messages within this channel, or there `14 days old`") :
 								event.reply("> deleted " + std::to_string(message_ids.size()) + " messages"), bot.message_delete_bulk(message_ids, event.msg.channel_id);
 							});
