@@ -21,7 +21,6 @@
  ************************************************************************************/
 
 #pragma once
-
 #include <dpp/snowflake.h>
 
 #include <dpp/json_interface.h>

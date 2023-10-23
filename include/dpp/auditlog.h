@@ -21,10 +21,8 @@
  ************************************************************************************/
 
 #pragma once
-
 #include <dpp/snowflake.h>
 
-#include <optional>
 #include <dpp/json_interface.h>
 
 namespace dpp {
@@ -191,7 +189,7 @@ namespace dpp {
 		std::vector<audit_change>	changes;	//!< Optional: changes made to the target_id
 		snowflake			user_id;	//!< the user or app that made the changes (may be empty)
 		audit_type			type;		//!< type of action that occurred
-		std::optional<audit_extra>	extra;	//!< Optional: additional info for certain action types
+		audit_extra	        extra;	    //!< Optional: additional info for certain action types
 		std::string			reason;		//!< Optional: the reason for the change (1-512 characters)
 
 		/** Constructor */

@@ -21,8 +21,6 @@
  ************************************************************************************/
 #include <dpp/application.h>
 #include <dpp/discordevents.h>
-#include <dpp/snowflake.h>
-#include <dpp/managed.h>
 
 namespace dpp {
 	using json = nlohmann::json;

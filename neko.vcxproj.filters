@@ -5,9 +5,6 @@
     <ClCompile Include="include\dpp\auditlog.cpp">
       <Filter>dpp</Filter>
     </ClCompile>
-    <ClCompile Include="include\dpp\automod.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
     <ClCompile Include="include\dpp\ban.cpp">
       <Filter>dpp</Filter>
     </ClCompile>
@@ -116,9 +113,6 @@
     <ClCompile Include="include\dpp\cluster\appcommand.cpp">
       <Filter>dpp\cluster</Filter>
     </ClCompile>
-    <ClCompile Include="include\dpp\cluster\automod_cluster.cpp">
-      <Filter>dpp\cluster</Filter>
-    </ClCompile>
     <ClCompile Include="include\dpp\cluster\channel_cluster.cpp">
       <Filter>dpp\cluster</Filter>
     </ClCompile>
@@ -178,18 +172,6 @@
     </ClCompile>
     <ClCompile Include="include\dpp\cluster\webhook_cluster.cpp">
       <Filter>dpp\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\automod_rule_create.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\automod_rule_delete.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\automod_rule_execute.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\automod_rule_update.cpp">
-      <Filter>dpp\events</Filter>
     </ClCompile>
     <ClCompile Include="include\dpp\events\channel_create.cpp">
       <Filter>dpp\events</Filter>
@@ -430,9 +412,6 @@
       <Filter>dpp</Filter>
     </ClInclude>
     <ClInclude Include="include\dpp\auditlog.h">
-      <Filter>dpp</Filter>
-    </ClInclude>
-    <ClInclude Include="include\dpp\automod.h">
       <Filter>dpp</Filter>
     </ClInclude>
     <ClInclude Include="include\dpp\ban.h">

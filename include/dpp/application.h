@@ -21,12 +21,7 @@
  ************************************************************************************/
 
 #pragma once
-
-#include <dpp/snowflake.h>
-#include <dpp/managed.h>
-#include <dpp/utility.h>
-#include <dpp/user.h>
-#include <dpp/permissions.h>
+#include "user.h"
 
 #include <dpp/json_interface.h>
 

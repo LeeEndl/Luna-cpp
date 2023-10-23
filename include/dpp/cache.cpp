@@ -21,9 +21,7 @@
  ************************************************************************************/
 
 #include <mutex>
-#include <variant>
 #include <dpp/cache.h>
-#include <dpp/exception.h>
 
 namespace dpp {
 	std::unordered_map<managed*, time_t> deletion_queue;

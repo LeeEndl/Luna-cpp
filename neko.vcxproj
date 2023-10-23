@@ -94,13 +94,11 @@
   <ItemGroup>
     <ClCompile Include="include\dpp\application.cpp" />
     <ClCompile Include="include\dpp\auditlog.cpp" />
-    <ClCompile Include="include\dpp\automod.cpp" />
     <ClCompile Include="include\dpp\ban.cpp" />
     <ClCompile Include="include\dpp\cache.cpp" />
     <ClCompile Include="include\dpp\channel.cpp" />
     <ClCompile Include="include\dpp\cluster.cpp" />
     <ClCompile Include="include\dpp\cluster\appcommand.cpp" />
-    <ClCompile Include="include\dpp\cluster\automod_cluster.cpp" />
     <ClCompile Include="include\dpp\cluster\channel_cluster.cpp" />
     <ClCompile Include="include\dpp\cluster\confirmation.cpp" />
     <ClCompile Include="include\dpp\cluster\dm.cpp" />
@@ -130,10 +128,6 @@
     <ClCompile Include="include\dpp\dtemplate.cpp" />
     <ClCompile Include="include\dpp\emoji.cpp" />
     <ClCompile Include="include\dpp\etf.cpp" />
-    <ClCompile Include="include\dpp\events\automod_rule_create.cpp" />
-    <ClCompile Include="include\dpp\events\automod_rule_delete.cpp" />
-    <ClCompile Include="include\dpp\events\automod_rule_execute.cpp" />
-    <ClCompile Include="include\dpp\events\automod_rule_update.cpp" />
     <ClCompile Include="include\dpp\events\channel_create.cpp" />
     <ClCompile Include="include\dpp\events\channel_delete.cpp" />
     <ClCompile Include="include\dpp\events\channel_pins_update.cpp" />
@@ -231,7 +225,6 @@
     <ClInclude Include="include\dpp\appcommand.h" />
     <ClInclude Include="include\dpp\application.h" />
     <ClInclude Include="include\dpp\auditlog.h" />
-    <ClInclude Include="include\dpp\automod.h" />
     <ClInclude Include="include\dpp\ban.h" />
     <ClInclude Include="include\dpp\cache.h" />
     <ClInclude Include="include\dpp\channel.h" />

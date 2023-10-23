@@ -101,12 +101,7 @@ namespace dpp {
 	std::string string_not_null(const json* j, const char* keyname) {
 		/* Returns empty string if the value is not a string, or is null or not defined */
 		auto k = j->find(keyname);
-		if (k != j->end()) {
-			return !k->is_null() && k->is_string() ? k->get<std::string>() : "";
-		}
-		else {
-			return const_cast<char*>("");
-		}
+		return (k not_eq j->end() and k->is_string() and not k->is_null()) ? k->get<std::string>() : "";
 	}
 
 	void set_string_not_null(const json* j, const char* keyname, std::string& v) {
@@ -372,10 +367,6 @@ namespace dpp {
 		{ "GUILD_SCHEDULED_EVENT_DELETE", new dpp::events::guild_scheduled_event_delete() },
 		{ "GUILD_SCHEDULED_EVENT_USER_ADD", new dpp::events::guild_scheduled_event_user_add() },
 		{ "GUILD_SCHEDULED_EVENT_USER_REMOVE", new dpp::events::guild_scheduled_event_user_remove() },
-		{ "AUTO_MODERATION_RULE_CREATE", new dpp::events::automod_rule_create() },
-		{ "AUTO_MODERATION_RULE_UPDATE", new dpp::events::automod_rule_update() },
-		{ "AUTO_MODERATION_RULE_DELETE", new dpp::events::automod_rule_delete() },
-		{ "AUTO_MODERATION_ACTION_EXECUTION", new dpp::events::automod_rule_execute() },
 		{ "GUILD_AUDIT_LOG_ENTRY_CREATE", new dpp::events::guild_audit_log_entry_create() },
 	};
 

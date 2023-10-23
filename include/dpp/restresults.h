@@ -187,8 +187,6 @@ namespace dpp {
 		scheduled_event_map,
 		event_member,
 		event_member_map,
-		automod_rule,
-		automod_rule_map,
 		onboarding,
 		welcome_screen
 	> confirmable_t;

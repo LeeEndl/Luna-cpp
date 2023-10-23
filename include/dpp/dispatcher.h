@@ -32,7 +32,6 @@
 #include <dpp/invite.h>
 #include <dpp/emoji.h>
 #include <dpp/ban.h>
-#include <dpp/automod.h>
 #include <dpp/webhook.h>
 #include <dpp/presence.h>
 #include <dpp/message.h>
@@ -276,100 +275,6 @@ namespace dpp {
 		 * @brief deleted event
 		 */
 		scheduled_event deleted = {};
-	};
-
-	/** @brief Create automod rule */
-	struct  automod_rule_create_t : public event_dispatch_t {
-		using event_dispatch_t::event_dispatch_t;
-		using event_dispatch_t::operator=;
-
-		/**
-		 * @brief updated event
-		 */
-		automod_rule created = {};
-	};
-
-	/** @brief Update automod rule */
-	struct  automod_rule_update_t : public event_dispatch_t {
-		using event_dispatch_t::event_dispatch_t;
-		using event_dispatch_t::operator=;
-
-		/**
-		 * @brief updated event
-		 */
-		automod_rule updated = {};
-	};
-
-	/** @brief Delete automod rule */
-	struct  automod_rule_delete_t : public event_dispatch_t {
-		using event_dispatch_t::event_dispatch_t;
-		using event_dispatch_t::operator=;
-
-		/**
-		 * @brief updated event
-		 */
-		automod_rule deleted = {};
-	};
-
-	/** @brief Execute/trigger automod rule */
-	struct  automod_rule_execute_t : public event_dispatch_t {
-		using event_dispatch_t::event_dispatch_t;
-		using event_dispatch_t::operator=;
-
-		/**
-		 * @brief The id of the guild in which action was executed.
-		 */
-		snowflake guild_id = {};
-
-		/**
-		 * @brief The action which was executed.
-		 */
-		automod_action action = {};
-
-		/**
-		 * @brief The id of the rule which action belongs to.
-		 */
-		snowflake rule_id = {};
-
-		/**
-		 * @brief The trigger type of rule which was triggered.
-		 */
-		automod_trigger_type rule_trigger_type = {};
-
-		/**
-		 * @brief The id of the user which generated the content which triggered the rule.
-		 */
-		snowflake user_id = {};
-
-		/**
-		 * @brief Optional: the id of the channel in which user content was posted.
-		 */
-		snowflake channel_id = {};
-
-		/**
-		 * @brief Optional: the id of any user message which content belongs to.
-		 */
-		snowflake message_id = {};
-
-		/**
-		 * @brief Optional: the id of any system auto moderation messages posted as a result of this action.
-		 */
-		snowflake alert_system_message_id = {};
-
-		/**
-		 * @brief The user generated text content.
-		 */
-		std::string content = {};
-
-		/**
-		 * @brief The word or phrase configured in the rule that triggered the rule (may be empty).
-		 */
-		std::string matched_keyword = {};
-
-		/**
-		 * @brief The substring in content that triggered the rule (may be empty).
-		 */
-		std::string matched_content = {};
 	};
 
 	/** @brief Create stage instance */
