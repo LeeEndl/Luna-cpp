@@ -261,8 +261,8 @@ namespace dpp {
 		if (j->contains(keyname) && !(*j)[keyname].is_null() && (*j)[keyname].is_string()) {
 			tm timestamp = {};
 			std::string timedate = (*j)[keyname].get<std::string>();
-			if (timedate.find('+') != std::string::npos) {
-				if (timedate.find('.') != std::string::npos)
+			if (timedate.find('+') not_eq std::string::npos) {
+				if (timedate.find('.') not_eq std::string::npos)
 					timedate.resize(timedate.find('.'));
 				crossplatform_strptime(timedate.substr(0, 19).c_str(), "%Y-%m-%dT%T", &timestamp);
 				timestamp.tm_isdst = 0;
@@ -286,10 +286,10 @@ namespace dpp {
 			time_t retval = 0;
 			tm timestamp = {};
 			std::string timedate = (*j)[keyname].get<std::string>();
-			if (timedate.find('+') != std::string::npos) {
-				if (timedate.find('.') != std::string::npos) {
-					timedate = timedate.substr(0, timedate.find('.'));
-				}
+			if (timedate.find('+') not_eq std::string::npos) {
+				if (timedate.find('.') not_eq std::string::npos)
+					timedate.resize(timedate.find('.'));
+
 				crossplatform_strptime(timedate.substr(0, 19).c_str(), "%Y-%m-%dT%T", &timestamp);
 				timestamp.tm_isdst = 0;
 				retval = mktime(&timestamp);

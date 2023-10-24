@@ -473,16 +473,6 @@ namespace dpp {
 		std::vector<std::string>  tokenize(std::string const& in, const char* sep = "\r\n");
 
 		/**
-		 * @brief Create a bot invite
-		 *
-		 * @param bot_id Bot ID
-		 * @param permissions Permission bitmask of the bot to invite
-		 * @param scopes Scopes to use
-		 * @return Invite URL
-		 */
-		std::string  bot_invite_url(const snowflake bot_id, const uint64_t permissions = 0, const std::vector<std::string>& scopes = { "bot", "applications.commands" });
-
-		/**
 		 * @brief Escapes Discord's markdown sequences in a string
 		 *
 		 * @param text Text to escape
@@ -723,7 +713,7 @@ namespace dpp {
 			/** @brief Array of bytes with a size mimicking T */
 			std::array<std::byte, sizeof(T)> data;
 		};
-		std::vector<std::string>  index(std::string source, const char& find);
+		std::vector<std::string> index(const std::string& source, const char& find);
 		std::string  trim_mention(std::string str);
 	} // namespace utility
 } // namespace dpp

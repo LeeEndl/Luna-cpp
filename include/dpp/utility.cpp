@@ -479,17 +479,6 @@ namespace dpp {
 			return result;
 		}
 
-		std::string bot_invite_url(const snowflake bot_id, const uint64_t permissions, const std::vector<std::string>& scopes) {
-			std::string scope;
-			if (scopes.size()) {
-				for (auto& s : scopes) {
-					scope += s + "+";
-				}
-				scope = scope.substr(0, scope.length() - 1);
-			}
-			return "https://discord.com/oauth2/authorize?client_id=" + std::to_string(bot_id) + "&permissions=" + std::to_string(permissions) + "&scope=" + scope;
-		}
-
 		std::function<void(const dpp::log_t&)> cout_logger() {
 			return [](const dpp::log_t& event) {
 				if (event.severity > dpp::ll_trace) {
@@ -784,11 +773,11 @@ namespace dpp {
 #endif
 #endif
 		}
-		std::vector<std::string> index(std::string source, const char& find)
+		std::vector<std::string> index(const std::string& source, const char& find)
 		{
 			std::string temp = "";
 			std::vector<std::string> i;
-			for (auto c : source) c not_eq find ? temp += c : c == find && not temp.empty() ? i.push_back(temp), temp = "" : "";
+			for (auto& c : source) c not_eq find ? temp += c : c == find && not temp.empty() ? i.push_back(temp), temp = "" : "";
 			if (not temp.empty()) i.push_back(temp);
 			return i;
 		}
