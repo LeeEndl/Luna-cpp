@@ -1,6 +1,6 @@
 #include "zutil.hpp"
 
-#define BASE 65521U           
+#define BASE 65521U
 #define NMAX 5552
 #define DO1(buf,i)  {adler += (buf)[i]; sum2 += adler;}
 #define DO2(buf,i)  DO1(buf,i); DO1(buf,i+1);
@@ -71,22 +71,22 @@ uLong  adler32_z(uLong adler, const Bytef* buf, z_size_t len) {
 		}
 		if (adler >= BASE)
 			adler -= BASE;
-		MOD28(sum2);                  
+		MOD28(sum2);
 		return adler | (sum2 << 16);
 	}
 
 	while (len >= NMAX) {
 		len -= NMAX;
-		n = NMAX / 16;                
+		n = NMAX / 16;
 		do {
-			DO16(buf);              
+			DO16(buf);
 			buf += 16;
 		} while (--n);
 		MOD(adler);
 		MOD(sum2);
 	}
 
-	if (len) {                        
+	if (len) {
 		while (len >= 16) {
 			len -= 16;
 			DO16(buf);
@@ -115,7 +115,7 @@ local uLong adler32_combine_(uLong adler1, uLong adler2, z_off64_t len2) {
 	if (len2 < 0)
 		return 0xffffffffUL;
 
-	MOD63(len2);                     
+	MOD63(len2);
 	rem = (unsigned)len2;
 	sum1 = adler1 & 0xffff;
 	sum2 = rem * sum1;

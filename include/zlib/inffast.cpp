@@ -9,29 +9,29 @@
 
 void  inflate_fast(z_streamp strm, unsigned start) {
 	struct inflate_state FAR* state;
-	z_const unsigned char FAR* in;         
-	z_const unsigned char FAR* last;            
-	unsigned char FAR* out;        
-	unsigned char FAR* beg;         
-	unsigned char FAR* end;             
+	z_const unsigned char FAR* in;
+	z_const unsigned char FAR* last;
+	unsigned char FAR* out;
+	unsigned char FAR* beg;
+	unsigned char FAR* end;
 #ifdef INFLATE_STRICT
-	unsigned dmax;                    
+	unsigned dmax;
 #endif
-	unsigned wsize;                      
-	unsigned whave;                   
-	unsigned wnext;                 
-	unsigned char FAR* window;          
-	unsigned long hold;            
-	unsigned bits;                 
-	code const FAR* lcode;         
-	code const FAR* dcode;         
-	unsigned lmask;                     
-	unsigned dmask;                     
-	code const* here;               
-	unsigned op;                       
-	unsigned len;                    
-	unsigned dist;                 
-	unsigned char FAR* from;          
+	unsigned wsize;
+	unsigned whave;
+	unsigned wnext;
+	unsigned char FAR* window;
+	unsigned long hold;
+	unsigned bits;
+	code const FAR* lcode;
+	code const FAR* dcode;
+	unsigned lmask;
+	unsigned dmask;
+	code const* here;
+	unsigned op;
+	unsigned len;
+	unsigned dist;
+	unsigned char FAR* from;
 
 	state = (struct inflate_state FAR*)strm->state;
 	in = strm->next_in;
@@ -66,15 +66,15 @@ void  inflate_fast(z_streamp strm, unsigned start) {
 		hold >>= op;
 		bits -= op;
 		op = (unsigned)(here->op);
-		if (op == 0) {                            
+		if (op == 0) {
 			Tracevv((stderr, here->val >= 0x20 && here->val < 0x7f ?
 				"inflate:         literal '%c'\n" :
 				"inflate:         literal 0x%02x\n", here->val));
 			*out++ = (unsigned char)(here->val);
 		}
-		else if (op & 16) {                        
+		else if (op & 16) {
 			len = (unsigned)(here->val);
-			op &= 15;                                
+			op &= 15;
 			if (op) {
 				if (bits < op) {
 					hold += (unsigned long)(*in++) << bits;
@@ -97,9 +97,9 @@ void  inflate_fast(z_streamp strm, unsigned start) {
 			hold >>= op;
 			bits -= op;
 			op = (unsigned)(here->op);
-			if (op & 16) {                         
+			if (op & 16) {
 				dist = (unsigned)(here->val);
-				op &= 15;                            
+				op &= 15;
 				if (bits < op) {
 					hold += (unsigned long)(*in++) << bits;
 					bits += 8;
@@ -119,9 +119,9 @@ void  inflate_fast(z_streamp strm, unsigned start) {
 				hold >>= op;
 				bits -= op;
 				Tracevv((stderr, "inflate:         distance %u\n", dist));
-				op = (unsigned)(out - beg);          
-				if (dist > op) {                      
-					op = dist - op;                  
+				op = (unsigned)(out - beg);
+				if (dist > op) {
+					op = dist - op;
 					if (op > whave) {
 						if (state->sane) {
 							strm->msg =
@@ -150,43 +150,43 @@ void  inflate_fast(z_streamp strm, unsigned start) {
 #endif
 					}
 					from = window;
-					if (wnext == 0) {               
+					if (wnext == 0) {
 						from += wsize - op;
-						if (op < len) {             
+						if (op < len) {
 							len -= op;
 							do {
 								*out++ = *from++;
 							} while (--op);
-							from = out - dist;      
+							from = out - dist;
 						}
 					}
-					else if (wnext < op) {          
+					else if (wnext < op) {
 						from += wsize + wnext - op;
 						op -= wnext;
-						if (op < len) {               
+						if (op < len) {
 							len -= op;
 							do {
 								*out++ = *from++;
 							} while (--op);
 							from = window;
-							if (wnext < len) {        
+							if (wnext < len) {
 								op = wnext;
 								len -= op;
 								do {
 									*out++ = *from++;
 								} while (--op);
-								from = out - dist;          
+								from = out - dist;
 							}
 						}
 					}
-					else {                          
+					else {
 						from += wnext - op;
-						if (op < len) {             
+						if (op < len) {
 							len -= op;
 							do {
 								*out++ = *from++;
 							} while (--op);
-							from = out - dist;      
+							from = out - dist;
 						}
 					}
 					while (len > 2) {
@@ -202,8 +202,8 @@ void  inflate_fast(z_streamp strm, unsigned start) {
 					}
 				}
 				else {
-					from = out - dist;               
-					do {                             
+					from = out - dist;
+					do {
 						*out++ = *from++;
 						*out++ = *from++;
 						*out++ = *from++;
@@ -216,7 +216,7 @@ void  inflate_fast(z_streamp strm, unsigned start) {
 					}
 				}
 			}
-			else if ((op & 64) == 0) {               
+			else if ((op & 64) == 0) {
 				here = dcode + here->val + (hold & ((1U << op) - 1));
 				goto dodist;
 			}
@@ -226,11 +226,11 @@ void  inflate_fast(z_streamp strm, unsigned start) {
 				break;
 			}
 		}
-		else if ((op & 64) == 0) {                   
+		else if ((op & 64) == 0) {
 			here = lcode + here->val + (hold & ((1U << op) - 1));
 			goto dolen;
 		}
-		else if (op & 32) {                       
+		else if (op & 32) {
 			Tracevv((stderr, "inflate:         end of block\n"));
 			state->mode = TYPE;
 			break;

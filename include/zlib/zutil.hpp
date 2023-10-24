@@ -36,7 +36,7 @@ typedef unsigned long  ulg;
 #  endif
 #endif
 
-extern z_const char* const z_errmsg[10];     
+extern z_const char* const z_errmsg[10];
 #define ERR_MSG(err) z_errmsg[Z_NEED_DICT-(err)]
 
 #define ERR_RETURN(strm,err) \
@@ -54,7 +54,7 @@ extern z_const char* const z_errmsg[10];
 #define DYN_TREES    2
 #define MIN_MATCH  3
 #define MAX_MATCH  258
-#define PRESET_DICT 0x20        
+#define PRESET_DICT 0x20
 
 #if defined(MSDOS) || (defined(WINDOWS) && !defined(WIN32))
 #  define OS_CODE  0x00
@@ -66,7 +66,7 @@ void* _Cdecl farmalloc(unsigned long nbytes);
 #      else
 #        include <alloc.h>
 #      endif
-#    else     
+#    else
 #      include <malloc.h>
 #    endif
 #  endif
@@ -107,10 +107,10 @@ void* _Cdecl farmalloc(unsigned long nbytes);
 #  define OS_CODE  7
 #  ifndef Z_SOLO
 #    if defined(__MWERKS__) && __dest_os != __be_os && __dest_os != __win32_os
-#      include <unix.h>    
+#      include <unix.h>
 #    else
 #      ifndef fdopen
-#        define fdopen(fd,mode) NULL    
+#        define fdopen(fd,mode) NULL
 #      endif
 #    endif
 #  endif
@@ -137,12 +137,12 @@ void* _Cdecl farmalloc(unsigned long nbytes);
 #endif
 
 #if defined(_BEOS_) || defined(RISCOS)
-#  define fdopen(fd,mode) NULL    
+#  define fdopen(fd,mode) NULL
 #endif
 
 #if (defined(_MSC_VER) && (_MSC_VER > 600)) && !defined __INTERIX
 #  if defined(_WIN32_WCE)
-#    define fdopen(fd,mode) NULL    
+#    define fdopen(fd,mode) NULL
 #  else
 #    define fdopen(fd,type)  _fdopen(fd,type)
 #  endif
@@ -162,7 +162,7 @@ uLong  crc32_combine_gen64(z_off_t);
 #endif
 
 #ifndef OS_CODE
-#  define OS_CODE  3        
+#  define OS_CODE  3
 #endif
 
 #ifndef F_OPEN
@@ -179,7 +179,7 @@ uLong  crc32_combine_gen64(z_off_t);
 #  define HAVE_MEMCPY
 #endif
 #ifdef HAVE_MEMCPY
-#  ifdef SMALL_MEDIUM       
+#  ifdef SMALL_MEDIUM
 #    define zmemcpy _fmemcpy
 #    define zmemcmp _fmemcmp
 #    define zmemzero(dest, len) _fmemset(dest, 0, len)

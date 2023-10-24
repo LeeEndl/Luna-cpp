@@ -53,13 +53,13 @@
 #  define STDC
 #endif
 
-#if defined(__OS400__) && !defined(STDC)        
+#if defined(__OS400__) && !defined(STDC)
 #  define STDC
 #endif
 
 #ifndef STDC
-#  ifndef const         
-#    define const               
+#  ifndef const
+#    define const
 #  endif
 #endif
 
@@ -97,10 +97,10 @@ typedef unsigned long z_size_t;
 #endif
 
 #ifndef MAX_WBITS
-#  define MAX_WBITS   15     
+#  define MAX_WBITS   15
 #endif
 
-#ifndef OF    
+#ifndef OF
 #  ifdef STDC
 #    define OF(args)  args
 #  else
@@ -108,7 +108,7 @@ typedef unsigned long z_size_t;
 #  endif
 #endif
 
-#ifndef Z_ARG      
+#ifndef Z_ARG
 #  if defined(STDC) || defined(Z_HAVE_STDARG_H)
 #    define Z_ARG(args)  args
 #  else
@@ -136,15 +136,6 @@ typedef unsigned long z_size_t;
 #endif
 
 #if defined(WINDOWS) || defined(WIN32)
-#  ifdef ZLIB_DLL
-#    if defined(WIN32) && (!defined(__BORLANDC__) || (__BORLANDC__ >= 0x500))
-#      ifdef
-#        define  extern __declspec(dllexport)
-#      else
-#        define  extern __declspec(dllimport)
-#      endif
-#    endif
-#  endif    
 #  ifdef ZLIB_WINAPI
 #    ifdef FAR
 #      undef FAR
@@ -162,18 +153,6 @@ typedef unsigned long z_size_t;
 #  endif
 #endif
 
-#if defined (__BEOS__)
-#  ifdef ZLIB_DLL
-#    ifdef
-#      define    __declspec(dllexport)
-#      define VA __declspec(dllexport)
-#    else
-#      define    __declspec(dllimport)
-#      define VA __declspec(dllimport)
-#    endif
-#  endif
-#endif
-
 #ifndef VA
 #  define VA
 #endif
@@ -183,10 +162,10 @@ typedef unsigned long z_size_t;
 #endif
 
 #if !defined(__MACTYPES__)
-typedef unsigned char  Byte;     
+typedef unsigned char  Byte;
 #endif
-typedef unsigned int   uInt;       
-typedef unsigned long  uLong;      
+typedef unsigned int   uInt;
+typedef unsigned long  uLong;
 
 #ifdef SMALL_MEDIUM
 #  define Bytef Byte FAR
@@ -225,29 +204,29 @@ typedef Z_U4 z_crc_t;
 typedef unsigned long z_crc_t;
 #endif
 
-#ifdef HAVE_UNISTD_H             
+#ifdef HAVE_UNISTD_H
 #  define Z_HAVE_UNISTD_H
 #endif
 
-#ifdef HAVE_STDARG_H             
+#ifdef HAVE_STDARG_H
 #  define Z_HAVE_STDARG_H
 #endif
 
 #ifdef STDC
 #  ifndef Z_SOLO
-#    include <sys/types.h>         
+#    include <sys/types.h>
 #  endif
 #endif
 
 #if defined(STDC) || defined(Z_HAVE_STDARG_H)
 #  ifndef Z_SOLO
-#    include <stdarg.h>            
+#    include <stdarg.h>
 #  endif
 #endif
 
 #ifdef _WIN32
 #  ifndef Z_SOLO
-#    include <stddef.h>            
+#    include <stddef.h>
 #  endif
 #endif
 
@@ -267,9 +246,9 @@ typedef unsigned long z_crc_t;
 #endif
 #ifndef Z_SOLO
 #  if defined(Z_HAVE_UNISTD_H)
-#    include <unistd.h>               
+#    include <unistd.h>
 #    ifdef VMS
-#      include <unixio.h>          
+#      include <unixio.h>
 #    endif
 #    ifndef z_off_t
 #      define z_off_t off_t
@@ -290,9 +269,9 @@ typedef unsigned long z_crc_t;
 #endif
 
 #if !defined(SEEK_SET) && !defined(Z_SOLO)
-#  define SEEK_SET        0              
-#  define SEEK_CUR        1             
-#  define SEEK_END        2               
+#  define SEEK_SET        0
+#  define SEEK_CUR        1
+#  define SEEK_END        2
 #endif
 
 #ifndef z_off_t

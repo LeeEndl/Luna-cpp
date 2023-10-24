@@ -14,7 +14,7 @@ int  inflateBackInit_(z_streamp strm, int windowBits,
 	if (strm == Z_NULL || window == Z_NULL ||
 		windowBits < 8 || windowBits > 15)
 		return Z_STREAM_ERROR;
-	strm->msg = Z_NULL;                        
+	strm->msg = Z_NULL;
 	if (strm->zalloc == (alloc_func)0) {
 #ifdef Z_SOLO
 		return Z_STREAM_ERROR;
@@ -72,9 +72,9 @@ local void fixedtables(struct inflate_state FAR* state) {
 
 		virgin = 0;
 	}
-#else   
+#else
 #   include "inffixed.hpp"
-#endif   
+#endif
 	state->lencode = lenfix;
 	state->lenbits = 9;
 	state->distcode = distfix;
@@ -164,18 +164,18 @@ local void fixedtables(struct inflate_state FAR* state) {
 int  inflateBack(z_streamp strm, in_func in, void FAR* in_desc,
 	out_func out, void FAR* out_desc) {
 	struct inflate_state FAR* state;
-	z_const unsigned char FAR* next;       
-	unsigned char FAR* put;        
-	unsigned have, left;             
-	unsigned long hold;            
-	unsigned bits;                   
-	unsigned copy;                       
-	unsigned char FAR* from;           
-	code here;                       
-	code last;                      
-	unsigned len;                        
-	int ret;                       
-	static const unsigned short order[19] =      
+	z_const unsigned char FAR* next;
+	unsigned char FAR* put;
+	unsigned have, left;
+	unsigned long hold;
+	unsigned bits;
+	unsigned copy;
+	unsigned char FAR* from;
+	code here;
+	code last;
+	unsigned len;
+	int ret;
+	static const unsigned short order[19] =
 	{ 16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15 };
 
 	if (strm == Z_NULL || strm->state == Z_NULL)
@@ -205,18 +205,18 @@ int  inflateBack(z_streamp strm, in_func in, void FAR* in_desc,
 			state->last = BITS(1);
 			DROPBITS(1);
 			switch (BITS(2)) {
-			case 0:                                
+			case 0:
 				Tracev((stderr, "inflate:     stored block%s\n",
 					state->last ? " (last)" : ""));
 				state->mode = STORED;
 				break;
-			case 1:                                
+			case 1:
 				fixedtables(state);
 				Tracev((stderr, "inflate:     fixed codes block%s\n",
 					state->last ? " (last)" : ""));
-				state->mode = LEN;                 
+				state->mode = LEN;
 				break;
-			case 2:                                
+			case 2:
 				Tracev((stderr, "inflate:     dynamic codes block%s\n",
 					state->last ? " (last)" : ""));
 				state->mode = TABLE;
@@ -229,7 +229,7 @@ int  inflateBack(z_streamp strm, in_func in, void FAR* in_desc,
 			break;
 
 		case STORED:
-			BYTEBITS();                              
+			BYTEBITS();
 			NEEDBITS(32);
 			if ((hold & 0xffff) != ((hold >> 16) ^ 0xffff)) {
 				strm->msg = (char*)"invalid stored block lengths";

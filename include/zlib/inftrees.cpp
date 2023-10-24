@@ -8,37 +8,37 @@ const char inflate_copyright[] =
 int  inflate_table(codetype type, unsigned short FAR* lens,
 	unsigned codes, code FAR* FAR* table,
 	unsigned FAR* bits, unsigned short FAR* work) {
-	unsigned len;                     
-	unsigned sym;                    
-	unsigned min, max;                
-	unsigned root;                      
-	unsigned curr;                      
-	unsigned drop;                     
-	int left;                         
-	unsigned used;                    
-	unsigned huff;                 
-	unsigned incr;                   
-	unsigned fill;                   
-	unsigned low;                      
-	unsigned mask;                    
-	code here;                       
-	code FAR* next;                   
-	const unsigned short FAR* base;           
-	const unsigned short FAR* extra;          
-	unsigned match;                      
-	unsigned short count[MAXBITS + 1];           
-	unsigned short offs[MAXBITS + 1];            
-	static const unsigned short lbase[31] = {      
+	unsigned len;
+	unsigned sym;
+	unsigned min, max;
+	unsigned root;
+	unsigned curr;
+	unsigned drop;
+	int left;
+	unsigned used;
+	unsigned huff;
+	unsigned incr;
+	unsigned fill;
+	unsigned low;
+	unsigned mask;
+	code here;
+	code FAR* next;
+	const unsigned short FAR* base;
+	const unsigned short FAR* extra;
+	unsigned match;
+	unsigned short count[MAXBITS + 1];
+	unsigned short offs[MAXBITS + 1];
+	static const unsigned short lbase[31] = {
 		3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31,
 		35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258, 0, 0 };
-	static const unsigned short lext[31] = {      
+	static const unsigned short lext[31] = {
 		16, 16, 16, 16, 16, 16, 16, 16, 17, 17, 17, 17, 18, 18, 18, 18,
 		19, 19, 19, 19, 20, 20, 20, 20, 21, 21, 21, 21, 16, 198, 203 };
-	static const unsigned short dbase[32] = {      
+	static const unsigned short dbase[32] = {
 		1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193,
 		257, 385, 513, 769, 1025, 1537, 2049, 3073, 4097, 6145,
 		8193, 12289, 16385, 24577, 0, 0 };
-	static const unsigned short dext[32] = {      
+	static const unsigned short dext[32] = {
 		16, 16, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22,
 		23, 23, 24, 24, 25, 25, 26, 26, 27, 27,
 		28, 28, 29, 29, 64, 64 };
@@ -52,14 +52,14 @@ int  inflate_table(codetype type, unsigned short FAR* lens,
 	for (max = MAXBITS; max >= 1; max--)
 		if (count[max] != 0) break;
 	if (root > max) root = max;
-	if (max == 0) {                            
-		here.op = (unsigned char)64;        
+	if (max == 0) {
+		here.op = (unsigned char)64;
 		here.bits = (unsigned char)1;
 		here.val = (unsigned short)0;
-		*(*table)++ = here;                     
+		*(*table)++ = here;
 		*(*table)++ = here;
 		*bits = 1;
-		return 0;               
+		return 0;
 	}
 	for (min = 1; min < max; min++)
 		if (count[min] != 0) break;
@@ -69,10 +69,10 @@ int  inflate_table(codetype type, unsigned short FAR* lens,
 	for (len = 1; len <= MAXBITS; len++) {
 		left <<= 1;
 		left -= count[len];
-		if (left < 0) return -1;          
+		if (left < 0) return -1;
 	}
 	if (left > 0 && (type == CODES || max != 1))
-		return -1;                         
+		return -1;
 
 	offs[1] = 0;
 	for (len = 1; len < MAXBITS; len++)
@@ -83,7 +83,7 @@ int  inflate_table(codetype type, unsigned short FAR* lens,
 
 	switch (type) {
 	case CODES:
-		base = extra = work;        
+		base = extra = work;
 		match = 20;
 		break;
 	case LENS:
@@ -91,21 +91,21 @@ int  inflate_table(codetype type, unsigned short FAR* lens,
 		extra = lext;
 		match = 257;
 		break;
-	default:      
+	default:
 		base = dbase;
 		extra = dext;
 		match = 0;
 	}
 
-	huff = 0;                      
-	sym = 0;                        
-	len = min;                      
-	next = *table;                    
-	curr = root;                     
-	drop = 0;                            
-	low = (unsigned)(-1);               
-	used = 1U << root;               
-	mask = used - 1;                 
+	huff = 0;
+	sym = 0;
+	len = min;
+	next = *table;
+	curr = root;
+	drop = 0;
+	low = (unsigned)(-1);
+	used = 1U << root;
+	mask = used - 1;
 
 	if ((type == LENS && used > ENOUGH_LENS) ||
 		(type == DISTS && used > ENOUGH_DISTS))
@@ -122,13 +122,13 @@ int  inflate_table(codetype type, unsigned short FAR* lens,
 			here.val = base[work[sym] - match];
 		}
 		else {
-			here.op = (unsigned char)(32 + 64);             
+			here.op = (unsigned char)(32 + 64);
 			here.val = 0;
 		}
 
 		incr = 1U << (len - drop);
 		fill = 1U << curr;
-		min = fill;                       
+		min = fill;
 		do {
 			fill -= incr;
 			next[(huff >> drop) + fill] = here;
@@ -154,7 +154,7 @@ int  inflate_table(codetype type, unsigned short FAR* lens,
 			if (drop == 0)
 				drop = root;
 
-			next += min;                   
+			next += min;
 
 			curr = len - drop;
 			left = (int)(1 << curr);
@@ -178,7 +178,7 @@ int  inflate_table(codetype type, unsigned short FAR* lens,
 	}
 
 	if (huff != 0) {
-		here.op = (unsigned char)64;                
+		here.op = (unsigned char)64;
 		here.bits = (unsigned char)(len - drop);
 		here.val = (unsigned short)0;
 		next[huff] = here;

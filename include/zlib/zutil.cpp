@@ -1,15 +1,15 @@
 #include "zutil.hpp"
 
 z_const char* const z_errmsg[10] = {
-	(z_const char*)"need dictionary",               
-	(z_const char*)"stream end",                   
-	(z_const char*)"",                                     
-	(z_const char*)"file error",                     
-	(z_const char*)"stream error",            
-	(z_const char*)"data error",                
-	(z_const char*)"insufficient memory",        
-	(z_const char*)"buffer error",               
-	(z_const char*)"incompatible version",   
+	(z_const char*)"need dictionary",
+	(z_const char*)"stream end",
+	(z_const char*)"",
+	(z_const char*)"file error",
+	(z_const char*)"stream error",
+	(z_const char*)"data error",
+	(z_const char*)"insufficient memory",
+	(z_const char*)"buffer error",
+	(z_const char*)"incompatible version",
 	(z_const char*)""
 };
 
@@ -122,7 +122,7 @@ int errno = 0;
 void  zmemcpy(Bytef* dest, const Bytef* source, uInt len) {
 	if (len == 0) return;
 	do {
-		*dest++ = *source++;      
+		*dest++ = *source++;
 	} while (--len != 0);
 }
 
@@ -138,12 +138,12 @@ int  zmemcmp(const Bytef* s1, const Bytef* s2, uInt len) {
 void  zmemzero(Bytef* dest, uInt len) {
 	if (len == 0) return;
 	do {
-		*dest++ = 0;       
+		*dest++ = 0;
 	} while (--len != 0);
 }
 #endif
 
-#ifndef MY_ZCALLOC         
+#ifndef MY_ZCALLOC
 
 #ifndef STDC
 extern voidp malloc(uInt size);

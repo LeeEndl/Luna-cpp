@@ -20,42 +20,42 @@ extern "C" {
 	struct internal_state;
 
 	typedef struct z_stream_s {
-		z_const Bytef* next_in;         
-		uInt     avail_in;         
-		uLong    total_in;           
+		z_const Bytef* next_in;
+		uInt     avail_in;
+		uLong    total_in;
 
-		Bytef* next_out;        
-		uInt     avail_out;       
-		uLong    total_out;         
+		Bytef* next_out;
+		uInt     avail_out;
+		uLong    total_out;
 
-		z_const char* msg;          
-		struct internal_state FAR* state;      
+		z_const char* msg;
+		struct internal_state FAR* state;
 
-		alloc_func zalloc;         
-		free_func  zfree;          
-		voidpf     opaque;           
+		alloc_func zalloc;
+		free_func  zfree;
+		voidpf     opaque;
 
-		int     data_type;           
-		uLong   adler;               
-		uLong   reserved;        
+		int     data_type;
+		uLong   adler;
+		uLong   reserved;
 	} z_stream;
 
 	typedef z_stream FAR* z_streamp;
 
 	typedef struct gz_header_s {
-		int     text;                
-		uLong   time;          
-		int     xflags;               
-		int     os;            
-		Bytef* extra;              
-		uInt    extra_len;           
-		uInt    extra_max;          
-		Bytef* name;              
-		uInt    name_max;           
-		Bytef* comment;          
-		uInt    comm_max;           
-		int     hcrc;                  
-		int     done;               
+		int     text;
+		uLong   time;
+		int     xflags;
+		int     os;
+		Bytef* extra;
+		uInt    extra_len;
+		uInt    extra_max;
+		Bytef* name;
+		uInt    name_max;
+		Bytef* comment;
+		uInt    comm_max;
+		int     hcrc;
+		int     done;
 	} gz_header;
 
 	typedef gz_header FAR* gz_headerp;
@@ -87,10 +87,10 @@ extern "C" {
 #define Z_DEFAULT_STRATEGY    0
 #define Z_BINARY   0
 #define Z_TEXT     1
-#define Z_ASCII    Z_TEXT          
+#define Z_ASCII    Z_TEXT
 #define Z_UNKNOWN  2
 #define Z_DEFLATED   8
-#define Z_NULL  0        
+#define Z_NULL  0
 
 #define zlib_version zlibVersion()
 	const char* zlibVersion(void);
@@ -164,9 +164,9 @@ extern "C" {
 		const Bytef* source, uLong sourceLen);
 	int  uncompress2(Bytef* dest, uLongf* destLen,
 		const Bytef* source, uLong* sourceLen);
-	typedef struct gzFile_s* gzFile;         
+	typedef struct gzFile_s* gzFile;
 
-#endif   
+#endif
 
 	uLong  adler32(uLong adler, const Bytef* buf, uInt len);
 	uLong  adler32_z(uLong adler, const Bytef* buf,
@@ -257,13 +257,13 @@ extern "C" {
 	uLong  crc32_combine_gen(z_off_t);
 #endif
 
-#else   
+#else
 
 	uLong  adler32_combine(uLong, uLong, z_off_t);
 	uLong  crc32_combine(uLong, uLong, z_off_t);
 	uLong  crc32_combine_gen(z_off_t);
 
-#endif   
+#endif
 
 	const char* zError(int);
 	int             inflateSyncPoint(z_streamp);

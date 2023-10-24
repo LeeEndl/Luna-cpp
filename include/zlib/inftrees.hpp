@@ -1,7 +1,7 @@
 typedef struct {
-	unsigned char op;                 
-	unsigned char bits;                 
-	unsigned short val;                
+	unsigned char op;
+	unsigned char bits;
+	unsigned short val;
 } code;
 
 #define ENOUGH_LENS 852

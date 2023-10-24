@@ -28,7 +28,7 @@ int  inflateResetKeep(z_streamp strm) {
 	state = (struct inflate_state FAR*)strm->state;
 	strm->total_in = strm->total_out = state->total = 0;
 	strm->msg = Z_NULL;
-	if (state->wrap)               
+	if (state->wrap)
 		strm->adler = state->wrap & 1;
 	state->mode = HEAD;
 	state->last = 0;
@@ -98,7 +98,7 @@ int  inflateInit2_(z_streamp strm, int windowBits,
 		stream_size != (int)(sizeof(z_stream)))
 		return Z_VERSION_ERROR;
 	if (strm == Z_NULL) return Z_STREAM_ERROR;
-	strm->msg = Z_NULL;                        
+	strm->msg = Z_NULL;
 	if (strm->zalloc == (alloc_func)0) {
 #ifdef Z_SOLO
 		return Z_STREAM_ERROR;
@@ -120,7 +120,7 @@ int  inflateInit2_(z_streamp strm, int windowBits,
 	strm->state = (struct internal_state FAR*)state;
 	state->strm = strm;
 	state->window = Z_NULL;
-	state->mode = HEAD;            
+	state->mode = HEAD;
 	ret = inflateReset2(strm, windowBits);
 	if (ret != Z_OK) {
 		ZFREE(strm, state);
@@ -181,9 +181,9 @@ local void fixedtables(struct inflate_state FAR* state) {
 
 		virgin = 0;
 	}
-#else   
+#else
 #   include "inffixed.hpp"
-#endif   
+#endif
 	state->lencode = lenfix;
 	state->lenbits = 9;
 	state->distcode = distfix;
@@ -231,7 +231,7 @@ void makefixed(void)
 	}
 	puts("\n    };");
 }
-#endif   
+#endif
 
 local int updatewindow(z_streamp strm, const Bytef* end, unsigned copy) {
 	struct inflate_state FAR* state;
@@ -358,22 +358,22 @@ local int updatewindow(z_streamp strm, const Bytef* end, unsigned copy) {
 
 int  inflate(z_streamp strm, int flush) {
 	struct inflate_state FAR* state;
-	z_const unsigned char FAR* next;       
-	unsigned char FAR* put;        
-	unsigned have, left;             
-	unsigned long hold;            
-	unsigned bits;                   
-	unsigned in, out;                  
-	unsigned copy;                       
-	unsigned char FAR* from;           
-	code here;                       
-	code last;                      
-	unsigned len;                        
-	int ret;                       
+	z_const unsigned char FAR* next;
+	unsigned char FAR* put;
+	unsigned have, left;
+	unsigned long hold;
+	unsigned bits;
+	unsigned in, out;
+	unsigned copy;
+	unsigned char FAR* from;
+	code here;
+	code last;
+	unsigned len;
+	int ret;
 #ifdef GUNZIP
-	unsigned char hbuf[4];             
+	unsigned char hbuf[4];
 #endif
-	static const unsigned short order[19] =      
+	static const unsigned short order[19] =
 	{ 16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15 };
 
 	if (inflateStateCheck(strm) || strm->next_out == Z_NULL ||
@@ -381,7 +381,7 @@ int  inflate(z_streamp strm, int flush) {
 		return Z_STREAM_ERROR;
 
 	state = (struct inflate_state FAR*)strm->state;
-	if (state->mode == TYPE) state->mode = TYPEDO;         
+	if (state->mode == TYPE) state->mode = TYPEDO;
 	LOAD();
 	in = have;
 	out = left;
@@ -395,7 +395,7 @@ int  inflate(z_streamp strm, int flush) {
 			}
 			NEEDBITS(16);
 #ifdef GUNZIP
-			if ((state->wrap & 2) && hold == 0x8b1f) {     
+			if ((state->wrap & 2) && hold == 0x8b1f) {
 				if (state->wbits == 0)
 					state->wbits = 15;
 				state->check = crc32(0L, Z_NULL, 0);
@@ -406,7 +406,7 @@ int  inflate(z_streamp strm, int flush) {
 			}
 			if (state->head != Z_NULL)
 				state->head->done = -1;
-			if (!(state->wrap & 1) ||         
+			if (!(state->wrap & 1) ||
 #else
 			if (
 #endif
@@ -430,7 +430,7 @@ int  inflate(z_streamp strm, int flush) {
 				break;
 			}
 			state->dmax = 1U << len;
-			state->flags = 0;                   
+			state->flags = 0;
 			Tracev((stderr, "inflate:   zlib header ok\n"));
 			strm->adler = state->check = adler32(0L, Z_NULL, 0);
 			state->mode = hold & 0x200 ? DICTID : TYPE;
@@ -593,22 +593,22 @@ int  inflate(z_streamp strm, int flush) {
 			state->last = BITS(1);
 			DROPBITS(1);
 			switch (BITS(2)) {
-			case 0:                                
+			case 0:
 				Tracev((stderr, "inflate:     stored block%s\n",
 					state->last ? " (last)" : ""));
 				state->mode = STORED;
 				break;
-			case 1:                                
+			case 1:
 				fixedtables(state);
 				Tracev((stderr, "inflate:     fixed codes block%s\n",
 					state->last ? " (last)" : ""));
-				state->mode = LEN_;                
+				state->mode = LEN_;
 				if (flush == Z_TREES) {
 					DROPBITS(2);
 					goto inf_leave;
 				}
 				break;
-			case 2:                                
+			case 2:
 				Tracev((stderr, "inflate:     dynamic codes block%s\n",
 					state->last ? " (last)" : ""));
 				state->mode = TABLE;
@@ -620,7 +620,7 @@ int  inflate(z_streamp strm, int flush) {
 			DROPBITS(2);
 			break;
 		case STORED:
-			BYTEBITS();                              
+			BYTEBITS();
 			NEEDBITS(32);
 			if ((hold & 0xffff) != ((hold >> 16) ^ 0xffff)) {
 				strm->msg = (char*)"invalid stored block lengths";
@@ -876,7 +876,7 @@ int  inflate(z_streamp strm, int flush) {
 		case MATCH:
 			if (left == 0) goto inf_leave;
 			copy = out - left;
-			if (state->offset > copy) {             
+			if (state->offset > copy) {
 				copy = state->offset - copy;
 				if (copy > state->whave) {
 					if (state->sane) {
@@ -906,7 +906,7 @@ int  inflate(z_streamp strm, int flush) {
 					from = state->window + (state->wnext - copy);
 				if (copy > state->length) copy = state->length;
 			}
-			else {                                  
+			else {
 				from = put - state->offset;
 				copy = state->length;
 			}
@@ -1089,10 +1089,10 @@ local unsigned syncsearch(unsigned FAR* have, const unsigned char FAR* buf,
 }
 
 int  inflateSync(z_streamp strm) {
-	unsigned len;                         
-	int flags;                        
-	unsigned long in, out;             
-	unsigned char buf[4];               
+	unsigned len;
+	int flags;
+	unsigned long in, out;
+	unsigned char buf[4];
 	struct inflate_state FAR* state;
 
 	if (inflateStateCheck(strm)) return Z_STREAM_ERROR;
@@ -1120,9 +1120,9 @@ int  inflateSync(z_streamp strm) {
 
 	if (state->have != 4) return Z_DATA_ERROR;
 	if (state->flags == -1)
-		state->wrap = 0;            
+		state->wrap = 0;
 	else
-		state->wrap &= ~4;           
+		state->wrap &= ~4;
 	flags = state->flags;
 	in = strm->total_in;  out = strm->total_out;
 	inflateReset(strm);

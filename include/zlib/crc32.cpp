@@ -2,10 +2,10 @@
 #  include <stdio.h>
 #  ifndef DYNAMIC_CRC_TABLE
 #    define DYNAMIC_CRC_TABLE
-#  endif   
-#endif   
+#  endif
+#endif
 
-#include "zutil.hpp"              
+#include "zutil.hpp"
 
 #ifdef Z_TESTN
 #  define N Z_TESTN
@@ -22,7 +22,7 @@
 #  endif
 #else
 #  ifdef MAKECRCH
-#    define W 8             
+#    define W 8
 #  else
 #    if defined(__x86_64__) || defined(__aarch64__)
 #      define W 8
@@ -59,7 +59,7 @@ local z_word_t byte_swap(z_word_t word) {
 		(word & 0xff0000) << 24 |
 		(word & 0xff00) << 40 |
 		(word & 0xff) << 56;
-#  else       
+#  else
 	return
 		(word & 0xff000000) >> 24 |
 		(word & 0xff0000) >> 8 |
@@ -75,7 +75,7 @@ local z_crc_t FAR x2n_table[32];
 #  include "crc32.hpp"
 #endif
 
-#define POLY 0xedb88320               
+#define POLY 0xedb88320
 
 local z_crc_t multmodp(z_crc_t a, z_crc_t b) {
 	z_crc_t m, p;
@@ -97,7 +97,7 @@ local z_crc_t multmodp(z_crc_t a, z_crc_t b) {
 local z_crc_t x2nmodp(z_off64_t n, unsigned k) {
 	z_crc_t p;
 
-	p = (z_crc_t)1 << 31;               
+	p = (z_crc_t)1 << 31;
 	while (n) {
 		if (n & 1)
 			p = multmodp(x2n_table[k & 31], p);
@@ -110,7 +110,7 @@ local z_crc_t x2nmodp(z_off64_t n, unsigned k) {
 const z_crc_t FAR* get_crc_table(void) {
 #ifdef DYNAMIC_CRC_TABLE
 	once(&made, make_crc_table);
-#endif   
+#endif
 	return (const z_crc_t FAR*)crc_table;
 }
 
@@ -139,7 +139,7 @@ unsigned long  crc32_z(unsigned long crc, const unsigned char FAR* buf,
 
 #ifdef DYNAMIC_CRC_TABLE
 	once(&made, make_crc_table);
-#endif   
+#endif
 
 	crc = (~crc) & 0xffffffff;
 
@@ -388,7 +388,7 @@ unsigned long  crc32_z(unsigned long crc, const unsigned char FAR* buf,
 		buf = (unsigned char const*)words;
 	}
 
-#endif   
+#endif
 
 	while (len >= 8) {
 		len -= 8;
@@ -417,7 +417,7 @@ unsigned long  crc32(unsigned long crc, const unsigned char FAR* buf,
 uLong  crc32_combine64(uLong crc1, uLong crc2, z_off64_t len2) {
 #ifdef DYNAMIC_CRC_TABLE
 	once(&made, make_crc_table);
-#endif   
+#endif
 	return multmodp(x2nmodp(len2, 3), crc1) ^ (crc2 & 0xffffffff);
 }
 
@@ -428,7 +428,7 @@ uLong  crc32_combine(uLong crc1, uLong crc2, z_off_t len2) {
 uLong  crc32_combine_gen64(z_off64_t len2) {
 #ifdef DYNAMIC_CRC_TABLE
 	once(&made, make_crc_table);
-#endif   
+#endif
 	return x2nmodp(len2, 3);
 }
 

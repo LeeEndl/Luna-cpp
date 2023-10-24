@@ -28,7 +28,7 @@ void message_create(const dpp::message_create_t& event)
 					});
 			}) : (event.msg.content.find("!purge ") not_eq -1) ? std::function<void()>([&event]()
 				{
-					if (event.msg.member.get_user()->get_permission(event.msg.guild_id) & dpp::p_manage_messages) /* only members who can delete messages */
+					if (event.msg.member.get_user()->get_permission(event.msg.guild_id) & dpp::p_manage_messages)
 					{
 						std::string& provided = dpp::utility::index(event.msg.content, ' ')[1];
 						int amount = (std::ranges::all_of(provided, ::isdigit)) ? stoi(dpp::utility::index(event.msg.content, ' ')[1]) : 0;
@@ -40,7 +40,7 @@ void message_create(const dpp::message_create_t& event)
 								event.reply("> there are no messages within this channel, or there `14 days old`") :
 								event.reply("> deleted " + std::to_string(message_ids.size()) + " messages"), bot.message_delete_bulk(message_ids, event.msg.channel_id);
 							});
-					} /* only members who can delete messages */
+					}
 				}) : std::function<void()>());
 }
 

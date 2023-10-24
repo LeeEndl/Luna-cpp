@@ -262,9 +262,8 @@ namespace dpp {
 			tm timestamp = {};
 			std::string timedate = (*j)[keyname].get<std::string>();
 			if (timedate.find('+') != std::string::npos) {
-				if (timedate.find('.') != std::string::npos) {
-					timedate = timedate.substr(0, timedate.find('.'));
-				}
+				if (timedate.find('.') != std::string::npos)
+					timedate.resize(timedate.find('.'));
 				crossplatform_strptime(timedate.substr(0, 19).c_str(), "%Y-%m-%dT%T", &timestamp);
 				timestamp.tm_isdst = 0;
 				retval = mktime(&timestamp);

@@ -6,7 +6,7 @@ int  uncompress2(Bytef* dest, uLongf* destLen, const Bytef* source,
 	int err;
 	const uInt max = (uInt)-1;
 	uLong len, left;
-	Byte buf[1];              
+	Byte buf[1];
 
 	len = *sourceLen;
 	if (*destLen) {

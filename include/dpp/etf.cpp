@@ -424,7 +424,7 @@ namespace dpp {
 				return j;
 			}
 
-			const bool isSignBitAvailable = (value & (1 << 31)) == 0;
+			const bool isSignBitAvailable = (value & (static_cast<uint64_t>(1) << 31)) == 0;
 			if (isSignBitAvailable) {
 				int32_t negativeValue = -static_cast<int32_t>(value);
 				json j = std::to_string(negativeValue);

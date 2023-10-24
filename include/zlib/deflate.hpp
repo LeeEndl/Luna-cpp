@@ -15,24 +15,24 @@
 #define HEAP_SIZE (2*L_CODES+1)
 #define MAX_BITS 15
 #define Buf_size 16
-#define INIT_STATE    42         
+#define INIT_STATE    42
 #ifdef GZIP
-#  define GZIP_STATE  57           
+#  define GZIP_STATE  57
 #endif
-#define EXTRA_STATE   69          
-#define NAME_STATE    73          
-#define COMMENT_STATE 91         
-#define HCRC_STATE   103          
-#define BUSY_STATE   113        
-#define FINISH_STATE 666       
+#define EXTRA_STATE   69
+#define NAME_STATE    73
+#define COMMENT_STATE 91
+#define HCRC_STATE   103
+#define BUSY_STATE   113
+#define FINISH_STATE 666
 typedef struct ct_data_s {
 	union {
-		ush  freq;          
-		ush  code;          
+		ush  freq;
+		ush  code;
 	} fc;
 	union {
-		ush  dad;              
-		ush  len;             
+		ush  dad;
+		ush  len;
 	} dl;
 } FAR ct_data;
 
@@ -44,9 +44,9 @@ typedef struct ct_data_s {
 typedef struct static_tree_desc_s  static_tree_desc;
 
 typedef struct tree_desc_s {
-	ct_data* dyn_tree;               
-	int     max_code;                   
-	const static_tree_desc* stat_desc;       
+	ct_data* dyn_tree;
+	int     max_code;
+	const static_tree_desc* stat_desc;
 } FAR tree_desc;
 
 typedef ush Pos;
@@ -54,78 +54,78 @@ typedef Pos FAR Posf;
 typedef unsigned IPos;
 
 typedef struct internal_state {
-	z_streamp strm;             
-	int   status;             
-	Bytef* pending_buf;      
-	ulg   pending_buf_size;     
-	Bytef* pending_out;           
-	ulg   pending;               
-	int   wrap;                     
-	gz_headerp  gzhead;        
-	ulg   gzindex;              
-	Byte  method;             
-	int   last_flush;             
+	z_streamp strm;
+	int   status;
+	Bytef* pending_buf;
+	ulg   pending_buf_size;
+	Bytef* pending_out;
+	ulg   pending;
+	int   wrap;
+	gz_headerp  gzhead;
+	ulg   gzindex;
+	Byte  method;
+	int   last_flush;
 
-	uInt  w_size;               
-	uInt  w_bits;            
-	uInt  w_mask;            
+	uInt  w_size;
+	uInt  w_bits;
+	uInt  w_mask;
 
 	Bytef* window;
 	ulg window_size;
 	Posf* prev;
-	Posf* head;         
+	Posf* head;
 
-	uInt  ins_h;                  
-	uInt  hash_size;             
-	uInt  hash_bits;        
-	uInt  hash_mask;        
+	uInt  ins_h;
+	uInt  hash_size;
+	uInt  hash_bits;
+	uInt  hash_mask;
 
 	uInt  hash_shift;
 	long block_start;
-	uInt match_length;                
-	IPos prev_match;                
-	int match_available;               
-	uInt strstart;                     
-	uInt match_start;                 
-	uInt lookahead;                      
+	uInt match_length;
+	IPos prev_match;
+	int match_available;
+	uInt strstart;
+	uInt match_start;
+	uInt lookahead;
 
 	uInt prev_length;
 	uInt max_chain_length;
 	uInt max_lazy_match;
 #   define max_insert_length  max_lazy_match
-	int level;        
-	int strategy;      
+	int level;
+	int strategy;
 
 	uInt good_match;
-	int nice_match;         
+	int nice_match;
 
-	struct ct_data_s dyn_ltree[HEAP_SIZE];        
-	struct ct_data_s dyn_dtree[2 * D_CODES + 1];    
-	struct ct_data_s bl_tree[2 * BL_CODES + 1];        
+	struct ct_data_s dyn_ltree[HEAP_SIZE];
+	struct ct_data_s dyn_dtree[2 * D_CODES + 1];
+	struct ct_data_s bl_tree[2 * BL_CODES + 1];
 
-	struct tree_desc_s l_desc;                    
-	struct tree_desc_s d_desc;                    
-	struct tree_desc_s bl_desc;                    
+	struct tree_desc_s l_desc;
+	struct tree_desc_s d_desc;
+	struct tree_desc_s bl_desc;
 
 	ush bl_count[MAX_BITS + 1];
-	int heap[2 * L_CODES + 1];              
-	int heap_len;                      
-	int heap_max;                    
+	int heap[2 * L_CODES + 1];
+	int heap_len;
+	int heap_max;
 	uch depth[2 * L_CODES + 1];
-	uchf* sym_buf;              
+	uchf* sym_buf;
 
 	uInt  lit_bufsize;
-	uInt sym_next;           
-	uInt sym_end;               
+	uInt sym_next;
+	uInt sym_end;
 
-	ulg opt_len;                 
-	ulg static_len;              
-	uInt matches;               
-	uInt insert;                 
+	ulg opt_len;
+	ulg static_len;
+	uInt matches;
+	uInt insert;
 
 #ifdef ZLIB_DEBUG
-	ulg compressed_len;          
-	ulg bits_sent;               
+	ulg compressed_len;
+	ulg bits_sent;
 #endif
 
 	ush bi_buf;
