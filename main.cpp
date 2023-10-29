@@ -12,13 +12,8 @@ void release_command(const dpp::message_create_t& event)
 		std::async(std::launch::async,
 		(event.msg.content == "!ping") ? std::function<void()>([&event, &reply]()
 			{
-				try {
-					dpp::message msg = std::get<dpp::message>(reply.value);
-					bot.message_edit(msg.set_content("> :ping_pong: pong! *" + std::to_string(static_cast<int>(bot.rest_ping * 1000)) + "ms*"));
-				}
-				catch (dpp::exception exc) {
-					std::cout << exc.what() << std::endl;
-				}
+				dpp::message msg = std::get<dpp::message>(reply.value);
+				bot.message_edit(msg.set_content("> :ping_pong: pong! *" + std::to_string(static_cast<int>(bot.rest_ping * 1000)) + "ms*"));
 			}) :
 			(event.msg.content.find("!purge ") not_eq -1) ? std::function<void()>([&event, &reply]()
 				{
