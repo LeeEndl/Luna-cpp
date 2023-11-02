@@ -1218,6 +1218,8 @@ namespace dpp {
 		std::vector<dpp::component> components;
 		/** when this message was sent */
 		time_t		sent;
+		/** message was deleted from discord cache. (older then 14 days) */
+		bool deleted = false;
 		/** when this message was edited (may be 0 if never edited) */
 		time_t		edited;
 		/** users specifically mentioned in the message */

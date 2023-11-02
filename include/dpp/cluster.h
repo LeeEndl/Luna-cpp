@@ -1779,6 +1779,7 @@ namespace dpp {
 		 * On success the callback will contain a dpp::confirmation object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
 		 */
 		void message_delete_bulk(const std::vector<snowflake>& message_ids, snowflake channel_id, command_completion_event_t callback = utility::log_error());
+		void message_delete_bulk(const message_map& message_ids, snowflake channel_id, command_completion_event_t callback = utility::log_error());
 
 		/**
 		 * @brief Get a channel

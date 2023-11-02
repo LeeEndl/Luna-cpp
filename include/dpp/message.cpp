@@ -1106,6 +1106,7 @@ namespace dpp {
 		set_object_array_not_null<component>(d, "components", this->components);
 		this->content = string_not_null(d, "content");
 		this->sent = ts_not_null(d, "timestamp");
+		if (this->sent > std::time(0) + (static_cast<time_t>(60 * 60 * 24) * 14)) this->deleted = true;
 		this->edited = ts_not_null(d, "edited_timestamp");
 		this->tts = bool_not_null(d, "tts");
 		this->mention_everyone = bool_not_null(d, "mention_everyone");
