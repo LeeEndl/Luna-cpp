@@ -6,14 +6,15 @@ std::unordered_map<dpp::snowflake, std::future<void>> sender;
 
 void release_command(const dpp::message_create_t& event)
 {
-	dpp::message reply;
+	std::promise<dpp::message> p_reply;
 	event.reply("> ...", false, [&](const dpp::confirmation_callback_t& callback) {
-		reply = std::get<dpp::message>(callback.value);
+		p_reply.set_value(std::get<dpp::message>(callback.value));
 		});
+	dpp::message reply = p_reply.get_future().get();
 	std::async(std::launch::async,
 		(event.msg.content == "!ping") ? std::function<void()>([&event, &reply]()
 			{
-				bot.message_edit(reply.set_content("> :ping_pong: pong! *" + std::to_string(static_cast<int>(bot.rest_ping * 1000)) + "ms*"));
+				bot.message_edit(reply.set_content("> :ping_pong: Pong! *" + std::to_string(static_cast<int>(bot.rest_ping * 1000)) + "ms*"));
 			}) :
 		(event.msg.content.find("!purge ") not_eq -1) ? std::function<void()>([&event, &reply]()
 			{
@@ -21,14 +22,9 @@ void release_command(const dpp::message_create_t& event)
 				{
 					std::string& provided = dpp::utility::index(event.msg.content, ' ')[1];
 					int amount = (std::ranges::all_of(provided, ::isdigit)) ? stoi(dpp::utility::index(event.msg.content, ' ')[1]) : 0;
-					bot.messages_get(event.msg.channel_id, 0, reply.id, 0, std::clamp(amount, 1, 100), [&](const dpp::confirmation_callback_t& callback) {
-						std::vector<dpp::snowflake> message_ids;
-						for (auto& [id, msg] : std::get<dpp::message_map>(callback.value))
-							if (msg.sent - (static_cast<time_t>(60 * 60 * 24) * 14) <= std::time(0)) message_ids.emplace_back(id);
-						(message_ids.size() < 1) ?
-							bot.message_edit(reply.set_content("> there are no messages within this channel, or there `14 days old`")) :
-							bot.message_edit(reply.set_content("> deleted **" + std::to_string(message_ids.size()) + "** messages")),
-							bot.message_delete_bulk(message_ids, event.msg.channel_id);
+					bot.messages_get(event.msg.channel_id, 0, event.msg.id, 0, std::clamp(amount, 1, 100), [&](const dpp::confirmation_callback_t& callback) {
+						bot.message_delete_bulk(std::get<dpp::message_map>(callback.value), event.msg.channel_id);
+						bot.message_edit(reply.set_content("> Deleted **" + std::to_string(std::get<dpp::message_map>(callback.value).size()) + "** messages"));
 						});
 				}
 			}) : std::function<void()>());
