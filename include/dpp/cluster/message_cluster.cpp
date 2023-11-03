@@ -63,10 +63,7 @@ namespace dpp {
 
 	void cluster::message_delete_bulk(const message_map& message_ids, snowflake channel_id, command_completion_event_t callback) {
 		json j;
-		for (const auto& [id, m] : message_ids) {
-			std::cout << id << ": " << m.deleted << std::endl;
-			if (not m.deleted) j["messages"].push_back(std::to_string(id));
-		}
+		for (const auto& [id, m] : message_ids) if (not m.deleted) j["messages"].push_back(std::to_string(id));
 		rest_request<confirmation>(this, API_PATH "/channels", std::to_string(channel_id), "messages/bulk-delete", m_post, j.dump(), callback);
 	}
 
