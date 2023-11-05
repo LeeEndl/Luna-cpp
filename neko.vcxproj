@@ -249,11 +249,6 @@
     <ClInclude Include="include\dpp\integration.h" />
     <ClInclude Include="include\dpp\intents.h" />
     <ClInclude Include="include\dpp\invite.h" />
-    <ClInclude Include="include\dpp\isa\avx.h" />
-    <ClInclude Include="include\dpp\isa\avx2.h" />
-    <ClInclude Include="include\dpp\isa\avx512.h" />
-    <ClInclude Include="include\dpp\isa\fallback.h" />
-    <ClInclude Include="include\dpp\isa_detection.h" />
     <ClInclude Include="include\dpp\json.h" />
     <ClInclude Include="include\dpp\json_in.h" />
     <ClInclude Include="include\dpp\json_interface.h" />

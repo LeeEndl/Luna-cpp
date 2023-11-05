@@ -400,9 +400,6 @@
     <Filter Include="openssl">
       <UniqueIdentifier>{b7451118-8053-4519-8e74-969f53162542}</UniqueIdentifier>
     </Filter>
-    <Filter Include="dpp\isa">
-      <UniqueIdentifier>{96c9152a-1251-4ca8-8e0b-28a6f753ec0d}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\dpp\appcommand.h">
@@ -484,9 +481,6 @@
       <Filter>dpp</Filter>
     </ClInclude>
     <ClInclude Include="include\dpp\invite.h">
-      <Filter>dpp</Filter>
-    </ClInclude>
-    <ClInclude Include="include\dpp\isa_detection.h">
       <Filter>dpp</Filter>
     </ClInclude>
     <ClInclude Include="include\dpp\json.h">
@@ -1016,18 +1010,6 @@
     </ClInclude>
     <ClInclude Include="include\dpp\json_in.h">
       <Filter>dpp</Filter>
-    </ClInclude>
-    <ClInclude Include="include\dpp\isa\avx.h">
-      <Filter>dpp\isa</Filter>
-    </ClInclude>
-    <ClInclude Include="include\dpp\isa\avx2.h">
-      <Filter>dpp\isa</Filter>
-    </ClInclude>
-    <ClInclude Include="include\dpp\isa\avx512.h">
-      <Filter>dpp\isa</Filter>
-    </ClInclude>
-    <ClInclude Include="include\dpp\isa\fallback.h">
-      <Filter>dpp\isa</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

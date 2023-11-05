@@ -44,7 +44,6 @@
 #ifdef HAVE_VOICE
 #include <sodium.h>
 #include <opus/opus.h>
-#include <dpp/isa_detection.h>
 #else
 struct OpusDecoder {};
 struct OpusEncoder {};
