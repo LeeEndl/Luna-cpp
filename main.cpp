@@ -1,19 +1,32 @@
 ﻿#include <dpp/dpp.h>
-std::unique_ptr<dpp::cluster> bot = std::make_unique<dpp::cluster>("MTAwNDUxNDkzNTA1OTAwNTQ3MA.GuKkx7.Z6-Pkt1HINgFOKBDg_q8TkjDBEDq8UvrorE3Qg", dpp::i_all_intents);
+
+struct giveaway {
+	time_t ends;
+	dpp::snowflake host;
+	std::vector<dpp::snowflake> entries;
+	uint64_t winners;
+};
+
+std::unique_ptr<dpp::cluster> bot = std::make_unique<dpp::cluster>("MTAwNDUxNDkzNTA1OTAwNTQ3MA.______.", dpp::i_all_intents);
 std::unique_ptr<std::unordered_map<dpp::snowflake, std::future<void>>> cmd_sender = std::make_unique<std::unordered_map<dpp::snowflake, std::future<void>>>();
 std::unique_ptr<std::unordered_map<dpp::snowflake, std::future<void>>> btn_sender = std::make_unique<std::unordered_map<dpp::snowflake, std::future<void>>>();
+std::unique_ptr<std::unordered_map<short, giveaway>> _giveaway = std::make_unique<std::unordered_map<short, giveaway>>();
 
 void button_pressed(const dpp::button_click_t& event) {
-	std::async(std::launch::async, std::function<void()>([&event]()
+	std::promise<dpp::message> p_reply;
+	event.reply(dpp::message(event.command.channel_id, dpp::embed().set_description("> ...")), [&](const dpp::confirmation_callback_t& callback) {
+		p_reply.set_value(std::get<dpp::message>(callback.value));
+		});
+	dpp::message reply = p_reply.get_future().get();
+	std::async(std::launch::async, std::function<void()>([&event, &reply]()
 		{
 			std::unique_ptr<std::vector<std::string>> i = std::make_unique<std::vector<std::string>>(dpp::utility::index(event.custom_id, '.'));
-			if (i->at(0) == "test") event.reply(std::format("> button pressed by <@{0}>. button made by <@{1}>", (uint64_t)event.command.member.user_id, i->at(1)));
 		}));
 	std::this_thread::sleep_for(std::chrono::seconds(1));
 	btn_sender->erase(event.command.member.user_id);
 }
 
-std::vector<std::string> commands = { "!purge ", "!button"};
+std::vector<std::string> commands = { "!purge ", "!gcreate" };
 void release_command(const dpp::message_create_t& event)
 {
 	std::promise<dpp::message> p_reply;
@@ -35,9 +48,17 @@ void release_command(const dpp::message_create_t& event)
 						});
 					});
 			}
-			if (event.msg.content == "!button") {
-				reply.add_component(dpp::component()
-					.add_component(dpp::component().set_label("test button").set_style(dpp::cos_primary).set_id(std::format(".test.{0}", (uint64_t)event.msg.member.user_id))));
+			if (event.msg.content == "!gcreate") {
+				giveaway gw = { time(0), event.msg.member.user_id, std::vector<dpp::snowflake>(), 1 }; /* TODO: store in _giveaway */
+				reply.components.emplace_back(dpp::component().add_component(dpp::component()
+					.set_emoji(u8"🎉")
+					.set_id(std::format(".giveaway.{0}", (uint64_t)event.msg.member.user_id))));
+
+				reply.embeds[0]
+					.set_title("prize title")
+					.set_description(std::format("prize desc. \n\nEnds: {0} \nHosted by: <@{1}> \nEntries: {2} \nWinners: {3}",
+						dpp::utility::timestamp(gw.ends, dpp::utility::tf_short_datetime), (uint64_t)gw.host, gw.entries.size(), gw.winners))
+					.set_timestamp(time(0));
 				bot->message_edit(reply);
 			}
 		}));

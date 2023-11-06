@@ -507,6 +507,7 @@ namespace dpp {
 		 * @return component& Reference to self
 		 */
 		component& set_emoji(const std::string& name, dpp::snowflake id = 0, bool animated = false);
+		component& set_emoji(const char8_t* name, dpp::snowflake id = 0, bool animated = false);
 
 		/** Read class values from json object
 		 * @param j A json object to read from

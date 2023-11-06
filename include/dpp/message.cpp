@@ -220,6 +220,15 @@ namespace dpp {
 		return *this;
 	}
 
+	component& component::set_emoji(const char8_t* name, dpp::snowflake id, bool animated)
+	{
+		if (type == cot_action_row) set_type(cot_button);
+		this->emoji.id = id;
+		this->emoji.name = reinterpret_cast<const char*>(name);
+		this->emoji.animated = animated;
+		return *this;
+	}
+
 	component& component::set_min_length(uint32_t min_l)
 	{
 		min_length = static_cast<int32_t>(min_l);
