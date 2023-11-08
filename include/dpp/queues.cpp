@@ -149,7 +149,7 @@ namespace dpp {
 		else {
 			/* Always attach token and correct user agent when sending REST to Discord */
 			headers.emplace("Authorization", "Bot " + owner->token);
-			headers.emplace("User-Agent", http_version);
+			headers.emplace("User-Agent", "DiscordBot (https://github.com/brainboxdotcc/DPP");
 			if (!reason.empty()) {
 				headers.emplace("X-Audit-Log-Reason", reason);
 			}

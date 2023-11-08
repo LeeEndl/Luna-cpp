@@ -64,7 +64,7 @@ namespace dpp {
 			"GET " + this->path + " HTTP/1.1\r\n"
 			"Host: " + this->hostname + "\r\n"
 			"pragma: no-cache\r\n"
-			"User-Agent: " + http_version + "\r\n"
+			"User-Agent: " + "DiscordBot (https://github.com/brainboxdotcc/DPP" + "\r\n"
 			"Upgrade: WebSocket\r\n"
 			"Connection: Upgrade\r\n"
 			"Sec-WebSocket-Key: " + this->key + "\r\n"

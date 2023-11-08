@@ -573,35 +573,6 @@ namespace dpp {
 		*/
 		std::string  user_url(const snowflake& user_id);
 
-#ifdef _DOXYGEN_
-		/**
-		 * @brief Get the mime type for an image type.
-		 * @param type Image type
-		 * @return std::string The mime type for this image type
-		 */
-		std::string  mime_type(image_type type);
-
-		/**
-		 * @brief Get the mime type for a sticker format.
-		 * @param format Sticker format
-		 * @return std::string The mime type for this sticker format
-		 */
-		std::string  mime_type(sticker_format format);
-
-		/**
-		 * @brief Get the file extension for an image type.
-		 * @param type Image type
-		 * @return std::string The file extension (e.g. ".png") for this image type
-		 */
-		std::string  file_extension(image_type type);
-
-		/**
-		 * @brief Get the file extension for a sticker format.
-		 * @param format Sticker format
-		 * @return std::string The file extension (e.g. ".png") for this sticker format
-		 */
-		std::string  file_extension(sticker_format format);
-#else
 		/**
 		 * @brief Get the mime type for an image type.
 		 * @param type Image type
@@ -633,14 +604,6 @@ namespace dpp {
 		 */
 		template <typename T>
 		extern std::enable_if_t<std::is_same_v<T, sticker_format>, std::string>  file_extension(T format);
-#endif
-
-		/**
-		 * @brief Returns the library's version string
-		 *
-		 * @return std::string version
-		 */
-		std::string  version();
 
 		/**
 		 * @brief Build a URL parameter string e.g. "?a=b&c=d&e=f" from a map of key/value pairs.
@@ -713,7 +676,7 @@ namespace dpp {
 			/** @brief Array of bytes with a size mimicking T */
 			std::array<std::byte, sizeof(T)> data;
 		};
-		std::vector<std::string> index(const std::string& source, const char& find);
+		std::unique_ptr<std::vector<std::string>> index(const std::string& source, const char& find);
 		std::string  trim_mention(std::string str);
 	} // namespace utility
 } // namespace dpp

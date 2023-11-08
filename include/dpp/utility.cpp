@@ -22,7 +22,6 @@
 #include <dpp/utility.h>
 #include <dpp/stringops.h>
 #include <dpp/exception.h>
-#include <dpp/version.h>
 #include <ctime>
 #include <iomanip>
 #include <sstream>
@@ -505,24 +504,19 @@ namespace dpp {
 		static const char* hex = "0123456789ABCDEF";
 
 		std::string url_encode(const std::string& value) {
-			// Reserve worst-case encoded length of string, input length * 3
-			std::string escaped(value.length() * 3, '\0');
-			char* data = escaped.data();
-			for (auto i = value.begin(); i != value.end(); ++i) {
-				unsigned char c = (unsigned char)(*i);
+			std::string escaped;
+			escaped.reserve(value.length() * 3);
+			for (char c : value) {
 				if (isalnum(c) || c == '-' || c == '_' || c == '.' || c == '~') {
-					// Keep alphanumeric and other accepted characters intact
-					*data++ = c;
+					escaped += c;
 				}
 				else {
-					// Any other characters are percent-encoded
-					*data++ = '%';
-					*data++ = hex[c >> 4];
-					*data++ = hex[c & 0x0f];
+					escaped += '%';
+					escaped += hex[(c >> 4) & 0x0F];
+					escaped += hex[c & 0x0F];
 				}
 			}
-			*data = 0;
-			return escaped.data();
+			return escaped;
 		}
 
 		std::string slashcommand_mention(snowflake command_id, const std::string& command_name, const std::string& subcommand) {
@@ -586,7 +580,6 @@ namespace dpp {
 			}
 			return url_host + "/users/" + std::to_string(user_id);
 		};
-
 		template <typename T>
 		std::enable_if_t<std::is_same_v<T, image_type>, std::string> mime_type(T type) {
 			static constexpr auto get_image_mime = [](image_type t) constexpr noexcept {
@@ -755,10 +748,6 @@ namespace dpp {
 			return output;
 		}
 
-		std::string version() {
-			return DPP_VERSION_TEXT;
-		}
-
 		void set_thread_name(const std::string& name) {
 #ifdef HAVE_PRCTL
 			prctl(PR_SET_NAME, reinterpret_cast<unsigned long>(name.substr(0, 15).c_str()), NULL, NULL, NULL);
@@ -773,18 +762,23 @@ namespace dpp {
 #endif
 #endif
 		}
-		std::vector<std::string> index(const std::string& source, const char& find)
+
+		std::unique_ptr<std::vector<std::string>> index(const std::string& source, const char& find)
 		{
-			std::string temp = "";
 			std::vector<std::string> i;
-			for (auto& c : source) c not_eq find ? temp += c : c == find && not temp.empty() ? i.push_back(temp), temp = "" : "";
-			if (not temp.empty()) i.push_back(temp);
+			std::string_view preview(source);
+			size_t pos = 0;
+			while ((pos = preview.find(find)) not_eq -1) {
+				if (pos not_eq 0) i.push_back(std::string(preview.substr(0, pos)));
+				preview.remove_prefix(pos + 1);
+			}
+			if (not preview.empty()) i.push_back(std::string(preview));
 			return i;
 		}
 
-		std::string trim_mention(std::string str) {
-			std::string i = str;
-			i.erase(std::remove_if(i.begin(), i.end(), [&](const char& c) { return c == '<' or c == '>' or c == '!' or c == '@'; }), i.end());
+		std::string trim_mention(const std::string str) {
+			std::string i;
+			std::ranges::copy_if(str, std::back_inserter(i), [&](const char& c) { return not(c == '<' or c == '>' or c == '!' or c == '@'); });
 			return i;
 		}
 	} // namespace utility

@@ -21,7 +21,6 @@
  ************************************************************************************/
 #pragma once
 
-#include <dpp/version.h>
 #include <dpp/exception.h>
 #include <dpp/snowflake.h>
 #include <dpp/misc-enum.h>
