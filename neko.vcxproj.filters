@@ -561,9 +561,6 @@
     <ClInclude Include="include\dpp\utility.h">
       <Filter>dpp</Filter>
     </ClInclude>
-    <ClInclude Include="include\dpp\version.h">
-      <Filter>dpp</Filter>
-    </ClInclude>
     <ClInclude Include="include\dpp\voiceregion.h">
       <Filter>dpp</Filter>
     </ClInclude>

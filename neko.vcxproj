@@ -276,7 +276,6 @@
     <ClInclude Include="include\dpp\unicode_emoji.h" />
     <ClInclude Include="include\dpp\user.h" />
     <ClInclude Include="include\dpp\utility.h" />
-    <ClInclude Include="include\dpp\version.h" />
     <ClInclude Include="include\dpp\voiceregion.h" />
     <ClInclude Include="include\dpp\voicestate.h" />
     <ClInclude Include="include\dpp\webhook.h" />
