@@ -11,6 +11,12 @@ struct giveaway {
 	uint64_t winners;
 }; std::unique_ptr<std::unordered_map<size_t, giveaway>> _giveaway = std::make_unique<std::unordered_map<size_t, giveaway>>();
 
+struct command_info {
+	std::string name, description;
+	dpp::permissions permission;
+	std::vector<dpp::command_option> options;
+};
+
 void button_pressed(const dpp::button_click_t& event) {
 	std::async(std::launch::async, std::function<void()>([&event]()
 		{
@@ -63,13 +69,17 @@ void release_command(const dpp::slashcommand_t& lam)
 
 int main()
 {
-	bot->on_log(dpp::utility::cout_logger());
 	bot->on_ready([](const dpp::ready_t& event) {
 		std::unique_ptr<std::vector<dpp::slashcommand>> cmds = std::make_unique<std::vector<dpp::slashcommand>>();
-		cmds->emplace_back(dpp::slashcommand().set_name("purge").set_description("mass delete messages")
-			.add_option(dpp::command_option(dpp::co_integer, "amount", "amount of messages to delete", true)));
-		cmds->emplace_back(dpp::slashcommand().set_name("gcreate").set_description("create a giveaway"));
-
+		std::unique_ptr<std::vector<command_info>> _command_info = std::make_unique<std::vector<command_info>>(std::vector<command_info>{
+			command_info{ "purge", "mass delete messages", dpp::p_manage_messages, {{dpp::command_option(dpp::co_integer, "amount", "amount of messages to delete", true)}} },
+			command_info{ "gcreate", "create a giveaway", dpp::p_administrator } });
+		for (auto& [name, description, permission, options] : std::move(*_command_info)) {
+			dpp::slashcommand cmd_handler;
+			cmd_handler.set_name(name).set_description(description).set_default_permissions(permission);
+			for (const auto& option : options) cmd_handler.add_option(option);
+			cmds->emplace_back(cmd_handler);
+		}
 		bot->global_bulk_command_create(std::move(*cmds));
 		});
 	bot->on_slashcommand([](const dpp::slashcommand_t& event) {
@@ -80,5 +90,6 @@ int main()
 		if (btn_sender->contains(event.command.member.user_id)) return;
 		btn_sender->emplace(event.command.member.user_id, std::async(std::launch::async, button_pressed, event));
 		});
+	bot->on_log(dpp::utility::cout_logger());
 	bot->start(dpp::start_type::st_wait);
 }
