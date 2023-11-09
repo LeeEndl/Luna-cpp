@@ -765,15 +765,15 @@ namespace dpp {
 
 		std::unique_ptr<std::vector<std::string>> index(const std::string& source, const char& find)
 		{
-			std::vector<std::string> i;
+			std::unique_ptr<std::vector<std::string>> i = std::make_unique<std::vector<std::string>>();
 			std::string_view preview(source);
 			size_t pos = 0;
 			while ((pos = preview.find(find)) not_eq -1) {
-				if (pos not_eq 0) i.push_back(std::string(preview.substr(0, pos)));
+				if (pos not_eq 0) i->emplace_back(std::string(preview.substr(0, pos)));
 				preview.remove_prefix(pos + 1);
 			}
-			if (not preview.empty()) i.push_back(std::string(preview));
-			return i;
+			if (not preview.empty()) i->emplace_back(std::string(preview));
+			return std::move(i);
 		}
 
 		std::string trim_mention(const std::string str) {
