@@ -65,7 +65,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>./include/libcrypto.lib;./include/libssl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>./include/libssl.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <Driver>NotSet</Driver>
       <SwapRunFromNET>false</SwapRunFromNET>
       <NoEntryPoint>false</NoEntryPoint>
