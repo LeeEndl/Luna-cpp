@@ -29,6 +29,8 @@ namespace dpp {
 	*/
 	namespace colors {
 		const uint32_t
+			outter = 0x2b2d31, /* -> colorless embeded */ // -> discord embed color
+			inner = 0x313338, /* -> colorless */ // -> discord signature color
 			white = 0xFFFFFF,
 			discord_white = 0xFFFFFE,
 			light_gray = 0xC0C0C0,
