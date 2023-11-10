@@ -21,7 +21,6 @@ struct command_info {
 void button_pressed(const dpp::button_click_t& event) {
 	std::async(std::launch::async, std::function<void()>([&event]()
 		{
-			event.reply();
 			std::unique_ptr<std::vector<std::string>> i = dpp::utility::index(event.custom_id, '.');
 			if (i->at(0) == "giveaway") {
 				giveaway gw = _giveaway->at(stoull(i->at(1)));
@@ -31,7 +30,8 @@ void button_pressed(const dpp::button_click_t& event) {
 				gw.message.embeds[0].set_description(std::format("{0} \n\nEnds: {1} \nHosted by: <@{2}> \nEntries: {3} \nWinners: {4}",
 					gw.description, dpp::utility::timestamp(gw.ends, dpp::utility::tf_short_datetime), (uint64_t)gw.host, gw.entries.size(), gw.winners));
 				bot->message_edit(gw.message);
-				_giveaway->at(stoull(i->at(1))) = gw; \
+				_giveaway->at(stoull(i->at(1))) = gw;
+				event.reply();
 			}
 		}));
 	std::this_thread::sleep_for(std::chrono::seconds(1));
