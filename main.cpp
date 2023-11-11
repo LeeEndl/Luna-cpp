@@ -69,9 +69,7 @@ void release_command(std::unique_ptr<dpp::slashcommand_t> event)
 		bot->message_create(dpp::message(event->command.channel_id,
 			std::make_unique<dpp::embed>()
 			->set_color(dpp::colors::outter)
-			.set_title(std::format("{0}", gw.title))
-			.set_description(std::format("{0} \n\nEnds: {1} \nHosted by: <@{2}> \nEntries: {3} \nWinners: {4}",
-				gw.description, dpp::utility::timestamp(gw.ends, dpp::utility::tf_short_datetime), (uint64_t)gw.host, gw.entries.size(), gw.winners)))
+			.set_title(std::format("{0}", gw.title)))
 			.add_component(std::make_unique<dpp::component>()->add_component(std::make_unique<dpp::component>()
 				->set_emoji(u8"🎉")
 				.set_id(std::format(".giveaway.{0}",
@@ -81,6 +79,7 @@ void release_command(std::unique_ptr<dpp::slashcommand_t> event)
 				std::unique_ptr<dpp::message> msg = std::make_unique<dpp::message>(std::get<dpp::message>(mc_cb.value));
 				gw.message = std::move(*msg);
 				gw.description = std::move(get<std::string>(event->get_parameter("description"))); // TODO
+				gw.message_update();
 				_giveaway->emplace(_giveaway->size(), gw);
 			});
 		event->reply(std::make_unique<dpp::message>(std::format("> The giveaway was successfully created! ID: **{0}**", _giveaway->size()))
