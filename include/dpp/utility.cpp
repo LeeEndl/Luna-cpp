@@ -776,7 +776,7 @@ namespace dpp {
 			return std::move(i);
 		}
 
-		std::string trim_mention(const std::string str) {
+		std::string trim_mention(const std::string& str) {
 			std::string i;
 			std::ranges::copy_if(str, std::back_inserter(i), [&](const char& c) { return not(c == '<' or c == '>' or c == '!' or c == '@'); });
 			return i;
