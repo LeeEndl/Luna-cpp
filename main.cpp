@@ -9,11 +9,13 @@ struct giveaway {
 	dpp::snowflake host{};
 	std::vector<dpp::snowflake> entries{};
 	dpp::message message{};
-	void message_update() {
+	dpp::embed& message_update() {
 		this->message.embeds[0]
-			.set_description(std::format("{0} \n\nEnds: {1} \nHosted by: <@{2}> \nEntries: {3} \nWinners: {4}",
-				this->description, dpp::utility::timestamp(this->ends, dpp::utility::tf_short_datetime), (uint64_t)this->host, this->entries.size(), this->winners));
+			.set_description(std::format("{0} \n\nEnd{1}: {2} \nHosted by: <@{3}> \nEntries: {4} \nWinners: {5}",
+				this->description, this->ends < time(0) ? "ed" : "s", dpp::utility::timestamp(this->ends, dpp::utility::tf_short_datetime), 
+				(uint64_t)this->host, this->entries.size(), this->winners));
 		bot->message_edit(this->message);
+		return this->message.embeds[0];
 	}
 }; std::unique_ptr<std::unordered_map<size_t, giveaway>> _giveaway = std::make_unique<std::unordered_map<size_t, giveaway>>();
 
