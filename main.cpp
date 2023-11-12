@@ -130,7 +130,7 @@ int main()
 					{dpp::command_option(dpp::co_string, "title", "what you're giveawaying", true)},
 					{dpp::command_option(dpp::co_string, "description", "describe the giveaway", true)},
 					{dpp::command_option(dpp::co_integer, "time", "the length of the giveaway", true)}, // -> improve
-					{dpp::command_option(dpp::co_integer, "winners", "amount of winners", true)}
+					{dpp::command_option(dpp::co_integer, "winners", "amount of winners", true).set_min_value(1)}
 				}
 			}});
 		for (auto& [name, description, permission, options] : std::move(*_command_info)) {
