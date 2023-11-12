@@ -1,19 +1,35 @@
 ﻿#include <dpp/dpp.h>
+#include <random> // rand is old. ok.
+using namespace std::chrono;
 std::unique_ptr<dpp::cluster> bot = std::make_unique<dpp::cluster>("MTAwNDUxNDkzNTA1OTAwNTQ3MA.______.", dpp::i_all_intents);
 std::unique_ptr<std::unordered_map<dpp::snowflake, std::future<void>>> cmd_sender = std::make_unique<std::unordered_map<dpp::snowflake, std::future<void>>>();
 std::unique_ptr<std::unordered_map<dpp::snowflake, std::future<void>>> btn_sender = std::make_unique<std::unordered_map<dpp::snowflake, std::future<void>>>();
+std::unique_ptr<std::vector<std::future<void>>> active_code = std::make_unique<std::vector<std::future<void>>>(); /* running mostly 24/7 */
 
 struct giveaway {
 	std::string title{}, description{};
 	int64_t ends{}, winners{};
 	dpp::snowflake host{};
-	std::vector<dpp::snowflake> entries{};
+	std::vector<dpp::snowflake> entries{}, sub_entries{};
 	dpp::message message{};
 	dpp::embed& message_update() {
+		std::string winner_list;
+		if (this->ends < time(0)) {
+			this->message.components[0].components[0].set_disabled(true); // ... I don't like this
+			this->sub_entries = this->entries;
+			if (entries.size() < winners) winner_list = "no entries"; // TODO: trim winners scaled off entries.size()
+			else for (int i = 0; i < winners; i++) {
+				std::uniform_int_distribution<int> random(0, this->sub_entries.size() - 1);
+				std::default_random_engine engine;
+				int result = random(engine); // idk if the engine'll re-randomize when called 2nd time, so I'll just store it in a int
+				winner_list += std::format("<@{0}>", (uint64_t)this->sub_entries[result]);
+				this->sub_entries.erase(std::ranges::find(this->sub_entries, this->sub_entries[result]));
+			}
+		}
 		this->message.embeds[0]
 			.set_description(std::format("{0} \n\nEnd{1}: {2} \nHosted by: <@{3}> \nEntries: {4} \nWinners: {5}",
-				this->description, this->ends < time(0) ? "ed" : "s", dpp::utility::timestamp(this->ends, dpp::utility::tf_short_datetime), 
-				(uint64_t)this->host, this->entries.size(), this->winners));
+				this->description, this->ends < time(0) ? "ed" : "s", dpp::utility::timestamp(this->ends, dpp::utility::tf_short_datetime),
+				(uint64_t)this->host, this->entries.size(), (this->ends < time(0)) ? winner_list : std::to_string(this->winners)));
 		bot->message_edit(this->message);
 		return this->message.embeds[0];
 	}
@@ -30,14 +46,14 @@ void button_pressed(std::unique_ptr<dpp::button_click_t> event) {
 	if (i->at(0) == "giveaway") {
 		std::unique_ptr<giveaway> gw = std::make_unique<giveaway>(_giveaway->at(stoull(i->at(1))));
 		if (std::ranges::find(gw->entries, event->command.member.user_id) not_eq gw->entries.end())
-			event->reply(dpp::message("> You have already entered this giveaway!")
-				.set_flags(dpp::message_flags::m_ephemeral));
+			event->reply(std::make_unique<dpp::message>("> You have already entered this giveaway!")
+				->set_flags(dpp::message_flags::m_ephemeral));
 		else gw->entries.emplace_back(event->command.member.user_id);
 		gw->message_update();
 		_giveaway->at(stoull(i->at(1))) = std::move(*gw);
 		event->reply();
 	}
-	std::this_thread::sleep_for(std::chrono::seconds(1));
+	std::this_thread::sleep_for(1s);
 	btn_sender->erase(event->command.member.user_id);
 }
 
@@ -80,17 +96,25 @@ void release_command(std::unique_ptr<dpp::slashcommand_t> event)
 				gw.message = std::move(*msg);
 				gw.description = std::move(get<std::string>(event->get_parameter("description"))); // TODO
 				gw.message_update();
+				std::cout << gw.message.components.size() << std::endl;
 				_giveaway->emplace(_giveaway->size(), gw);
 			});
 		event->reply(std::make_unique<dpp::message>(std::format("> The giveaway was successfully created! ID: **{0}**", _giveaway->size()))
 			->set_flags(dpp::m_ephemeral));
 	}
-	std::this_thread::sleep_for(std::chrono::seconds(1));
+	std::this_thread::sleep_for(1s);
 	cmd_sender->erase(event->command.member.user_id);
 }
 
 int main()
 {
+	/* giveaway threaded traffic */ //-> IMPROVING...
+	active_code->emplace_back(std::async(std::launch::async, std::function<void()>([&]() {
+		while (true) {
+			std::this_thread::sleep_for(1s); // heart-beat
+			for (auto& [id, gw] : *_giveaway) gw.message_update();
+		}
+		})));
 	bot->on_ready([](const dpp::ready_t& event) {
 		std::unique_ptr<std::vector<dpp::slashcommand>> cmds = std::make_unique<std::vector<dpp::slashcommand>>();
 		std::unique_ptr<std::vector<command_info>> _command_info = std::make_unique<std::vector<command_info>>(std::vector<command_info>{
