@@ -1,10 +1,11 @@
 ﻿#include <dpp/dpp.h>
-#include <random> // rand is old. ok.
 using namespace std::chrono;
+struct giveaway;
 std::unique_ptr<dpp::cluster> bot = std::make_unique<dpp::cluster>("MTAwNDUxNDkzNTA1OTAwNTQ3MA.______.", dpp::i_all_intents);
 std::unique_ptr<std::unordered_map<dpp::snowflake, std::future<void>>> cmd_sender = std::make_unique<std::unordered_map<dpp::snowflake, std::future<void>>>();
 std::unique_ptr<std::unordered_map<dpp::snowflake, std::future<void>>> btn_sender = std::make_unique<std::unordered_map<dpp::snowflake, std::future<void>>>();
-std::unique_ptr<std::vector<std::future<void>>> active_code = std::make_unique<std::vector<std::future<void>>>(); /* running mostly 24/7 */
+std::unique_ptr<std::unordered_map<size_t, giveaway>> _giveaway = std::make_unique<std::unordered_map<size_t, giveaway>>();
+std::unique_ptr<std::vector<std::future<void>>> active_code = std::make_unique<std::vector<std::future<void>>>();
 
 struct giveaway {
 	std::string title{}, description{};
@@ -12,16 +13,16 @@ struct giveaway {
 	dpp::snowflake host{};
 	std::vector<dpp::snowflake> entries{}, sub_entries{};
 	dpp::message message{};
-	dpp::embed& message_update() {
+	bool locked;
+	void message_update(size_t id = 0) {
+		locked = true;
 		std::string winner_list;
 		if (this->ends < time(0)) {
-			this->message.components[0].components[0].set_disabled(true); // ... I don't like this
+			this->message.components[0].components[0].set_disabled(true);
 			this->sub_entries = this->entries;
-			if (entries.size() < winners) winner_list = "no entries"; // TODO: trim winners scaled off entries.size()
-			else for (int i = 0; i < winners; i++) {
-				std::uniform_int_distribution<int> random(0, this->sub_entries.size() - 1);
-				std::default_random_engine engine;
-				int result = random(engine); // idk if the engine'll re-randomize when called 2nd time, so I'll just store it in a int
+			if (this->entries.size() < this->winners) winner_list = "no entries"; // TODO: trim winners scaled off entries.size()
+			else for (int64_t i = 0; i < this->winners; i++) {
+				size_t result = dpp::utility::rand<size_t>(0, this->sub_entries.size() - 1);
 				winner_list += std::format("<@{0}>", (uint64_t)this->sub_entries[result]);
 				this->sub_entries.erase(std::ranges::find(this->sub_entries, this->sub_entries[result]));
 			}
@@ -31,9 +32,10 @@ struct giveaway {
 				this->description, this->ends < time(0) ? "ed" : "s", dpp::utility::timestamp(this->ends, dpp::utility::tf_short_datetime),
 				(uint64_t)this->host, this->entries.size(), (this->ends < time(0)) ? winner_list : std::to_string(this->winners)));
 		bot->message_edit(this->message);
-		return this->message.embeds[0];
+		_giveaway->erase(id); // this'll free up memory
+		locked = false;
 	}
-}; std::unique_ptr<std::unordered_map<size_t, giveaway>> _giveaway = std::make_unique<std::unordered_map<size_t, giveaway>>();
+};
 
 struct command_info {
 	std::string name{}, description{};
@@ -47,10 +49,10 @@ void button_pressed(std::unique_ptr<dpp::button_click_t> event) {
 		std::unique_ptr<giveaway> gw = std::make_unique<giveaway>(_giveaway->at(stoull(i->at(1))));
 		if (std::ranges::find(gw->entries, event->command.member.user_id) not_eq gw->entries.end())
 			event->reply(std::make_unique<dpp::message>("> You have already entered this giveaway!")
-				->set_flags(dpp::message_flags::m_ephemeral));
+				->set_flags(dpp::m_ephemeral));
 		else gw->entries.emplace_back(event->command.member.user_id);
-		gw->message_update();
 		_giveaway->at(stoull(i->at(1))) = std::move(*gw);
+		gw->message_update();
 		event->reply();
 	}
 	std::this_thread::sleep_for(1s);
@@ -72,7 +74,7 @@ void release_command(std::unique_ptr<dpp::slashcommand_t> event)
 							std::format("> {0}", mdb_cb.get_error().message) :
 							std::format("> Deleted **{0}** messages", std::get<dpp::message_map>(mg_cb.value).size());
 						event->edit_original_response(std::make_unique<dpp::message>(std::move(what))
-							->set_flags(dpp::message_flags::m_ephemeral));
+							->set_flags(dpp::m_ephemeral));
 					});
 			});
 	}
@@ -82,21 +84,19 @@ void release_command(std::unique_ptr<dpp::slashcommand_t> event)
 			get<int64_t>(event->get_parameter("time")), get<int64_t>(event->get_parameter("winners")),
 			event->command.member.user_id, {}
 		};
-		bot->message_create(dpp::message(event->command.channel_id,
+		bot->message_create(std::make_unique<dpp::message>(event->command.channel_id,
 			std::make_unique<dpp::embed>()
 			->set_color(dpp::colors::outter)
 			.set_title(std::format("{0}", gw.title)))
-			.add_component(std::make_unique<dpp::component>()->add_component(std::make_unique<dpp::component>()
+			->add_component(std::make_unique<dpp::component>()->add_component(std::make_unique<dpp::component>()
 				->set_emoji(u8"🎉")
 				.set_id(std::format(".giveaway.{0}",
 					_giveaway->size())))),
 			[&event, &gw](const dpp::confirmation_callback_t& mc_cb)
 			{
-				std::unique_ptr<dpp::message> msg = std::make_unique<dpp::message>(std::get<dpp::message>(mc_cb.value));
-				gw.message = std::move(*msg);
+				gw.message = std::move(*std::make_unique<dpp::message>(std::get<dpp::message>(mc_cb.value)));
 				gw.description = std::move(get<std::string>(event->get_parameter("description"))); // TODO
 				gw.message_update();
-				std::cout << gw.message.components.size() << std::endl;
 				_giveaway->emplace(_giveaway->size(), gw);
 			});
 		event->reply(std::make_unique<dpp::message>(std::format("> The giveaway was successfully created! ID: **{0}**", _giveaway->size()))
@@ -108,11 +108,13 @@ void release_command(std::unique_ptr<dpp::slashcommand_t> event)
 
 int main()
 {
-	/* giveaway threaded traffic */ //-> IMPROVING...
 	active_code->emplace_back(std::async(std::launch::async, std::function<void()>([&]() {
 		while (true) {
 			std::this_thread::sleep_for(1s); // heart-beat
-			for (auto& [id, gw] : *_giveaway) gw.message_update();
+			for (auto& [id, gw] : *_giveaway)
+				if (not gw.locked) active_code->emplace_back(std::async(std::launch::async, std::function<void()>([&id, &gw]() {
+					gw.message_update(id);
+					})));
 		}
 		})));
 	bot->on_ready([](const dpp::ready_t& event) {
