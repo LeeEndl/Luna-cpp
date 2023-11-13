@@ -24,6 +24,7 @@
 #include <dpp/snowflake.h>
 #include <dpp/misc-enum.h>
 #include <functional>
+#include <random>
 
 #ifndef MAX_CND_IMAGE_SIZE
 #define MAX_CDN_IMAGE_SIZE 4096
@@ -677,6 +678,10 @@ namespace dpp {
 			std::array<std::byte, sizeof(T)> data;
 		};
 		std::unique_ptr<std::vector<std::string>> index(const std::string& source, const char& find);
-		std::string  trim_mention(std::string str);
+		template<typename T> T rand(T min, T max) {
+			std::uniform_int_distribution<T> integer(min, max);
+			std::default_random_engine random;
+			return integer(random);
+		}
 	} // namespace utility
 } // namespace dpp

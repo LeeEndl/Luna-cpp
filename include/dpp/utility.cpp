@@ -106,7 +106,7 @@ namespace dpp {
 #else
 			return false;
 #endif
-		}
+	}
 
 		avx_type_t voice_avx() {
 #if AVX_TYPE == 512
@@ -118,7 +118,7 @@ namespace dpp {
 #else
 			return avx_none;
 #endif
-		}
+}
 		std::string current_date_time() {
 #ifdef _WIN32
 			std::time_t curr_time = time(nullptr);
@@ -774,12 +774,6 @@ namespace dpp {
 			}
 			if (not preview.empty()) i->emplace_back(std::string(preview));
 			return std::move(i);
-		}
-
-		std::string trim_mention(const std::string& str) {
-			std::string i;
-			std::ranges::copy_if(str, std::back_inserter(i), [&](const char& c) { return not(c == '<' or c == '>' or c == '!' or c == '@'); });
-			return i;
 		}
 	} // namespace utility
 } // namespace dpp
