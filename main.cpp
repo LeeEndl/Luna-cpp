@@ -20,7 +20,10 @@ struct giveaway {
 		if (this->ends < time(0)) {
 			this->message.components[0].components[0].set_disabled(true);
 			this->sub_entries = this->entries;
-			if (this->entries.size() < this->winners) winner_list = "no entries"; // TODO: trim winners scaled off entries.size()
+			if (this->entries.size() < this->winners) {
+				if (this->entries.empty()) winner_list = "no entries";
+				else this->winners = std::clamp((int)this->winners, 1, (int)this->entries.size());
+			}
 			else for (int64_t i = 0; i < this->winners; i++) {
 				size_t result = dpp::utility::rand<size_t>(0, this->sub_entries.size() - 1);
 				winner_list += std::format("<@{0}>", (uint64_t)this->sub_entries[result]);
@@ -32,7 +35,7 @@ struct giveaway {
 				this->description, this->ends < time(0) ? "ed" : "s", dpp::utility::timestamp(this->ends, dpp::utility::tf_short_datetime),
 				(uint64_t)this->host, this->entries.size(), (this->ends < time(0)) ? winner_list : std::to_string(this->winners)));
 		bot->message_edit(this->message);
-		_giveaway->erase(id); // this'll free up memory
+		_giveaway->erase(id);
 		locked = false;
 	}
 };
