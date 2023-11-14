@@ -7,6 +7,19 @@ std::unique_ptr<std::unordered_map<dpp::snowflake, std::future<void>>> btn_sende
 std::unique_ptr<std::unordered_map<size_t, giveaway>> _giveaway = std::make_unique<std::unordered_map<size_t, giveaway>>();
 std::unique_ptr<std::vector<std::future<void>>> active_code = std::make_unique<std::vector<std::future<void>>>();
 
+time_t string_to_time(std::string str) { // TODO: try/catch for wrong formatting
+	time_t t = time(0);
+	str.erase(std::remove(str.begin(), str.end(), ' '), str.end());
+	std::unique_ptr<std::vector<std::string>> is = dpp::utility::index(str, ','); // TODO: make it so ',' are not needed. 1h, 30m -> 1h 30m
+	for (std::string& i : std::move(*is)) {
+		if (std::ranges::find(i | std::views::reverse, 's') not_eq i.rend()) t += stoull(dpp::rtrim(i));
+		if (std::ranges::find(i | std::views::reverse, 'm') not_eq i.rend()) t += stoull(dpp::rtrim(i)) * 60;
+		if (std::ranges::find(i | std::views::reverse, 'h') not_eq i.rend()) t += stoull(dpp::rtrim(i)) * 60 * 60;
+		if (std::ranges::find(i | std::views::reverse, 'd') not_eq i.rend()) t += stoull(dpp::rtrim(i)) * 60 * 60 * 24;
+	}
+	return t;
+}
+
 struct giveaway {
 	std::string title{}, description{};
 	int64_t ends{}, winners{};
@@ -14,28 +27,29 @@ struct giveaway {
 	std::vector<dpp::snowflake> entries{}, sub_entries{};
 	dpp::message message{};
 	bool locked;
+
 	void message_update(size_t id = 0) {
 		locked = true;
 		std::string winner_list;
 		if (this->ends < time(0)) {
 			this->message.components[0].components[0].set_disabled(true);
 			this->sub_entries = this->entries;
-			if (this->entries.size() < this->winners) {
-				if (this->entries.empty()) winner_list = "no entries";
-				else this->winners = std::clamp((int)this->winners, 1, (int)this->entries.size());
-			}
-			else for (int64_t i = 0; i < this->winners; i++) {
-				size_t result = dpp::utility::rand<size_t>(0, this->sub_entries.size() - 1);
-				winner_list += std::format("<@{0}>", (uint64_t)this->sub_entries[result]);
-				this->sub_entries.erase(std::ranges::find(this->sub_entries, this->sub_entries[result]));
-			}
+			if (this->entries.size() < this->winners)
+				this->winners = std::clamp((int)this->winners, 1, (int)this->entries.size());
+			if (not this->entries.empty())
+				for (int64_t i = 0; i < this->winners; i++) {
+					size_t result = dpp::utility::rand<size_t>(0, this->sub_entries.size() - 1);
+					winner_list += std::format("<@{0}>", (uint64_t)this->sub_entries[result]);
+					this->sub_entries.erase(std::ranges::find(this->sub_entries, this->sub_entries[result]));
+				}
+			else winner_list = "no entries";
 		}
 		this->message.embeds[0]
 			.set_description(std::format("{0} \n\nEnd{1}: {2} \nHosted by: <@{3}> \nEntries: {4} \nWinners: {5}",
 				this->description, this->ends < time(0) ? "ed" : "s", dpp::utility::timestamp(this->ends, dpp::utility::tf_short_datetime),
 				(uint64_t)this->host, this->entries.size(), (this->ends < time(0)) ? winner_list : std::to_string(this->winners)));
 		bot->message_edit(this->message);
-		_giveaway->erase(id);
+		if (this->ends < time(0)) _giveaway->erase(id);
 		locked = false;
 	}
 };
@@ -84,7 +98,7 @@ void release_command(std::unique_ptr<dpp::slashcommand_t> event)
 	if (event->command.get_command_name() == "gcreate") {
 		giveaway gw = {
 			get<std::string>(event->get_parameter("title")), get<std::string>(event->get_parameter("description")),
-			get<int64_t>(event->get_parameter("time")), get<int64_t>(event->get_parameter("winners")),
+			string_to_time(get<std::string>(event->get_parameter("duration"))), get<int64_t>(event->get_parameter("winners")),
 			event->command.member.user_id, {}
 		};
 		bot->message_create(std::make_unique<dpp::message>(event->command.channel_id,
@@ -134,7 +148,7 @@ int main()
 				{
 					{dpp::command_option(dpp::co_string, "title", "what you're giveawaying", true)},
 					{dpp::command_option(dpp::co_string, "description", "describe the giveaway", true)},
-					{dpp::command_option(dpp::co_integer, "time", "the length of the giveaway", true)}, // -> improve
+					{dpp::command_option(dpp::co_string, "duration", "the length of the giveaway e.g. 1h, 30m", true)},
 					{dpp::command_option(dpp::co_integer, "winners", "amount of winners", true).set_min_value(1)}
 				}
 			}});
