@@ -683,5 +683,6 @@ namespace dpp {
 			std::default_random_engine random;
 			return integer(random);
 		}
+		time_t string_to_time(std::string str);
 	} // namespace utility
 } // namespace dpp

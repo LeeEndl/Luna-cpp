@@ -106,7 +106,7 @@ namespace dpp {
 #else
 			return false;
 #endif
-	}
+		}
 
 		avx_type_t voice_avx() {
 #if AVX_TYPE == 512
@@ -118,7 +118,7 @@ namespace dpp {
 #else
 			return avx_none;
 #endif
-}
+		}
 		std::string current_date_time() {
 #ifdef _WIN32
 			std::time_t curr_time = time(nullptr);
@@ -774,6 +774,24 @@ namespace dpp {
 			}
 			if (not preview.empty()) i->emplace_back(std::string(preview));
 			return std::move(i);
+		}
+		time_t string_to_time(std::string str) {
+			try
+			{
+				time_t t = time(0);
+				str.erase(std::remove(str.begin(), str.end(), ' '), str.end());
+				std::unique_ptr<std::vector<std::string>> is = dpp::utility::index(str, ','); // TODO: make it so ',' are not needed. 1h, 30m -> 1h 30m
+				for (std::string& i : std::move(*is)) {
+					if (std::ranges::find(i | std::views::reverse, 's') not_eq i.rend()) t += stoull(dpp::rtrim(i));
+					if (std::ranges::find(i | std::views::reverse, 'm') not_eq i.rend()) t += stoull(dpp::rtrim(i)) * 60;
+					if (std::ranges::find(i | std::views::reverse, 'h') not_eq i.rend()) t += stoull(dpp::rtrim(i)) * 60 * 60;
+					if (std::ranges::find(i | std::views::reverse, 'd') not_eq i.rend()) t += stoull(dpp::rtrim(i)) * 60 * 60 * 24;
+				}
+				return t;
+			}
+			catch (...) {
+				return time(0);
+			}
 		}
 	} // namespace utility
 } // namespace dpp
