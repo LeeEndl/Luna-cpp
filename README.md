@@ -8,4 +8,3 @@
 - CMakeList.txt for static library support
 - Experiment with coroutine
 - create a anime and/or MMORPG themed discord bot game
-- implement JSON when stack data is complete and stable
