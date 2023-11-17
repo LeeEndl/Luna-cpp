@@ -41,21 +41,23 @@ std::function<void(dpp::snowflake id)> pending_giveaway = [](dpp::snowflake id)
 		std::unique_ptr<giveaway> gw = std::make_unique<giveaway>(_giveaway->at(id));
 		std::this_thread::sleep_until(system_clock::from_time_t(gw->ends));
 		gw = std::make_unique<giveaway>(_giveaway->at(id));
-		std::string winners = "";
 		gw->message.components[0].components[0].set_disabled(true);
-		gw->sub_entries = gw->entries;
-		if (gw->entries.size() < gw->winners)
-			gw->winners = std::clamp((int)gw->winners, 1, (int)gw->entries.size());
-		if (not gw->entries.empty())
+		gw->winners = std::clamp((int)gw->winners, 1, (int)gw->entries.size());
+		std::string winners = "";
+		if (not gw->entries.empty()) {
+			gw->sub_entries = gw->entries;
 			for (int64_t i = 0; i < gw->winners; i++)
 			{
 				size_t result = dpp::utility::rand<size_t>(0, gw->sub_entries.size() - 1);
 				winners += std::format("<@{0}>, ", gw->sub_entries[result]);
 				gw->sub_entries.erase(std::ranges::find(gw->sub_entries, gw->sub_entries[result]));
 			}
-		if (winners.size() > 2) winners.resize(winners.size() - 2);
+			winners.resize(winners.size() - 2);
+			gw->message_update(winners);
+		}
 		gw->message_update(winners);
 		_giveaway->erase(id);
+		std::filesystem::remove(std::format("./giveaways/{0}", (uint64_t)id));
 	};
 
 static void button_pressed(std::unique_ptr<dpp::button_click_t> event) {
@@ -81,8 +83,6 @@ static void release_command(std::unique_ptr<dpp::slashcommand_t> event)
 {
 	if (event->command.get_command_name() == "purge")
 	{
-		event->reply(std::make_unique<dpp::message>("> *Deleting..*")
-			->set_flags(dpp::m_ephemeral));
 		bot->messages_get(event->command.channel_id, 0, event->command.id, 0, std::clamp((int)get<int64_t>(event->get_parameter("amount")), 1, 100),
 			[&event](const dpp::confirmation_callback_t& mg_cb)
 			{
@@ -92,7 +92,7 @@ static void release_command(std::unique_ptr<dpp::slashcommand_t> event)
 						std::string what = mdb_cb.is_error() ?
 							std::format("> {0}", mdb_cb.get_error().message) :
 							std::format("> Deleted **{0}** messages", std::get<dpp::message_map>(mg_cb.value).size());
-						event->edit_original_response(std::make_unique<dpp::message>(std::move(what))
+						event->reply(std::make_unique<dpp::message>(std::move(what))
 							->set_flags(dpp::m_ephemeral));
 					});
 			});
@@ -142,7 +142,8 @@ int main()
 {
 	bot->on_ready([](const dpp::ready_t& event)
 		{
-			for (const auto& file : std::filesystem::directory_iterator("./giveaways/")) {
+			for (const auto& file : std::filesystem::directory_iterator("./giveaways/"))
+			{
 				json j = json::parse(std::ifstream{ file.path().string() });
 				bot->message_get(dpp::snowflake(j["m_id"]), dpp::snowflake(j["m_cid"]), [j](const dpp::confirmation_callback_t& mg_cb) {
 					giveaway gw = { {}, j["description"], j["ends"], j["winners"], j["host"], j["entries"], {}, std::get<dpp::message>(mg_cb.value) };
