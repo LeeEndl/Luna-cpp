@@ -5,6 +5,5 @@
 
 #### TODO list:
 > not in order of priority
-- CMakeList.txt for static library support
 - Experiment with coroutine
 - create a anime and/or MMORPG themed discord bot game
