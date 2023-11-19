@@ -18,7 +18,7 @@ struct giveaway {
 				dpp::utility::timestamp(this->ends, dpp::utility::tf_relative_time), dpp::utility::timestamp(this->ends, dpp::utility::tf_short_datetime),
 				this->host, this->entries.size(), (winners.empty()) ? std::to_string(this->winners) : winners));
 		bot->message_edit(this->message);
-		std::ofstream{ std::format("./giveaways/{0}", (uint64_t)this->message.id) } << this->to_json();
+		std::ofstream{ std::format("./giveaways/{0}", static_cast<uint64_t>(this->message.id)) } << this->to_json();
 	}
 	json to_json() const {
 		return {
@@ -27,8 +27,8 @@ struct giveaway {
 		{"w", this->winners},
 		{"h", this->host},
 		{"e", this->entries},
-		{"m_id", (uint64_t)this->message.id},
-		{"m_cid", (uint64_t)this->message.channel_id} };
+		{"m_id", static_cast<uint64_t>(this->message.id)},
+		{"m_cid", static_cast<uint64_t>(this->message.channel_id)} };
 	}
 };
 std::unique_ptr<std::unordered_map<dpp::snowflake, giveaway>> _giveaway = std::make_unique<std::unordered_map<dpp::snowflake, giveaway>>();
@@ -38,7 +38,7 @@ std::function<void(dpp::snowflake id)> pending_giveaway = [](dpp::snowflake id)
 		std::this_thread::sleep_until(system_clock::from_time_t(gw->ends));
 		gw = std::make_unique<giveaway>(_giveaway->at(id));
 		gw->message.components[0].components[0].set_disabled(true);
-		gw->winners = std::clamp((int)gw->winners, 1, (int)gw->entries.size());
+		gw->winners = std::clamp(static_cast<int>(gw->winners), 1, static_cast<int>(gw->entries.size()));
 		std::string winners{};
 		if (not gw->entries.empty()) {
 			gw->sub_entries = gw->entries;
@@ -53,14 +53,14 @@ std::function<void(dpp::snowflake id)> pending_giveaway = [](dpp::snowflake id)
 		}
 		gw->message_update(winners);
 		_giveaway->erase(id);
-		std::filesystem::remove(std::format("./giveaways/{0}", (uint64_t)id));
+		std::filesystem::remove(std::format("./giveaways/{0}", static_cast<uint64_t>(id)));
 	};
 
 static void button_pressed(std::unique_ptr<dpp::button_click_t> event) {
 	std::unique_ptr<std::vector<std::string>> i = dpp::utility::index(event->custom_id, '.');
 	if (i->at(0) == "giveaway") {
 		std::unique_ptr<giveaway> gw = std::make_unique<giveaway>(_giveaway->at(stoull(i->at(1))));
-		if (std::ranges::find(gw->entries, (uint64_t)event->command.member.user_id) not_eq gw->entries.end())
+		if (std::ranges::find(gw->entries, static_cast<uint64_t>(event->command.member.user_id)) not_eq gw->entries.end())
 			event->reply(std::make_unique<dpp::message>("> You have already entered this giveaway!")
 				->set_flags(dpp::m_ephemeral));
 		else
@@ -122,7 +122,7 @@ static void release_command(std::unique_ptr<dpp::slashcommand_t> event)
 					gw.message_update();
 					_giveaway->emplace(gw.message.id, gw);
 					active_code->emplace_back(std::async(std::launch::async, pending_giveaway, gw.message.id));
-					event->reply(std::make_unique<dpp::message>(std::format("> The giveaway was successfully created! ID: **{0}**", (uint64_t)gw.message.id))
+					event->reply(std::make_unique<dpp::message>(std::format("> The giveaway was successfully created! ID: **{0}**", static_cast<uint64_t>(gw.message.id)))
 						->set_flags(dpp::m_ephemeral));
 				});
 		}

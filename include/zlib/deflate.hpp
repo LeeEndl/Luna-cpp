@@ -123,11 +123,6 @@ typedef struct internal_state {
 	uInt matches;
 	uInt insert;
 
-#ifdef ZLIB_DEBUG
-	ulg compressed_len;
-	ulg bits_sent;
-#endif
-
 	ush bi_buf;
 	int bi_valid;
 	ulg high_water;

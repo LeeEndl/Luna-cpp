@@ -121,36 +121,7 @@ local void gen_codes(ct_data* tree, int max_code, ushf* bl_count) {
 	}
 }
 
-#ifdef GEN_TREES_H
-local void gen_trees_header(void);
-#endif
-
-#ifndef ZLIB_DEBUG
 #  define send_code(s, c, tree) send_bits(s, tree[c].Code, tree[c].Len)
-#else
-#  define send_code(s, c, tree) \
-     { if (z_verbose>2) fprintf(stderr,"\ncd %3d ",(c)); \
-       send_bits(s, tree[c].Code, tree[c].Len); }
-#endif
-
-#ifdef ZLIB_DEBUG
-local void send_bits(deflate_state* s, int value, int length) {
-	Tracevv((stderr, " l %2d v %4x ", length, value));
-	Assert(length > 0 && length <= 15, "invalid length");
-	s->bits_sent += (ulg)length;
-
-	if (s->bi_valid > (int)Buf_size - length) {
-		s->bi_buf |= (ush)value << s->bi_valid;
-		put_short(s, s->bi_buf);
-		s->bi_buf = (ush)value >> (Buf_size - s->bi_valid);
-		s->bi_valid += length - Buf_size;
-	}
-	else {
-		s->bi_buf |= (ush)value << s->bi_valid;
-		s->bi_valid += length;
-	}
-}
-#else
 
 #define send_bits(s, value, length) \
 { int len = length;\
@@ -165,131 +136,6 @@ local void send_bits(deflate_state* s, int value, int length) {
     s->bi_valid += len;\
   }\
 }
-#endif
-
-local void tr_static_init(void) {
-#if defined(GEN_TREES_H) || !defined(STDC)
-	static int static_init_done = 0;
-	int n;
-	int bits;
-	int length;
-	int code;
-	int dist;
-	ush bl_count[MAX_BITS + 1];
-	if (static_init_done) return;
-
-#ifdef NO_INIT_GLOBAL_POINTERS
-	static_l_desc.static_tree = static_ltree;
-	static_l_desc.extra_bits = extra_lbits;
-	static_d_desc.static_tree = static_dtree;
-	static_d_desc.extra_bits = extra_dbits;
-	static_bl_desc.extra_bits = extra_blbits;
-#endif
-
-	length = 0;
-	for (code = 0; code < LENGTH_CODES - 1; code++) {
-		base_length[code] = length;
-		for (n = 0; n < (1 << extra_lbits[code]); n++) {
-			_length_code[length++] = (uch)code;
-		}
-	}
-	Assert(length == 256, "tr_static_init: length != 256");
-	_length_code[length - 1] = (uch)code;
-
-	dist = 0;
-	for (code = 0; code < 16; code++) {
-		base_dist[code] = dist;
-		for (n = 0; n < (1 << extra_dbits[code]); n++) {
-			_dist_code[dist++] = (uch)code;
-		}
-	}
-	Assert(dist == 256, "tr_static_init: dist != 256");
-	dist >>= 7;
-	for (; code < D_CODES; code++) {
-		base_dist[code] = dist << 7;
-		for (n = 0; n < (1 << (extra_dbits[code] - 7)); n++) {
-			_dist_code[256 + dist++] = (uch)code;
-		}
-	}
-	Assert(dist == 256, "tr_static_init: 256 + dist != 512");
-
-	for (bits = 0; bits <= MAX_BITS; bits++) bl_count[bits] = 0;
-	n = 0;
-	while (n <= 143) static_ltree[n++].Len = 8, bl_count[8]++;
-	while (n <= 255) static_ltree[n++].Len = 9, bl_count[9]++;
-	while (n <= 279) static_ltree[n++].Len = 7, bl_count[7]++;
-	while (n <= 287) static_ltree[n++].Len = 8, bl_count[8]++;
-	gen_codes((ct_data*)static_ltree, L_CODES + 1, bl_count);
-
-	for (n = 0; n < D_CODES; n++) {
-		static_dtree[n].Len = 5;
-		static_dtree[n].Code = bi_reverse((unsigned)n, 5);
-	}
-	static_init_done = 1;
-
-#  ifdef GEN_TREES_H
-	gen_trees_header();
-#  endif
-#endif
-}
-
-#ifdef GEN_TREES_H
-#  ifndef ZLIB_DEBUG
-#    include <stdio.h>
-#  endif
-
-#  define SEPARATOR(i, last, width) \
-      ((i) == (last)? "\n};\n\n" :    \
-       ((i) % (width) == (width) - 1 ? ",\n" : ", "))
-
-void gen_trees_header(void) {
-	FILE* header = fopen("trees.h", "w");
-	int i;
-
-	Assert(header != NULL, "Can't open trees.h");
-	fprintf(header,
-		"/* header created automatically with -DGEN_TREES_H */\n\n");
-
-	fprintf(header, "local const ct_data static_ltree[L_CODES+2] = {\n");
-	for (i = 0; i < L_CODES + 2; i++) {
-		fprintf(header, "{{%3u},{%3u}}%s", static_ltree[i].Code,
-			static_ltree[i].Len, SEPARATOR(i, L_CODES + 1, 5));
-	}
-
-	fprintf(header, "local const ct_data static_dtree[D_CODES] = {\n");
-	for (i = 0; i < D_CODES; i++) {
-		fprintf(header, "{{%2u},{%2u}}%s", static_dtree[i].Code,
-			static_dtree[i].Len, SEPARATOR(i, D_CODES - 1, 5));
-	}
-
-	fprintf(header, "const uch  _dist_code[DIST_CODE_LEN] = {\n");
-	for (i = 0; i < DIST_CODE_LEN; i++) {
-		fprintf(header, "%2u%s", _dist_code[i],
-			SEPARATOR(i, DIST_CODE_LEN - 1, 20));
-	}
-
-	fprintf(header,
-		"const uch  _length_code[MAX_MATCH-MIN_MATCH+1]= {\n");
-	for (i = 0; i < MAX_MATCH - MIN_MATCH + 1; i++) {
-		fprintf(header, "%2u%s", _length_code[i],
-			SEPARATOR(i, MAX_MATCH - MIN_MATCH, 20));
-	}
-
-	fprintf(header, "local const int base_length[LENGTH_CODES] = {\n");
-	for (i = 0; i < LENGTH_CODES; i++) {
-		fprintf(header, "%1u%s", base_length[i],
-			SEPARATOR(i, LENGTH_CODES - 1, 20));
-	}
-
-	fprintf(header, "local const int base_dist[D_CODES] = {\n");
-	for (i = 0; i < D_CODES; i++) {
-		fprintf(header, "%5u%s", base_dist[i],
-			SEPARATOR(i, D_CODES - 1, 10));
-	}
-
-	fclose(header);
-}
-#endif
 
 local void init_block(deflate_state* s) {
 	int n;
@@ -304,8 +150,6 @@ local void init_block(deflate_state* s) {
 }
 
 void  _tr_init(deflate_state* s) {
-	tr_static_init();
-
 	s->l_desc.dyn_tree = s->dyn_ltree;
 	s->l_desc.stat_desc = &static_l_desc;
 
@@ -575,7 +419,7 @@ local int build_bl_tree(deflate_state* s) {
 		if (s->bl_tree[bl_order[max_blindex]].Len != 0) break;
 	}
 	s->opt_len += 3 * ((ulg)max_blindex + 1) + 5 + 5 + 4;
-	Tracev((stderr, "\ndyn trees: dyn %ld, stat %ld",
+	Tracev((stderr, "\ndyn trees: dyn %lu, stat %lu",
 		s->opt_len, s->static_len));
 
 	return max_blindex;
@@ -596,13 +440,8 @@ local void send_all_trees(deflate_state* s, int lcodes, int dcodes,
 		Tracev((stderr, "\nbl code %2d ", bl_order[rank]));
 		send_bits(s, s->bl_tree[bl_order[rank]].Len, 3);
 	}
-	Tracev((stderr, "\nbl tree: sent %ld", s->bits_sent));
-
 	send_tree(s, (ct_data*)s->dyn_ltree, lcodes - 1);
-	Tracev((stderr, "\nlit tree: sent %ld", s->bits_sent));
-
 	send_tree(s, (ct_data*)s->dyn_dtree, dcodes - 1);
-	Tracev((stderr, "\ndist tree: sent %ld", s->bits_sent));
 }
 
 void  _tr_stored_block(deflate_state* s, charf* buf,
@@ -614,12 +453,6 @@ void  _tr_stored_block(deflate_state* s, charf* buf,
 	if (stored_len)
 		zmemcpy(s->pending_buf + s->pending, (Bytef*)buf, stored_len);
 	s->pending += stored_len;
-#ifdef ZLIB_DEBUG
-	s->compressed_len = (s->compressed_len + 3 + 7) & (ulg)~7L;
-	s->compressed_len += (stored_len + 4) << 3;
-	s->bits_sent += 2 * 16;
-	s->bits_sent += stored_len << 3;
-#endif
 }
 
 void  _tr_flush_bits(deflate_state* s) {
@@ -653,7 +486,7 @@ local void compress_block(deflate_state* s, const ct_data* ltree,
 		}
 		else {
 			code = _length_code[lc];
-			send_code(s, code + LITERALS + 1, ltree);
+			send_code(s, code + static_cast<unsigned>(LITERALS) + static_cast<unsigned>(1), ltree);
 			extra = extra_lbits[code];
 			if (extra != 0) {
 				lc -= base_length[code];
@@ -705,11 +538,11 @@ void  _tr_flush_block(deflate_state* s, charf* buf,
 			s->strm->data_type = detect_data_type(s);
 
 		build_tree(s, (tree_desc*)(&(s->l_desc)));
-		Tracev((stderr, "\nlit data: dyn %ld, stat %ld", s->opt_len,
+		Tracev((stderr, "\nlit data: dyn %lu, stat %lu", s->opt_len,
 			s->static_len));
 
 		build_tree(s, (tree_desc*)(&(s->d_desc)));
-		Tracev((stderr, "\ndist data: dyn %ld, stat %ld", s->opt_len,
+		Tracev((stderr, "\ndist data: dyn %lu, stat %lu", s->opt_len,
 			s->static_len));
 		max_blindex = build_bl_tree(s);
 

@@ -154,84 +154,12 @@ int  inflatePrime(z_streamp strm, int bits, int value) {
 }
 
 local void fixedtables(struct inflate_state FAR* state) {
-#ifdef BUILDFIXED
-	static int virgin = 1;
-	static code* lenfix, * distfix;
-	static code fixed[544];
-
-	if (virgin) {
-		unsigned sym, bits;
-		static code* next;
-
-		sym = 0;
-		while (sym < 144) state->lens[sym++] = 8;
-		while (sym < 256) state->lens[sym++] = 9;
-		while (sym < 280) state->lens[sym++] = 7;
-		while (sym < 288) state->lens[sym++] = 8;
-		next = fixed;
-		lenfix = next;
-		bits = 9;
-		inflate_table(LENS, state->lens, 288, &(next), &(bits), state->work);
-
-		sym = 0;
-		while (sym < 32) state->lens[sym++] = 5;
-		distfix = next;
-		bits = 5;
-		inflate_table(DISTS, state->lens, 32, &(next), &(bits), state->work);
-
-		virgin = 0;
-	}
-#else
 #   include "inffixed.hpp"
-#endif
 	state->lencode = lenfix;
 	state->lenbits = 9;
 	state->distcode = distfix;
 	state->distbits = 5;
 }
-
-#ifdef MAKEFIXED
-#include <stdio.h>
-
-void makefixed(void)
-{
-	unsigned low, size;
-	struct inflate_state state;
-
-	fixedtables(&state);
-	puts("    /* inffixed.h -- table for decoding fixed codes");
-	puts("     * Generated automatically by makefixed().");
-	puts("     */");
-	puts("");
-	puts("    /* WARNING: this file should *not* be used by applications.");
-	puts("       It is part of the implementation of this library and is");
-	puts("       subject to change. Applications should only use zlib.h.");
-	puts("     */");
-	puts("");
-	size = 1U << 9;
-	printf("    static const code lenfix[%u] = {", size);
-	low = 0;
-	for (;;) {
-		if ((low % 7) == 0) printf("\n        ");
-		printf("{%u,%u,%d}", (low & 127) == 99 ? 64 : state.lencode[low].op,
-			state.lencode[low].bits, state.lencode[low].val);
-		if (++low == size) break;
-		putchar(',');
-	}
-	puts("\n    };");
-	size = 1U << 5;
-	printf("\n    static const code distfix[%u] = {", size);
-	low = 0;
-	for (;;) {
-		if ((low % 6) == 0) printf("\n        ");
-		printf("{%u,%u,%d}", state.distcode[low].op, state.distcode[low].bits,
-			state.distcode[low].val);
-		if (++low == size) break;
-		putchar(',');
-	}
-	puts("\n    };");
-}
-#endif
 
 local int updatewindow(z_streamp strm, const Bytef* end, unsigned copy) {
 	struct inflate_state FAR* state;

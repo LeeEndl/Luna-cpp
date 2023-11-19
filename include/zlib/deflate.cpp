@@ -1133,27 +1133,7 @@ local uInt longest_match(deflate_state* s, IPos cur_match) {
 
 #endif
 
-#ifdef ZLIB_DEBUG
-
-#define EQUAL 0
-local void check_match(deflate_state* s, IPos start, IPos match, int length) {
-	if (zmemcmp(s->window + match,
-		s->window + start, length) != EQUAL) {
-		fprintf(stderr, " start %u, match %u, length %d\n",
-			start, match, length);
-		do {
-			fprintf(stderr, "%c%c", s->window[match++], s->window[start++]);
-		} while (--length != 0);
-		z_error("invalid match");
-	}
-	if (z_verbose > 1) {
-		fprintf(stderr, "\\[%d,%d]", start - match, length);
-		do { putc(s->window[start++], stderr); } while (--length != 0);
-	}
-}
-#else
 #  define check_match(s, start, match, length)
-#endif
 
 #define FLUSH_BLOCK_ONLY(s, last) { \
    _tr_flush_block(s, (s->block_start >= 0L ? \
