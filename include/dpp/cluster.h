@@ -1393,30 +1393,16 @@ namespace dpp {
 		void guild_command_create(const slashcommand& s, snowflake guild_id, command_completion_event_t callback = utility::log_error());
 
 		/**
-		 * @brief Create/overwrite guild slash commands.
-		 * Any existing guild slash commands on this guild will be deleted and replaced with these.
+		 * @brief Create/overwrite global/guild slash commands.
 		 *
-		 * @see https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-guild-application-commands
-		 * @param commands Vector of slash commands to create/update.
-		 * New guild commands will be available in the guild immediately. If the command did not already exist, it will count toward daily application command create limits.
-		 * @param guild_id Guild ID to create/update the slash commands in
-		 * @param callback Function to call when the API call completes.
-		 * On success the callback will contain a dpp::slashcommand_map object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
-		 */
-		void guild_bulk_command_create(const std::vector<slashcommand>& commands, snowflake guild_id, command_completion_event_t callback = utility::log_error());
-
-		/**
-		 * @brief Create/overwrite global slash commands.
-		 * Any existing global slash commands will be deleted and replaced with these.
-		 *
-		 * @see https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-global-application-commands
 		 * @param commands Vector of slash commands to create/update.
 		 * overwriting existing commands that are registered globally for this application. Updates will be available in all guilds after 1 hour.
 		 * Commands that do not already exist will count toward daily application command create limits.
+		 * @param guild_id the guild in which the command will be created, if 0 then it'll be created to all guilds.
 		 * @param callback Function to call when the API call completes.
 		 * On success the callback will contain a dpp::slashcommand_map object in confirmation_callback_t::value. On failure, the value is undefined and confirmation_callback_t::is_error() method will return true. You can obtain full error details with confirmation_callback_t::get_error().
 		 */
-		void global_bulk_command_create(const std::vector<slashcommand>& commands, command_completion_event_t callback = utility::log_error());
+		void command_bulk_create(const std::vector<slashcommand>& commands, snowflake guild_id = 0, command_completion_event_t callback = utility::log_error());
 
 		/**
 		 * @brief Edit a global slash command (a bot can have a maximum of 100 of these)
