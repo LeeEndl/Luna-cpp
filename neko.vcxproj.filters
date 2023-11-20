@@ -2,403 +2,10 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="include\dpp\auditlog.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\ban.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\cache.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\channel.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\cluster.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\commandhandler.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\discordclient.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\discordevents.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\discordvoiceclient.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\dispatcher.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\dns.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\dtemplate.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\emoji.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\etf.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\guild.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\httpsclient.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\integration.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\invite.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\managed.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\message.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\permissions.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\presence.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\prune.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\queues.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\role.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\scheduled_event.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\slashcommand.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\snowflake.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\sslclient.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\stage_instance.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\user.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\utility.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\voiceregion.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\voicestate.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\webhook.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\wsclient.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\cluster\appcommand.cpp">
-      <Filter>dpp\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\cluster\channel_cluster.cpp">
-      <Filter>dpp\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\cluster\confirmation.cpp">
-      <Filter>dpp\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\cluster\dm.cpp">
-      <Filter>dpp\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\cluster\emoji_cluster.cpp">
-      <Filter>dpp\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\cluster\gateway.cpp">
-      <Filter>dpp\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\cluster\guild_cluster.cpp">
-      <Filter>dpp\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\cluster\guild_member.cpp">
-      <Filter>dpp\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\cluster\invite_cluster.cpp">
-      <Filter>dpp\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\cluster\json_interface.cpp">
-      <Filter>dpp\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\cluster\message_cluster.cpp">
-      <Filter>dpp\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\cluster\role_cluster.cpp">
-      <Filter>dpp\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\cluster\scheduled_event_cluster.cpp">
-      <Filter>dpp\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\cluster\stage_instance_cluster.cpp">
-      <Filter>dpp\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\cluster\sticker.cpp">
-      <Filter>dpp\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\cluster\template.cpp">
-      <Filter>dpp\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\cluster\thread.cpp">
-      <Filter>dpp\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\cluster\timer.cpp">
-      <Filter>dpp\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\cluster\user_cluster.cpp">
-      <Filter>dpp\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\cluster\voice.cpp">
-      <Filter>dpp\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\cluster\webhook_cluster.cpp">
-      <Filter>dpp\cluster</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\channel_create.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\channel_delete.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\channel_pins_update.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\channel_update.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\guild_audit_log_entry_create.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\guild_ban_add.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\guild_ban_remove.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\guild_create.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\guild_delete.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\guild_emojis_update.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\guild_integrations_update.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\guild_join_request_delete.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\guild_member_add.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\guild_member_remove.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\guild_member_update.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\guild_members_chunk.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\guild_role_create.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\guild_role_delete.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\guild_role_update.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\guild_scheduled_event_create.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\guild_scheduled_event_delete.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\guild_scheduled_event_update.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\guild_scheduled_event_user_add.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\guild_scheduled_event_user_remove.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\guild_stickers_update.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\guild_update.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\integration_create.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\integration_delete.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\integration_update.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\interaction_create.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\invite_create.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\invite_delete.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\logger.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\message_create.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\message_delete.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\message_delete_bulk.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\message_reaction_add.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\message_reaction_remove.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\message_reaction_remove_all.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\message_reaction_remove_emoji.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\message_update.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\presence_update.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\ready.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\resumed.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\stage_instance_create.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\stage_instance_delete.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\stage_instance_update.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\thread_create.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\thread_delete.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\thread_list_sync.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\thread_member_update.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\thread_members_update.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\thread_update.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\typing_start.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\user_update.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\voice_server_update.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\voice_state_update.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\events\webhooks_update.cpp">
-      <Filter>dpp\events</Filter>
-    </ClCompile>
-    <ClCompile Include="include\zlib\adler32.cpp">
-      <Filter>zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="include\zlib\compress.cpp">
-      <Filter>zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="include\zlib\crc32.cpp">
-      <Filter>zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="include\zlib\deflate.cpp">
-      <Filter>zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="include\zlib\infback.cpp">
-      <Filter>zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="include\zlib\inffast.cpp">
-      <Filter>zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="include\zlib\inflate.cpp">
-      <Filter>zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="include\zlib\inftrees.cpp">
-      <Filter>zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="include\zlib\trees.cpp">
-      <Filter>zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="include\zlib\uncompr.cpp">
-      <Filter>zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="include\zlib\zutil.cpp">
-      <Filter>zlib</Filter>
-    </ClCompile>
-    <ClCompile Include="include\dpp\application.cpp">
-      <Filter>dpp</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="dpp">
-      <UniqueIdentifier>{b7142769-022a-4128-ad3c-82439f5f8075}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="dpp\cluster">
-      <UniqueIdentifier>{bd0afba4-ae01-45dd-aa27-c52a439b4d88}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="dpp\events">
-      <UniqueIdentifier>{28dfc596-1389-43ee-a162-a7d1707815f9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="zlib">
-      <UniqueIdentifier>{ada5e88e-8710-46ea-ac2d-3d9a9f6efa17}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="openssl">
-      <UniqueIdentifier>{b7451118-8053-4519-8e74-969f53162542}</UniqueIdentifier>
+      <UniqueIdentifier>{f66f01fa-0613-426a-97a4-52a7aa6dd07f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -409,6 +16,9 @@
       <Filter>dpp</Filter>
     </ClInclude>
     <ClInclude Include="include\dpp\auditlog.h">
+      <Filter>dpp</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dpp\automod.h">
       <Filter>dpp</Filter>
     </ClInclude>
     <ClInclude Include="include\dpp\ban.h">
@@ -423,6 +33,12 @@
     <ClInclude Include="include\dpp\cluster.h">
       <Filter>dpp</Filter>
     </ClInclude>
+    <ClInclude Include="include\dpp\cluster_coro_calls.h">
+      <Filter>dpp</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dpp\cluster_sync_calls.h">
+      <Filter>dpp</Filter>
+    </ClInclude>
     <ClInclude Include="include\dpp\collector.h">
       <Filter>dpp</Filter>
     </ClInclude>
@@ -430,6 +46,9 @@
       <Filter>dpp</Filter>
     </ClInclude>
     <ClInclude Include="include\dpp\commandhandler.h">
+      <Filter>dpp</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dpp\coro.h">
       <Filter>dpp</Filter>
     </ClInclude>
     <ClInclude Include="include\dpp\discordclient.h">
@@ -456,6 +75,9 @@
     <ClInclude Include="include\dpp\emoji.h">
       <Filter>dpp</Filter>
     </ClInclude>
+    <ClInclude Include="include\dpp\entitlement.h">
+      <Filter>dpp</Filter>
+    </ClInclude>
     <ClInclude Include="include\dpp\etf.h">
       <Filter>dpp</Filter>
     </ClInclude>
@@ -466,6 +88,9 @@
       <Filter>dpp</Filter>
     </ClInclude>
     <ClInclude Include="include\dpp\exception.h">
+      <Filter>dpp</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dpp\export.h">
       <Filter>dpp</Filter>
     </ClInclude>
     <ClInclude Include="include\dpp\guild.h">
@@ -483,7 +108,13 @@
     <ClInclude Include="include\dpp\invite.h">
       <Filter>dpp</Filter>
     </ClInclude>
+    <ClInclude Include="include\dpp\isa_detection.h">
+      <Filter>dpp</Filter>
+    </ClInclude>
     <ClInclude Include="include\dpp\json.h">
+      <Filter>dpp</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dpp\json_fwd.h">
       <Filter>dpp</Filter>
     </ClInclude>
     <ClInclude Include="include\dpp\json_interface.h">
@@ -525,6 +156,9 @@
     <ClInclude Include="include\dpp\scheduled_event.h">
       <Filter>dpp</Filter>
     </ClInclude>
+    <ClInclude Include="include\dpp\sku.h">
+      <Filter>dpp</Filter>
+    </ClInclude>
     <ClInclude Include="include\dpp\snowflake.h">
       <Filter>dpp</Filter>
     </ClInclude>
@@ -561,6 +195,9 @@
     <ClInclude Include="include\dpp\utility.h">
       <Filter>dpp</Filter>
     </ClInclude>
+    <ClInclude Include="include\dpp\version.h">
+      <Filter>dpp</Filter>
+    </ClInclude>
     <ClInclude Include="include\dpp\voiceregion.h">
       <Filter>dpp</Filter>
     </ClInclude>
@@ -571,441 +208,6 @@
       <Filter>dpp</Filter>
     </ClInclude>
     <ClInclude Include="include\dpp\wsclient.h">
-      <Filter>dpp</Filter>
-    </ClInclude>
-    <ClInclude Include="include\zlib\crc32.hpp">
-      <Filter>zlib</Filter>
-    </ClInclude>
-    <ClInclude Include="include\zlib\deflate.hpp">
-      <Filter>zlib</Filter>
-    </ClInclude>
-    <ClInclude Include="include\zlib\inffast.hpp">
-      <Filter>zlib</Filter>
-    </ClInclude>
-    <ClInclude Include="include\zlib\inffixed.hpp">
-      <Filter>zlib</Filter>
-    </ClInclude>
-    <ClInclude Include="include\zlib\inflate.hpp">
-      <Filter>zlib</Filter>
-    </ClInclude>
-    <ClInclude Include="include\zlib\inftrees.hpp">
-      <Filter>zlib</Filter>
-    </ClInclude>
-    <ClInclude Include="include\zlib\trees.hpp">
-      <Filter>zlib</Filter>
-    </ClInclude>
-    <ClInclude Include="include\zlib\zconf.hpp">
-      <Filter>zlib</Filter>
-    </ClInclude>
-    <ClInclude Include="include\zlib\zlib.hpp">
-      <Filter>zlib</Filter>
-    </ClInclude>
-    <ClInclude Include="include\zlib\zutil.hpp">
-      <Filter>zlib</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\aes.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\asn1.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\asn1err.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\asn1t.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\async.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\asyncerr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\bio.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\bioerr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\blowfish.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\bn.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\bnerr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\buffer.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\buffererr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\camellia.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\cast.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\cmac.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\cmp.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\cmp_util.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\cmperr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\cms.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\cmserr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\comp.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\comperr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\conf.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\conf_api.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\conferr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\configuration.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\conftypes.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\core.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\core_dispatch.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\core_names.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\core_object.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\crmf.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\crmferr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\crypto.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\cryptoerr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\cryptoerr_legacy.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\ct.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\cterr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\decoder.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\decodererr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\des.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\dh.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\dherr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\dsa.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\dsaerr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\dtls1.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\e_os2.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\ebcdic.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\ec.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\ecdh.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\ecdsa.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\ecerr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\encoder.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\encodererr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\engine.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\engineerr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\err.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\ess.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\esserr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\evp.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\evperr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\fips_names.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\fipskey.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\hmac.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\http.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\httperr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\idea.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\kdf.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\kdferr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\lhash.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\macros.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\md2.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\md4.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\md5.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\mdc2.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\modes.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\obj_mac.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\objects.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\objectserr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\ocsp.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\ocsperr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\opensslconf.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\opensslv.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\ossl_typ.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\param_build.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\params.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\pem.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\pem2.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\pemerr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\pkcs7.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\pkcs7err.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\pkcs12.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\pkcs12err.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\prov_ssl.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\proverr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\provider.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\rand.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\randerr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\rc2.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\rc4.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\rc5.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\ripemd.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\rsa.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\rsaerr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\safestack.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\seed.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\self_test.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\sha.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\srp.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\srtp.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\ssl.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\ssl2.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\ssl3.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\sslerr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\sslerr_legacy.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\stack.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\store.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\storeerr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\symhacks.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\tls1.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\trace.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\ts.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\tserr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\txt_db.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\types.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\ui.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\uierr.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\whrlpool.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\x509.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\x509_vfy.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\x509err.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\x509v3.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openssl\x509v3err.h">
-      <Filter>openssl</Filter>
-    </ClInclude>
-    <ClInclude Include="include\dpp\json_in.h">
       <Filter>dpp</Filter>
     </ClInclude>
   </ItemGroup>

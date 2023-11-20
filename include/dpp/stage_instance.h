@@ -3,7 +3,7 @@
  * D++, A Lightweight C++ library for Discord
  *
  * SPDX-License-Identifier: Apache-2.0
- * Copyright 2021 Craig Edwards and D++ contributors
+ * Copyright 2021 Craig Edwards and D++ contributors 
  * (https://github.com/brainboxdotcc/DPP/graphs/contributors)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,66 +20,72 @@
  *
  ************************************************************************************/
 #pragma once
-
+#include <dpp/export.h>
 #include <dpp/snowflake.h>
 #include <dpp/managed.h>
-
+#include <dpp/json_fwd.h>
 #include <unordered_map>
 #include <dpp/json_interface.h>
 
 namespace dpp {
-	/**
-	 * @brief Represents the privacy of a stage instance
-	 */
-	enum stage_privacy_level : uint8_t {
-		/// The Stage instance is visible publicly, such as on Stage Discovery.
-		sp_public = 1,
-		/// The Stage instance is visible to only guild members.
-		sp_guild_only = 2
-	};
+
+/**
+ * @brief Represents the privacy of a stage instance
+ */
+enum stage_privacy_level : uint8_t {
+	/// The Stage instance is visible publicly, such as on Stage Discovery.
+	sp_public = 1,
+	/// The Stage instance is visible to only guild members.
+	sp_guild_only = 2
+};
+
+/**
+ * @brief A stage instance.
+ * Stage instances are like a conference facility, with moderators/speakers and listeners.
+ */
+struct DPP_EXPORT stage_instance : public managed, public json_interface<stage_instance> {
+protected:
+	friend struct json_interface<stage_instance>;
 
 	/**
-	 * @brief A stage instance.
-	 * Stage instances are like a conference facility, with moderators/speakers and listeners.
+	 * @brief Serialise a stage_instance object rom json
+	 *
+	 * @return stage_instance& a reference to self
 	 */
-	struct  stage_instance : public managed, public json_interface<stage_instance> {
-		/// The guild id of the associated Stage channel
-		snowflake guild_id;
-		/// The id of the associated Stage channel
-		snowflake channel_id;
-		/// The topic of the Stage instance (1-120 characters)
-		std::string topic;
-		/// The privacy level of the Stage instance
-		stage_privacy_level privacy_level;
-		/// Whether or not Stage Discovery is disabled
-		bool discoverable_disabled;
+	 stage_instance& fill_from_json_impl(const nlohmann::json* j);
 
-		/**
-		 * @brief Create a stage_instance object
-		 */
-		stage_instance();
+	/**
+	 * @brief Build json for this object
+	 *
+	 * @param with_id include ID
+	 * @return json Json of this object
+	 */
+	virtual json to_json_impl(bool with_id = false) const;
 
-		/**
-		 * @brief Destroy the stage_instance object
-		 */
-		~stage_instance() = default;
+public:
+	/// The guild id of the associated Stage channel
+	snowflake guild_id;
+	/// The id of the associated Stage channel
+	snowflake channel_id;
+	/// The topic of the Stage instance (1-120 characters)
+	std::string topic;
+	/// The privacy level of the Stage instance
+	stage_privacy_level privacy_level;
+	/// Whether or not Stage Discovery is disabled
+	bool discoverable_disabled;
 
-		/**
-		 * @brief Serialise a stage_instance object rom json
-		 *
-		 * @return stage_instance& a reference to self
-		 */
-		stage_instance& fill_from_json(const nlohmann::json* j);
+	/**
+	 * @brief Create a stage_instance object
+	 */
+	stage_instance();
 
-		/**
-		 * @brief Build json for this object
-		 *
-		 * @param with_id include ID
-		 * @return std::string Dumped json of this object
-		 */
-		virtual std::string build_json(bool with_id = false) const;
-	};
+	/**
+	 * @brief Destroy the stage_instance object
+	 */
+	~stage_instance() = default;
+};
 
-	/** A group of stage instances */
-	typedef std::unordered_map<snowflake, stage_instance> stage_instance_map;
+/** A group of stage instances */
+typedef std::unordered_map<snowflake, stage_instance> stage_instance_map;
+
 } // namespace dpp

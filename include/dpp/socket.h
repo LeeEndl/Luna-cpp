@@ -1,5 +1,4 @@
 #pragma once
-#include <WinSock2.h>
 
 #ifndef _WIN32
 #ifndef SOCKET
@@ -24,8 +23,8 @@ namespace dpp
 #endif
 
 #ifndef INVALID_SOCKET
- /**
-  * @brief Represents a socket which is not yet assigned
-  */
+/**
+ * @brief Represents a socket which is not yet assigned
+ */
 #define INVALID_SOCKET ~0
 #endif

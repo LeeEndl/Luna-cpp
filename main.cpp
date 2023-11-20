@@ -1,5 +1,6 @@
 ﻿#include <dpp/dpp.h>
-#include <fstream>
+#include <opencv2/opencv.hpp>
+#include <dpp/nlohmann/json.hpp>
 using namespace std::chrono;
 std::unique_ptr<dpp::cluster> bot = std::make_unique<dpp::cluster>("MTAwNDUxNDkzNTA1OTAwNTQ3MA.______.", dpp::i_all_intents);
 std::unordered_map<dpp::snowflake, std::future<void>> cmd_sender;
@@ -20,7 +21,7 @@ struct giveaway {
 		bot->message_edit(this->message);
 		std::ofstream{ std::format("./giveaways/{0}", static_cast<uint64_t>(this->message.id)) } << this->to_json();
 	}
-	json to_json() const {
+	nlohmann::json to_json() const {
 		return {
 		{"desc", this->description},
 		{"ends", this->ends},
@@ -82,7 +83,9 @@ static void command_sent(std::unique_ptr<dpp::slashcommand_t> event)
 			[&event](const dpp::confirmation_callback_t& mg_cb)
 			{
 				if (mg_cb.is_error() or std::get<dpp::message_map>(mg_cb.value).empty()) return;
-				bot->message_delete_bulk(std::move(std::get<dpp::message_map>(mg_cb.value)), event->command.channel_id,
+				std::vector<dpp::snowflake> message_vector;
+				for (const auto& [id, m] : std::move(std::get<dpp::message_map>(mg_cb.value))) message_vector.emplace_back(id);
+				bot->message_delete_bulk(message_vector, event->command.channel_id,
 					[&event, mg_cb](const dpp::confirmation_callback_t& mdb_cb)
 					{
 						std::unique_ptr<dpp::message> msg = std::make_unique<dpp::message>();
@@ -108,10 +111,9 @@ static void command_sent(std::unique_ptr<dpp::slashcommand_t> event)
 		{
 			bot->message_create(std::make_unique<dpp::message>(event->command.channel_id,
 				std::make_unique<dpp::embed>()
-				->set_color(dpp::colors::outter)
-				.set_title(get<std::string>(event->get_parameter("title"))))
+				->set_title(get<std::string>(event->get_parameter("title"))))
 				->add_component(std::make_unique<dpp::component>()->add_component(std::make_unique<dpp::component>()
-					->set_emoji(u8"🎉").set_id("nullptr"))),
+					->set_emoji("🎉").set_id("nullptr"))),
 				[&event, &gw](const dpp::confirmation_callback_t& callback)
 				{
 					if (callback.is_error()) return;
@@ -136,8 +138,8 @@ int main()
 		{
 			for (const auto& file : std::filesystem::directory_iterator("./giveaways/"))
 			{
-				json j = json::parse(std::ifstream{ file.path().string() });
-				bot->message_get(dpp::snowflake(j["m_id"]), dpp::snowflake(j["m_cid"]), [j](const dpp::confirmation_callback_t& callback) {
+				nlohmann::json j = nlohmann::json::parse(std::ifstream{ file.path().string() });
+				bot->message_get(dpp::snowflake(j["m_id"].get<uint64_t>()), dpp::snowflake(j["m_cid"].get<uint64_t>()), [j](const dpp::confirmation_callback_t& callback) {
 					if (callback.is_error()) return;
 					giveaway gw = { j["desc"], j["ends"], j["w"], j["h"], j["e"], {}, std::get<dpp::message>(callback.value) };
 					_giveaway->emplace(gw.message.id, std::move(gw));
@@ -156,7 +158,7 @@ int main()
 					.add_option(dpp::command_option(dpp::co_string, "duration", "the length of the giveaway e.g. 1h, 30m", true))
 					.add_option(dpp::command_option(dpp::co_integer, "winners", "amount of winners", true).set_min_value(1))
 			};
-			bot->command_bulk_create(std::move(cmds));
+			bot->global_bulk_command_create(std::move(cmds));
 		});
 	bot->on_slashcommand([](const dpp::slashcommand_t& event)
 		{

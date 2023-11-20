@@ -19,7 +19,7 @@
  *
  ************************************************************************************/
 #pragma once
-
+#include <dpp/export.h>
 #ifdef _WIN32
 #include <WinSock2.h>
 #include <WS2tcpip.h>
@@ -33,6 +33,7 @@
 #include <unordered_map>
 
 namespace dpp {
+
 	/**
 	 * @brief Represents a cached DNS result.
 	 * Used by the ssl_client class to store cached copies of dns lookups.
@@ -65,7 +66,7 @@ namespace dpp {
 
 	/**
 	 * @brief Resolve a hostname to an addrinfo
-	 *
+	 * 
 	 * @param hostname Hostname to resolve
 	 * @param port A port number or named service, e.g. "80"
 	 * @return dns_cache_entry* First IP address associated with the hostname DNS record

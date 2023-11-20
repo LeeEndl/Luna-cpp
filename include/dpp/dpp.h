@@ -3,7 +3,7 @@
  * D++, A Lightweight C++ library for Discord
  *
  * SPDX-License-Identifier: Apache-2.0
- * Copyright 2021 Craig Edwards and D++ contributors
+ * Copyright 2021 Craig Edwards and D++ contributors 
  * (https://github.com/brainboxdotcc/DPP/graphs/contributors)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +20,18 @@
  *
  ************************************************************************************/
 #pragma once
-
+#include <dpp/export.h>
+#include <dpp/version.h>
+#include <string>
+#include <map>
+#include <vector>
+#include <fstream>
+#include <iostream>
+#include <ctime>
+#include <string>
+#include <vector>
+#include <map>
+#include <functional>
 #include <dpp/exception.h>
 #include <dpp/snowflake.h>
 #include <dpp/misc-enum.h>

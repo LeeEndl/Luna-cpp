@@ -3,7 +3,7 @@
  * D++, A Lightweight C++ library for Discord
  *
  * SPDX-License-Identifier: Apache-2.0
- * Copyright 2021 Craig Edwards and D++ contributors
+ * Copyright 2021 Craig Edwards and D++ contributors 
  * (https://github.com/brainboxdotcc/DPP/graphs/contributors)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,46 +21,49 @@
  ************************************************************************************/
 
 #pragma once
+#include <dpp/export.h>
 #include <dpp/snowflake.h>
-
+#include <dpp/json_fwd.h>
 #include <dpp/json_interface.h>
 #include <unordered_map>
 
 namespace dpp {
-	/**
-	 * @brief The ban class represents a ban on a guild.
-	 *
+
+/**
+ * @brief The ban class represents a ban on a guild.
+ * 
+ */
+class DPP_EXPORT ban : public json_interface<ban> {
+protected:
+	friend struct json_interface<ban>;
+
+	/** Read class values from json object
+	 * @param j A json object to read from
+	 * @return A reference to self
 	 */
-	class  ban : public json_interface<ban> {
-	public:
-		/** The ban reason */
-		std::string reason;
-		/** User ID the ban applies to */
-		snowflake user_id;
+	ban& fill_from_json_impl(nlohmann::json* j);
 
-		/** Constructor */
-		ban();
-
-		/** Destructor */
-		virtual ~ban() = default;
-
-		/** Read class values from json object
-		 * @param j A json object to read from
-		 * @return A reference to self
-		 */
-		ban& fill_from_json(nlohmann::json* j);
-
-		/**
-		 * @brief Build json representation of a ban
-		 * @param with_id Include ID in json
-		 *
-		 * @return std::string stringified json
-		 */
-		std::string build_json(bool with_id = false) const;
-	};
+public:
+	/**
+	 * @brief The ban reason.
+	 */
+	std::string reason;
 
 	/**
-	 * A group of bans. The key is the user ID
+	 * @brief User ID the ban applies to.
 	 */
-	typedef std::unordered_map<snowflake, ban> ban_map;
+	snowflake user_id;
+
+	/** Constructor */
+	ban();
+
+	/** Destructor */
+	virtual ~ban() = default;
+};
+
+/**
+ * @brief A group of bans. The key is the user ID.
+ */
+typedef std::unordered_map<snowflake, ban> ban_map;
+
 } // namespace dpp
