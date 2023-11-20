@@ -4,7 +4,7 @@ using namespace std::chrono;
 std::unique_ptr<dpp::cluster> bot = std::make_unique<dpp::cluster>("MTAwNDUxNDkzNTA1OTAwNTQ3MA.______.", dpp::i_all_intents);
 std::unordered_map<dpp::snowflake, std::future<void>> cmd_sender;
 std::unordered_map<dpp::snowflake, std::future<void>> btn_sender;
-std::unique_ptr<std::vector<std::future<void>>> active_code = std::make_unique<std::vector<std::future<void>>>();
+std::vector<std::future<void>> active_code;
 
 struct giveaway {
 	std::string description{};
@@ -36,7 +36,7 @@ std::function<void(dpp::snowflake id)> pending_giveaway = [](dpp::snowflake id)
 	{
 		std::unique_ptr<giveaway> gw = std::make_unique<giveaway>(_giveaway->at(id));
 		std::this_thread::sleep_until(system_clock::from_time_t(gw->ends));
-		gw = std::make_unique<giveaway>(_giveaway->at(id));
+		gw.reset(new giveaway(_giveaway->at(id)));
 		gw->message.components[0].components[0].set_disabled(true);
 		gw->winners = std::clamp(static_cast<int>(gw->winners), 1, static_cast<int>(gw->entries.size()));
 		std::string winners{};
@@ -49,7 +49,6 @@ std::function<void(dpp::snowflake id)> pending_giveaway = [](dpp::snowflake id)
 				gw->sub_entries.erase(std::ranges::find(gw->sub_entries, gw->sub_entries[result]));
 			}
 			winners.resize(winners.size() - 2);
-			gw->message_update(winners);
 		}
 		gw->message_update(winners);
 		_giveaway->erase(id);
@@ -75,7 +74,7 @@ static void button_pressed(std::unique_ptr<dpp::button_click_t> event) {
 	btn_sender.erase(event->command.member.user_id);
 }
 
-static void release_command(std::unique_ptr<dpp::slashcommand_t> event)
+static void command_sent(std::unique_ptr<dpp::slashcommand_t> event)
 {
 	if (event->command.get_command_name() == "purge")
 	{
@@ -121,7 +120,7 @@ static void release_command(std::unique_ptr<dpp::slashcommand_t> event)
 					gw.message.components[0].components[0].set_id(std::format(".giveaway.{0}", (uint64_t)gw.message.id));
 					gw.message_update();
 					_giveaway->emplace(gw.message.id, gw);
-					active_code->emplace_back(std::async(std::launch::async, pending_giveaway, gw.message.id));
+					active_code.emplace_back(std::async(std::launch::async, pending_giveaway, gw.message.id));
 					event->reply(std::make_unique<dpp::message>(std::format("> The giveaway was successfully created! ID: **{0}**", static_cast<uint64_t>(gw.message.id)))
 						->set_flags(dpp::m_ephemeral));
 				});
@@ -142,7 +141,7 @@ int main()
 					if (callback.is_error()) return;
 					giveaway gw = { j["desc"], j["ends"], j["w"], j["h"], j["e"], {}, std::get<dpp::message>(callback.value) };
 					_giveaway->emplace(gw.message.id, std::move(gw));
-					active_code->emplace_back(std::async(std::launch::async, pending_giveaway, gw.message.id));
+					active_code.emplace_back(std::async(std::launch::async, pending_giveaway, gw.message.id));
 					});
 			}
 			std::vector<dpp::slashcommand> cmds = {
@@ -157,12 +156,12 @@ int main()
 					.add_option(dpp::command_option(dpp::co_string, "duration", "the length of the giveaway e.g. 1h, 30m", true))
 					.add_option(dpp::command_option(dpp::co_integer, "winners", "amount of winners", true).set_min_value(1))
 			};
-			bot->global_bulk_command_create(std::move(cmds));
+			bot->command_bulk_create(std::move(cmds));
 		});
 	bot->on_slashcommand([](const dpp::slashcommand_t& event)
 		{
 			if (cmd_sender.contains(event.command.member.user_id)) return;
-			cmd_sender.try_emplace(event.command.member.user_id, std::async(std::launch::async, release_command, std::make_unique<dpp::slashcommand_t>(std::move(event))));
+			cmd_sender.try_emplace(event.command.member.user_id, std::async(std::launch::async, command_sent, std::make_unique<dpp::slashcommand_t>(std::move(event))));
 		});
 	bot->on_button_click([](const dpp::button_click_t& event)
 		{
