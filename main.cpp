@@ -1,6 +1,6 @@
 ﻿#include <dpp/dpp.h>
-#include <opencv2/opencv.hpp>
 #include <dpp/nlohmann/json.hpp>
+#include <image.hpp>
 using namespace std::chrono;
 std::unique_ptr<dpp::cluster> bot = std::make_unique<dpp::cluster>("MTAwNDUxNDkzNTA1OTAwNTQ3MA.______.", dpp::i_all_intents);
 std::unordered_map<dpp::snowflake, std::future<void>> cmd_sender;
@@ -19,7 +19,7 @@ struct giveaway {
 				dpp::utility::timestamp(this->ends, dpp::utility::tf_relative_time), dpp::utility::timestamp(this->ends, dpp::utility::tf_short_datetime),
 				this->host, this->entries.size(), (winners.empty()) ? std::to_string(this->winners) : winners));
 		bot->message_edit(this->message);
-		std::ofstream{ std::format("./giveaways/{0}", static_cast<uint64_t>(this->message.id)) } << this->to_json();
+		std::ofstream{ std::format(".\\giveaways\\{0}", static_cast<uint64_t>(this->message.id)) } << this->to_json();
 	}
 	nlohmann::json to_json() const {
 		return {
@@ -45,7 +45,7 @@ std::function<void(dpp::snowflake id)> pending_giveaway = [](dpp::snowflake id)
 			gw->sub_entries = gw->entries;
 			for (int64_t i = 0; i < gw->winners; i++)
 			{
-				size_t result = dpp::utility::rand<size_t>(0, gw->sub_entries.size() - 1);
+				size_t result = rand<size_t>(0, gw->sub_entries.size() - 1);
 				winners += std::format("<@{0}>, ", gw->sub_entries[result]);
 				gw->sub_entries.erase(std::ranges::find(gw->sub_entries, gw->sub_entries[result]));
 			}
@@ -53,11 +53,11 @@ std::function<void(dpp::snowflake id)> pending_giveaway = [](dpp::snowflake id)
 		}
 		gw->message_update(winners);
 		_giveaway->erase(id);
-		std::filesystem::remove(std::format("./giveaways/{0}", static_cast<uint64_t>(id)));
+		std::filesystem::remove(std::format(".\\giveaways\\{0}", static_cast<uint64_t>(id)));
 	};
 
 static void button_pressed(std::unique_ptr<dpp::button_click_t> event) {
-	std::unique_ptr<std::vector<std::string>> i = dpp::utility::index(event->custom_id, '.');
+	std::unique_ptr<std::vector<std::string>> i = index(event->custom_id, '.');
 	if (i->at(0) == "giveaway") {
 		std::unique_ptr<giveaway> gw = std::make_unique<giveaway>(_giveaway->at(stoull(i->at(1))));
 		if (std::ranges::find(gw->entries, static_cast<uint64_t>(event->command.member.user_id)) not_eq gw->entries.end())
@@ -101,7 +101,7 @@ static void command_sent(std::unique_ptr<dpp::slashcommand_t> event)
 	{
 		giveaway gw = {
 			get<std::string>(event->get_parameter("description")),
-			dpp::utility::string_to_time(get<std::string>(event->get_parameter("duration"))), get<int64_t>(event->get_parameter("winners")),
+			string_to_time(get<std::string>(event->get_parameter("duration"))), get<int64_t>(event->get_parameter("winners")),
 			event->command.member.user_id
 		};
 		if (system_clock::from_time_t(gw.ends) <= system_clock::now())
@@ -136,7 +136,7 @@ int main()
 {
 	bot->on_ready([](const dpp::ready_t& event)
 		{
-			for (const auto& file : std::filesystem::directory_iterator("./giveaways/"))
+			for (const auto& file : std::filesystem::directory_iterator(".\\giveaways\\"))
 			{
 				nlohmann::json j = nlohmann::json::parse(std::ifstream{ file.path().string() });
 				bot->message_get(dpp::snowflake(j["m_id"].get<uint64_t>()), dpp::snowflake(j["m_cid"].get<uint64_t>()), [j](const dpp::confirmation_callback_t& callback) {

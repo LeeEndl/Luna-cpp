@@ -162,6 +162,7 @@
     <ClInclude Include="include\dpp\voicestate.h" />
     <ClInclude Include="include\dpp\webhook.h" />
     <ClInclude Include="include\dpp\wsclient.h" />
+    <ClInclude Include="include\image.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
