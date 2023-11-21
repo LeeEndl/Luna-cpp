@@ -33,9 +33,6 @@
 #include <memory>
 #include <string_view>
 #include "stringops.h"
-#include <random>
-#include <time.h>
-#include <ranges>
 
  /**
   * @brief The main namespace for D++ functions, classes and types
@@ -990,42 +987,6 @@ static_assert(alignof(a) == alignof(b), #a " and " #b " must be the same alignme
 			/** @brief Array of bytes with a size mimicking T */
 			std::array<std::byte, sizeof(T)> data;
 		};
-
-		std::unique_ptr<std::vector<std::string>> index(const std::string& source, const char& find)
-		{
-			std::unique_ptr<std::vector<std::string>> i = std::make_unique<std::vector<std::string>>();
-			std::string_view preview(source);
-			size_t pos = 0;
-			while ((pos = preview.find(find)) not_eq -1) {
-				if (pos not_eq 0) i->emplace_back(std::string(preview.substr(0, pos)));
-				preview.remove_prefix(pos + 1);
-			}
-			if (not preview.empty()) i->emplace_back(std::string(preview));
-			return std::move(i);
-		}
-		template<typename T> T rand(T min, T max) {
-			std::uniform_int_distribution<T> integer(min, max);
-			std::default_random_engine random;
-			return integer(random);
-		}
-		time_t string_to_time(std::string str) {
-			try
-			{
-				time_t t = time(0);
-				str.erase(std::remove(str.begin(), str.end(), ' '), str.end());
-				std::unique_ptr<std::vector<std::string>> is = dpp::utility::index(str, ','); // TODO: make it so ',' are not needed. 1h, 30m -> 1h 30m
-				for (std::string& i : std::move(*is)) {
-					if (std::ranges::find(i | std::views::reverse, 's') not_eq i.rend()) t += std::stoull(dpp::rtrim(i));
-					if (std::ranges::find(i | std::views::reverse, 'm') not_eq i.rend()) t += std::stoull(dpp::rtrim(i)) * 60;
-					if (std::ranges::find(i | std::views::reverse, 'h') not_eq i.rend()) t += std::stoull(dpp::rtrim(i)) * 60 * 60;
-					if (std::ranges::find(i | std::views::reverse, 'd') not_eq i.rend()) t += std::stoull(dpp::rtrim(i)) * 60 * 60 * 24;
-				}
-				return t;
-			}
-			catch (...) {
-				return time(0);
-			}
-		}
 
 	} // namespace utility
 } // namespace dpp
