@@ -15,7 +15,7 @@ public:
 	/* @param dem y, x e.g. { 100, 100 } */
 	image(dpp::snowflake id, std::vector<int> dem) {
 		this->id = id;
-		update(cv::Mat::zeros(dem[0], dem[1], CV_8UC3) + cv::Scalar(100, 100, 100, 100));
+		update(cv::Mat::zeros(dem[0], dem[1], CV_8UC3) + cv::Scalar(0, 0, 0, 240));
 	}
 	std::string raw() {
 		return dpp::utility::read_file(std::format(".\\cache\\{0}.jpg", static_cast<uint64_t>(this->id)));
@@ -30,8 +30,9 @@ public:
 		cv::addWeighted(image, 0.5, background, (1.0 - 0.5), 0.0, this->img);
 		update();
 	}
-	image& add_line(std::vector<int> pt1, std::vector<int> pt2, std::vector<double> RGB, int thickness = 1) {
-		cv::line(this->img, cv::Point(pt1[0], pt1[1]), cv::Point(pt2[0], pt2[1]), cv::Scalar(RGB[0], RGB[1], RGB[2]), thickness);
+	image& add_line(std::vector<int> pt1, std::vector<int> pt2, std::vector<double> RGBA, int thickness = 1) {
+		if (RGBA.size() == 3) RGBA[4] = 240;
+		cv::line(this->img, cv::Point(pt1[0], pt1[1]), cv::Point(pt2[0], pt2[1]), cv::Scalar(RGBA[0], RGBA[1], RGBA[2], RGBA[3]), thickness);
 		update();
 	}
 	~image() {
