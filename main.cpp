@@ -1,6 +1,7 @@
 ﻿#include <dpp/dpp.h>
 #include <dpp/nlohmann/json.hpp>
 #include <image.hpp>
+#include <utility.hpp>
 using namespace std::chrono;
 std::unique_ptr<dpp::cluster> bot = std::make_unique<dpp::cluster>("MTAwNDUxNDkzNTA1OTAwNTQ3MA.______.", dpp::i_all_intents);
 std::unordered_map<dpp::snowflake, std::future<void>> cmd_sender;
