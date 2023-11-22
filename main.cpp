@@ -111,9 +111,9 @@ static void command_sent(std::unique_ptr<dpp::slashcommand_t> event)
 		{
 			bot->message_create(std::make_unique<dpp::message>(event->command.channel_id,
 				std::make_unique<dpp::embed>()
-				->set_title(get<std::string>(event->get_parameter("title"))))
+				->set_title({ get<std::string>(event->get_parameter("title")) }))
 				->add_component(std::make_unique<dpp::component>()->add_component(std::make_unique<dpp::component>()
-					->set_emoji("🎉").set_id("nullptr"))),
+					->set_emoji(u8"🎉").set_id("nullptr"))),
 				[&event, &gw](const dpp::confirmation_callback_t& callback)
 				{
 					if (callback.is_error()) return;
