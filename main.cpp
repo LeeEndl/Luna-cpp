@@ -129,6 +129,28 @@ static void command_sent(std::unique_ptr<dpp::slashcommand_t> event)
 				});
 		}
 	}
+	if (event->command.get_command_name() == "lvl")
+	{
+		image img(event->command.member.user_id, { 140, 500 }, rgb::embeded);
+
+		/* structure the progression bar */
+		img.add_line({ 20, 140 / 2 }, { 480, 140 / 2 }, rgb::white, 4);
+		img.add_line({ 20 /* + XP */ /* -> TODO */, 140 / 2}, {480, 140 / 2}, {120, 120, 120}, 4);
+		img.add_text(event->command.member.get_user()->username, 
+			{ (480 / 2) - static_cast<int>(event->command.member.get_user()->username.size() * 4), 140 / 2 - 35 }, cv::FONT_HERSHEY_PLAIN, rgb::white);
+
+		/* GET profile picture from discod, and adds the image as a object */ // -> TODO: convert .GIF to .jpg via URLDownloadToFileW()
+		URLDownloadToFileW(NULL,
+			to_wstring(event->command.member.get_user()->get_avatar_url(128, dpp::i_jpg)).c_str(),
+			to_wstring(".\\cache\\" + std::to_string(event->command.member.user_id) + ".jpg").c_str(), 0, NULL);
+		img.add_image(std::to_string(event->command.member.user_id), {0, 0});
+
+		img.image_write();
+		bot->message_create(dpp::message(cache_channel, "").add_file(img.path().c_str(), img.raw()), [&event](const dpp::confirmation_callback_t& callback) {
+			event->reply(dpp::message(event->command.channel_id, std::make_unique<dpp::embed>()
+				->set_image(std::get<dpp::message>(callback.value).attachments[0].url)));
+			});
+	}
 	std::this_thread::sleep_for(1s);
 	cmd_sender.erase(event->command.member.user_id);
 }
@@ -157,7 +179,9 @@ int main()
 					.add_option(dpp::command_option(dpp::co_string, "title", "what you're giveawaying", true))
 					.add_option(dpp::command_option(dpp::co_string, "description", "describe the giveaway", true))
 					.add_option(dpp::command_option(dpp::co_string, "duration", "the length of the giveaway e.g. 1h, 30m", true))
-					.add_option(dpp::command_option(dpp::co_integer, "winners", "amount of winners", true).set_min_value(1))
+					.add_option(dpp::command_option(dpp::co_integer, "winners", "amount of winners", true).set_min_value(1)),
+
+				dpp::slashcommand("lvl", "check your level", bot->me.id)
 			};
 			bot->global_bulk_command_create(std::move(cmds));
 		});

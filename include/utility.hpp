@@ -1,6 +1,8 @@
 #include <random> // random engine
 #include <dpp/stringops.h> // dpp::rtrim()
 #include <ranges> // std::ranges::
+#include <urlmon.h>
+#pragma comment(lib, "urlmon.lib")
 
 std::unique_ptr<std::vector<std::string>> index(const std::string& source, const char& find)
 {
@@ -35,4 +37,8 @@ time_t string_to_time(std::string str) {
 	catch (...) {
 		return time(0);
 	}
+}
+std::wstring to_wstring(std::string str) {
+	std::wstring temp = std::wstring(str.begin(), str.end());
+	return temp;
 }
