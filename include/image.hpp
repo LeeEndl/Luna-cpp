@@ -40,11 +40,20 @@ public:
 			cv::Mat::zeros(dim[0], dim[1], CV_8UC3) + cv::Scalar(RGBA[0], RGBA[1], RGBA[2], RGBA[3]) :
 			cv::imread(cv::String(std::format(".\\cache\\{0}.jpg", file_name))));
 	}
-	image& overlap(std::string file_name) {
-		cv::Mat image = cv::imread(this->path());
-		cv::Mat background = cv::imread(cv::String(std::format(".\\cache\\{0}.jpg", file_name)));
-		cv::resize(image, image, background.size());
-		cv::addWeighted(image, 0.5, background, (1.0 - 0.5), 0.0, this->img);
+	/* adds a image within the original image */
+	image& add_image(std::string file_name, std::vector<int> at) {
+		try {
+			cv::Mat image = this->img;
+			cv::Mat background = cv::imread(cv::String(std::format(".\\cache\\{0}.jpg", file_name)));
+			cv::Mat object = cv::Mat::zeros(image.size(), image.type()); // -> becomes a object within image.
+			cv::resize(background, background, cv::Size(), 0.5, 0.5);
+			cv::Rect roi(at[0], at[1], background.cols, background.rows);
+			background.copyTo(object(roi));
+			cv::addWeighted(image, 1, object, 1, 0.0, this->img);
+		}
+		catch (cv::Exception e) {
+			std::cout << e.what() << std::endl;
+		}
 	}
 	image& add_line(std::vector<int> pt1, std::vector<int> pt2, std::vector<double> RGBA, int thickness = 1) {
 		if (RGBA.size() == 3) RGBA[4] = 255;
