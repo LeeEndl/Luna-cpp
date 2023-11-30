@@ -212,5 +212,6 @@
     </ClInclude>
     <ClInclude Include="include\image.hpp" />
     <ClInclude Include="include\utility.hpp" />
+    <ClInclude Include="include\palette.hpp" />
   </ItemGroup>
 </Project>

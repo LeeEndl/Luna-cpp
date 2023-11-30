@@ -1,5 +1,6 @@
 ﻿#include <dpp/dpp.h>
 #include <dpp/nlohmann/json.hpp>
+#include <palette.hpp>
 #include <image.hpp>
 #include <utility.hpp>
 using namespace std::chrono;
@@ -80,13 +81,13 @@ static void command_sent(std::unique_ptr<dpp::slashcommand_t> event)
 {
 	if (event->command.get_command_name() == "purge")
 	{
-		bot->messages_get(event->command.channel_id, 0, event->command.id, 0, std::clamp((int)get<int64_t>(event->get_parameter("amount")), 1, 100),
+		bot->messages_get(event->command.channel.id, 0, event->command.id, 0, std::clamp((int)get<int64_t>(event->get_parameter("amount")), 1, 100),
 			[&event](const dpp::confirmation_callback_t& mg_cb)
 			{
 				if (mg_cb.is_error() or std::get<dpp::message_map>(mg_cb.value).empty()) return;
 				std::vector<dpp::snowflake> message_vector;
 				for (const auto& [id, m] : std::move(std::get<dpp::message_map>(mg_cb.value))) message_vector.emplace_back(id);
-				bot->message_delete_bulk(message_vector, event->command.channel_id,
+				bot->message_delete_bulk(message_vector, event->command.channel.id,
 					[&event, mg_cb](const dpp::confirmation_callback_t& mdb_cb)
 					{
 						std::unique_ptr<dpp::message> msg = std::make_unique<dpp::message>();
@@ -110,7 +111,7 @@ static void command_sent(std::unique_ptr<dpp::slashcommand_t> event)
 				->set_flags(dpp::m_ephemeral));
 		else
 		{
-			bot->message_create(std::make_unique<dpp::message>(event->command.channel_id,
+			bot->message_create(std::make_unique<dpp::message>(event->command.channel.id,
 				std::make_unique<dpp::embed>()
 				->set_title({ get<std::string>(event->get_parameter("title")) }))
 				->add_component(std::make_unique<dpp::component>()->add_component(std::make_unique<dpp::component>()
@@ -131,25 +132,17 @@ static void command_sent(std::unique_ptr<dpp::slashcommand_t> event)
 	}
 	if (event->command.get_command_name() == "lvl")
 	{
-		image img(event->command.member.user_id, { 140, 500 }, rgb::embeded);
-
-		/* structure the progression bar */
-		img.add_line({ 20, 140 / 2 }, { 480, 140 / 2 }, rgb::white, 4);
-		img.add_line({ 20 /* + XP */ /* -> TODO */, 140 / 2}, {480, 140 / 2}, {120, 120, 120}, 4);
-		img.add_text(event->command.member.get_user()->username, 
-			{ (480 / 2) - static_cast<int>(event->command.member.get_user()->username.size() * 4), 140 / 2 - 35 }, cv::FONT_HERSHEY_PLAIN, rgb::white);
-
-		/* GET profile picture from discod, and adds the image as a object */ // -> TODO: convert .GIF to .jpg via URLDownloadToFileW()
+		image img(event->command.member.user_id, { 140, 500 }, { blue(43), green(45), red(49) });
+		img.add_line({ 20, 140 / 2 }, { 480, 140 / 2 }, { {}, {}, {}}, 4);
+		img.add_line({ 20 /* + XP */, 140 / 2 }, { 480, 140 / 2 }, { blue() / 2.0, green() / 2.0, red() / 2.0 }, 4);
+		img.add_text(event->command.member.get_user()->username,
+			{ (480 / 2) - static_cast<int>(event->command.member.get_user()->username.size()) * 4, 140 / 2 - 35 }, cv::FONT_HERSHEY_PLAIN, { {}, {}, {} });
 		URLDownloadToFileW(NULL,
 			to_wstring(event->command.member.get_user()->get_avatar_url(128, dpp::i_jpg)).c_str(),
 			to_wstring(".\\cache\\" + std::to_string(event->command.member.user_id) + ".jpg").c_str(), 0, NULL);
-		img.add_image(std::to_string(event->command.member.user_id), {0, 0});
-
+		img.add_image(std::to_string(event->command.member.user_id), { 0, 0 });
 		img.image_write();
-		bot->message_create(dpp::message(cache_channel, "").add_file(img.path().c_str(), img.raw()), [&event](const dpp::confirmation_callback_t& callback) {
-			event->reply(dpp::message(event->command.channel_id, std::make_unique<dpp::embed>()
-				->set_image(std::get<dpp::message>(callback.value).attachments[0].url)));
-			});
+		event->reply(dpp::message(event->command.channel.id, "").add_file(img.path().c_str(), img.raw()));
 	}
 	std::this_thread::sleep_for(1s);
 	cmd_sender.erase(event->command.member.user_id);
